@@ -1,0 +1,188 @@
+import React from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Button, Avatar, Divider, Chip } from '@heroui/react';
+import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle } from 'lucide-react';
+import db from '../data/db.json';
+import { useUser } from '../context/UserContext';
+
+const PostDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated, currentUser } = useUser();
+
+  // 1. Encontrar la info real de la base de datos simulada
+  const post = db.posts.find(p => p.id === id);
+  
+  if (!post) {
+    return (
+      <div className="flex flex-col items-center justify-center p-20 text-center">
+        <h1 className="text-4xl font-black uppercase mb-4">Aviso extraviado</h1>
+        <p className="font-cuerpo text-lg mb-8">El anuncio que buscas ya no existe o fue eliminado.</p>
+        <Button onPress={() => navigate(-1)} className="bg-black text-white px-6">Volver atrás</Button>
+      </div>
+    );
+  }
+
+  const owner = db.users.find(u => u.id === post.userId);
+  const isMyPost = currentUser?.id === post.userId;
+  const isPublicViewer = !isAuthenticated;
+
+  // 2. Colores por categoría (igual que en los cards)
+  let typeColor = "text-woho-purple bg-purple-50 border-purple-200";
+  if (post.type === "Trabajo") typeColor = "text-woho-orange bg-orange-50 border-orange-200";
+  if (post.type === "Social") typeColor = "text-green-600 bg-green-50 border-green-200";
+
+  return (
+    <div className="w-full max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
+      
+      {/* Botón Volver */}
+      <div className="flex">
+        <Button 
+          variant="flat" 
+          onPress={() => navigate(-1)}
+          className="font-titulo font-bold border-[2px] border-black bg-white hover:bg-gray-100 transition-transform hover:-translate-y-1"
+          startContent={<ArrowLeft className="w-5 h-5" />}
+        >
+          Volver
+        </Button>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        
+        {/* COLUMNA IZQUIERDA: Contenido Principal */}
+        <div className="w-full lg:w-2/3 flex flex-col gap-6">
+          
+          {/* Cabecera del Documento */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Chip variant="flat" className={`font-bold border-[2px] ${typeColor} text-xs uppercase tracking-widest`}>
+                {post.type}
+              </Chip>
+              {post.expiresInDays <= 5 && post.expiresInDays > 0 && (
+                <Chip color="danger" variant="flat" size="sm" className="font-bold border-[2px] border-red-200 text-xs">
+                  Expira pronto ({post.expiresInDays} días)
+                </Chip>
+              )}
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-titulo font-black text-black leading-none tracking-tighter">
+              {post.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4 text-default-600 font-cuerpo font-bold">
+              <span className="flex items-center gap-1 text-black bg-gray-100 px-3 py-1 rounded-full border-[1.5px] border-black text-sm">
+                <MapPin className="w-4 h-4" /> {post.country}, {post.city} {post.flag}
+              </span>
+              <span className="flex items-center gap-1 text-sm bg-gray-50 px-3 py-1 rounded-full border border-gray-300">
+                <Calendar className="w-4 h-4" /> Publicado hace 2 días
+              </span>
+            </div>
+          </div>
+
+          <Divider className="bg-black opacity-20" />
+
+          {/* Galería de Imágenes Gigante (Si tiene) */}
+          {post.images && post.images.length > 0 ? (
+             <div className="flex flex-col gap-4">
+               {/* Imagen Hero */}
+               <div className="w-full aspect-video rounded-xl border-[4px] border-black overflow-hidden bg-gray-100">
+                 <img src={post.images[0]} alt="Principal" className="w-full h-full object-cover" />
+               </div>
+               {/* Grilla Secundaria */}
+               {post.images.length > 1 && (
+                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                   {post.images.slice(1).map((imgUrl, idx) => (
+                     <div key={idx} className="aspect-square rounded-lg border-[2px] border-black overflow-hidden bg-gray-50 hover:scale-[1.02] transition-transform cursor-pointer">
+                       <img src={imgUrl} alt={`Detalle ${idx+1}`} className="w-full h-full object-cover" />
+                     </div>
+                   ))}
+                 </div>
+               )}
+             </div>
+          ) : (
+            <div className="w-full h-32 bg-gray-50 border-[2px] border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-400 italic font-cuerpo text-sm">
+              Sin material visual disponible (Anuncio de texto puro)
+            </div>
+          )}
+
+          {/* Cuerpo del Mensaje */}
+          <div className="bg-white border-[3px] border-black rounded-xl p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-2xl font-titulo font-black uppercase text-black mb-4">El Detalle</h2>
+            <div className="font-cuerpo text-lg text-default-800 leading-relaxed whitespace-pre-wrap">
+              {post.description}
+            </div>
+          </div>
+
+        </div>
+
+        {/* COLUMNA DERECHA: Pizarra del Creador y Acciones (Sticky) */}
+        <div className="w-full lg:w-1/3 flex flex-col gap-6 sticky top-24">
+          
+          {/* Tarjeta del Autor Neo-Brutalista */}
+          <div className="bg-woho-black text-white border-[3px] border-black rounded-xl p-6 shadow-[8px_8px_0px_0px_rgba(242,166,90,1)] flex flex-col items-center text-center relative overflow-hidden">
+            
+            <div className="absolute top-0 right-0 p-3 opacity-20">
+              {isPublicViewer ? <Lock className="w-24 h-24" /> : <AlertCircle className="w-24 h-24" />}
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center">
+              {isPublicViewer ? (
+                <Avatar className="w-24 h-24 text-large border-[3px] border-dashed border-gray-500 bg-gray-800 mb-4" />
+              ) : (
+                <Avatar src={owner?.avatar} className="w-24 h-24 text-large border-[3px] border-white bg-white mb-4" />
+              )}
+              
+              <h3 className="text-2xl font-titulo font-black tracking-tight mb-1">
+                {isMyPost ? "Es tu propio aviso" : (isPublicViewer ? "Viajero Protegido" : (owner?.name || "Anónimo"))}
+              </h3>
+              
+              <p className="text-sm font-cuerpo opacity-80 mb-6">
+                {isPublicViewer ? "Identidad oculta por seguridad." : "Miembro de la comunidad WOHO."}
+              </p>
+
+              <div className="w-full flex flex-col gap-3">
+                {isMyPost ? (
+                  // ES MI POST
+                  <Button as={Link} to={`/edit-post/${post.id}`} className="w-full h-12 font-bold bg-white text-black border-2 border-black hover:bg-gray-200">
+                    Editar mi publicación
+                  </Button>
+                ) : (
+                  // ES POST DE OTRO
+                  <>
+                    {/* Botón Contactar Inteligente */}
+                    {isAuthenticated ? (
+                      <Button className="w-full h-14 font-titulo font-black uppercase tracking-widest text-lg bg-woho-orange text-black border-[3px] border-black hover:-translate-y-1 transition-transform">
+                         Enviar Mensaje
+                      </Button>
+                    ) : (
+                      <Button as={Link} to="/login" variant="flat" className="w-full h-14 font-titulo font-bold text-md bg-gray-800 text-gray-400 border-[2px] border-dashed border-gray-500">
+                         Inicia sesión para escribirle
+                      </Button>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Tarjeta Secundaria de Utilidades */}
+          <div className="bg-white border-[3px] border-black rounded-xl p-4 flex flex-col gap-2">
+            <h4 className="font-titulo font-black text-black">Acciones Adicionales</h4>
+            <div className="flex gap-2">
+              <Button variant="flat" className="flex-1 font-bold border-[2px] border-black bg-gray-50 hover:bg-gray-100" startContent={<Share2 className="w-4 h-4" />}>
+                Compartir
+              </Button>
+              <Button variant="flat" className="flex-1 font-bold border-[2px] border-black bg-red-50 text-red-600 hover:bg-red-100" startContent={<AlertCircle className="w-4 h-4" />}>
+                Reportar
+              </Button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default PostDetail;

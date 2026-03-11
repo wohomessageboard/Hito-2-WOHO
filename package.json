@@ -1,0 +1,37 @@
+{
+  "name": "woho-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@heroui/breadcrumbs": "^2.2.25",
+    "@heroui/button": "^2.2.31",
+    "@heroui/input": "^2.4.32",
+    "@heroui/navbar": "^2.2.29",
+    "@heroui/react": "^2.8.9",
+    "@heroui/system": "^2.4.28",
+    "@heroui/theme": "^2.4.26",
+    "axios": "^1.13.6",
+    "framer-motion": "^12.35.0",
+    "lucide-react": "^0.577.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.4",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "3.4.19",
+    "vite": "^7.3.1"
+  },
+  "overrides": {
+    "tailwindcss": "3.4.19"
+  }
+}
