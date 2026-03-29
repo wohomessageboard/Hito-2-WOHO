@@ -92,6 +92,21 @@ const TopNav = () => {
         {isAuthenticated ? (
           // VISIÓN DE USUARIO LOGUEADO
           <>
+            {/* Si es administrador, le mostramos funciones ocultas */}
+            {currentUser?.role === 'admin' && (
+              <NavbarItem className="hidden lg:flex">
+                <Button 
+                  as={RouterLink} 
+                  to="/admin-dashboard" 
+                  variant="solid" 
+                  radius="md" 
+                  className="font-bold bg-black text-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.8)] border border-white h-10 px-6"
+                >
+                  Admin Panel
+                </Button>
+              </NavbarItem>
+            )}
+
             <NavbarItem className="hidden lg:flex">
               <Button 
                 as={RouterLink} 
@@ -182,6 +197,21 @@ const TopNav = () => {
           {isAuthenticated ? (
             // BOTONES MÓVIL LOGUEADO
             <>
+              {/* Opción Admin en móvil */}
+              {currentUser?.role === 'admin' && (
+                <Button 
+                  as={RouterLink} 
+                  to="/admin-dashboard" 
+                  variant="solid" 
+                  radius="md" 
+                  fullWidth
+                  className="font-bold bg-black text-white shadow-sm h-12 text-lg border border-white"
+                  onPress={() => setIsMenuOpen(false)}
+                >
+                  Admin Panel
+                </Button>
+              )}
+
               <Button 
                 as={RouterLink} 
                 to="/new-post" 

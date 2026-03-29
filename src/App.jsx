@@ -14,9 +14,11 @@ import Countries from './views/Countries';
 import CountryFeed from './views/CountryFeed';
 import NewPost from './views/NewPost';
 import PostDetail from './views/PostDetail';
+import EditProfile from './views/EditProfile';
 import UnderConstruction from './views/UnderConstruction';
 import UIKit from './views/UIKit';
 import Manifiesto from './views/Manifiesto';
+import AdminDashboard from './views/AdminDashboard';
 // Contexto para manejar el estado del usuario logueado en cualquier ruta
 import { UserProvider } from './context/UserContext';
 
@@ -58,8 +60,11 @@ function App() {
               {/* Crear Post también patea a anónimos */}
               <Route path="/new-post" element={<NewPost />} />
               
-              {/* Rutas en construcción */}
-              <Route path="/edit-profile" element={<UnderConstruction title="Perfil" message="Pronto podrás modificar tu foto y tu descripción aquí." />} />
+              {/* Ruta SuperAdmin (Pantalla Administrativa general protegida por Contexto) */}
+              <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              
+              {/* Rutas en construcción / Habilitadas */}
+              <Route path="/edit-profile" element={<EditProfile />} />
               <Route path="/edit-post/:id" element={<UnderConstruction title="Aviso" message="La pantalla para editar tus publicaciones está recibiendo sus últimos ajustes." />} />
               
             </Route>

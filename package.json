@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "limpiar-comentarios": "find src -name \"*.jsx\" -exec perl -i -pe 's|^\\s*//.*||g; s|/\\*.*?\\*/||gs' {} +"
   },
   "dependencies": {
     "@heroui/breadcrumbs": "^2.2.25",

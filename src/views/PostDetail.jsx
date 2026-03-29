@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button, Avatar, Divider, Chip } from '@heroui/react';
 import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle } from 'lucide-react';
-import db from '../data/db.json';
+import api from '../config/api';
 import { useUser } from '../context/UserContext';
 
 const PostDetail = () => {
@@ -10,8 +10,29 @@ const PostDetail = () => {
   const navigate = useNavigate();
   const { isAuthenticated, currentUser } = useUser();
 
-  // 1. Encontrar la info real de la base de datos simulada
-  const post = db.posts.find(p => p.id === id);
+  const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showContact, setShowContact] = useState(false);
+
+  // 1. Encontrar la info real llamando a la API
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await api.get(`/posts/${id}`);
+        setPost(res.data);
+      } catch (error) {
+        console.error("Error al cargar el aviso", error);
+        setPost(null); // Fuerzo la caída al 404
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPost();
+  }, [id]);
+
+  if (isLoading) {
+    return <div className="p-20 text-center font-bold text-xl">Abriendo anuncio...</div>;
+  }
   
   if (!post) {
     return (
@@ -23,7 +44,8 @@ const PostDetail = () => {
     );
   }
 
-  const owner = db.users.find(u => u.id === post.userId);
+  // Si el backend viene con JOIN, debería traer un nodo "owner"
+  const owner = post.owner || { id: post.userId, name: "Viajero Oculto", avatar: null };
   const isMyPost = currentUser?.id === post.userId;
   const isPublicViewer = !isAuthenticated;
 
@@ -54,6 +76,11 @@ const PostDetail = () => {
           
           {/* Cabecera del Documento */}
           <div className="flex flex-col gap-4">
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-titulo font-black text-black leading-none tracking-tighter">
+              {post.title}
+            </h1>
+
             <div className="flex items-center gap-2 flex-wrap">
               <Chip variant="flat" className={`font-bold border-[2px] ${typeColor} text-xs uppercase tracking-widest`}>
                 {post.type}
@@ -64,10 +91,6 @@ const PostDetail = () => {
                 </Chip>
               )}
             </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-titulo font-black text-black leading-none tracking-tighter">
-              {post.title}
-            </h1>
 
             <div className="flex flex-wrap items-center gap-4 text-default-600 font-cuerpo font-bold">
               <span className="flex items-center gap-1 text-black bg-gray-100 px-3 py-1 rounded-full border-[1.5px] border-black text-sm">
@@ -81,9 +104,18 @@ const PostDetail = () => {
 
           <Divider className="bg-black opacity-20" />
 
+          {/* Cuerpo del Mensaje */}
+          <div className="bg-white border-[3px] border-black rounded-xl p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-2xl font-titulo font-black uppercase text-black mb-4">El Detalle</h2>
+            <div className="font-cuerpo text-lg text-default-800 leading-relaxed whitespace-pre-wrap">
+              {post.description}
+            </div>
+          </div>
+
           {/* Galería de Imágenes Gigante (Si tiene) */}
-          {post.images && post.images.length > 0 ? (
-             <div className="flex flex-col gap-4">
+          {post.images && post.images.length > 0 && (
+             <div className="flex flex-col gap-4 mt-2">
+               <h3 className="text-xl font-titulo font-black uppercase text-black">Material Audiovisual</h3>
                {/* Imagen Hero */}
                <div className="w-full aspect-video rounded-xl border-[4px] border-black overflow-hidden bg-gray-100">
                  <img src={post.images[0]} alt="Principal" className="w-full h-full object-cover" />
@@ -99,19 +131,7 @@ const PostDetail = () => {
                  </div>
                )}
              </div>
-          ) : (
-            <div className="w-full h-32 bg-gray-50 border-[2px] border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-400 italic font-cuerpo text-sm">
-              Sin material visual disponible (Anuncio de texto puro)
-            </div>
           )}
-
-          {/* Cuerpo del Mensaje */}
-          <div className="bg-white border-[3px] border-black rounded-xl p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-2xl font-titulo font-black uppercase text-black mb-4">El Detalle</h2>
-            <div className="font-cuerpo text-lg text-default-800 leading-relaxed whitespace-pre-wrap">
-              {post.description}
-            </div>
-          </div>
 
         </div>
 
@@ -151,9 +171,25 @@ const PostDetail = () => {
                   <>
                     {/* Botón Contactar Inteligente */}
                     {isAuthenticated ? (
-                      <Button className="w-full h-14 font-titulo font-black uppercase tracking-widest text-lg bg-woho-orange text-black border-[3px] border-black hover:-translate-y-1 transition-transform">
-                         Enviar Mensaje
-                      </Button>
+                      !showContact ? (
+                        <Button 
+                          onPress={() => setShowContact(true)}
+                          className="w-full h-14 font-titulo font-black uppercase tracking-widest text-lg bg-woho-orange text-black border-[3px] border-black hover:-translate-y-1 transition-transform"
+                        >
+                           Contactar
+                        </Button>
+                      ) : (
+                        <div className="w-full bg-white border-[3px] border-black p-4 rounded-xl flex flex-col items-center gap-2">
+                          <p className="text-black font-titulo font-black text-sm uppercase">Detalles de Contacto</p>
+                          <Divider className="bg-black opacity-20 my-1" />
+                          <p className="text-black font-cuerpo font-bold w-full text-center truncate">
+                            📧 {owner?.email || 'No especifica Correo'}
+                          </p>
+                          <p className="text-black font-cuerpo font-bold w-full text-center truncate">
+                            📞 {owner?.phone || 'No especifica Teléfono'}
+                          </p>
+                        </div>
+                      )
                     ) : (
                       <Button as={Link} to="/login" variant="flat" className="w-full h-14 font-titulo font-bold text-md bg-gray-800 text-gray-400 border-[2px] border-dashed border-gray-500">
                          Inicia sesión para escribirle

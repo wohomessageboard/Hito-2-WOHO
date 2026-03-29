@@ -4,40 +4,46 @@ import { Card, CardBody, CardHeader, Button, Input } from '@heroui/react';
 // Importamos los iconos
 import { Mail, Lock } from 'lucide-react';
 // Importamos Link de React Router para poder navegar hacia "Crear Cuenta"
-import { Link } from 'react-router-dom';
-// Importamos el hook que hicimos para iniciar sesión
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import api from '../config/api';
 
 const Login = () => {
-  // 1. Extraemos la función 'login' desde nuestro Contexto global
   const { login } = useUser();
+  const navigate = useNavigate();
 
   // 2. Estados locales: Cajas vacías guardando lo que el usuario tipea
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // 3. Manejador del botón "Ingresar"
-  const handleSubmit = (e) => {
-    // Evita recargar toda la página al mandar el formulario
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Aquí (en el futuro) le pegaríamos al Backend para validar.
-    console.log('Validando usuario:', email);
+    setErrorMsg('');
+    setIsLoading(true);
+    try {
+      // POST oficial al Backend para iniciar sesión
+      const res = await api.post('/auth/login', { email, password });
+      
+      // La API nos devolvería el Token y los datos del User
+      const { token, user } = res.data;
+      
+      // Guardar el JWT (opcional si configuras localStorage en el futuro)
+      localStorage.setItem('token', token);
 
-    login({
-      id: "current_user",
-      name: "Mi Perfil (Creador)",
-      avatar: "https://i.pravatar.cc/150?u=current_user",
-      country: "Chile",
-      flag: "🇨🇱",
-      followedLocations: [
-        { id: "loc1", name: "Australia", flag: "🇦🇺", type: "country" },
-        { id: "loc2", name: "Nueva Zelanda", flag: "🇳🇿", type: "country" },
-        { id: "loc3", name: "Tokyo", flag: "🇯🇵", type: "city" }
-      ]
-    });
-
-    // 💡 NOTA: Después de loguear, idealmente le rediriges a /feed con 'useNavigate'
+      // Le pasamos el objeto user real al Contexto Global
+      login(user);
+      
+      // Redirigir al Feed
+      navigate('/feed');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      setErrorMsg(error.response?.data?.error || 'Credenciales incorrectas o backend no disponible.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -94,11 +100,19 @@ const Login = () => {
               classNames={{ inputWrapper: "border-[2px] border-black" }}
             />
 
+            {/* Mensaje de Error (No Alert) */}
+            {errorMsg && (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm font-bold mt-2">
+                <p>{errorMsg}</p>
+              </div>
+            )}
+
             {/* Botón enviar. Como está dentro de <form>, si es type="submit", gatillará la función handleSubmit */}
             <Button
               type="submit"
               variant="solid"
               radius="md"
+              isLoading={isLoading}
               className="font-titulo font-bold bg-woho-purple text-white shadow-sm mt-4 h-12 text-lg"
             >
               Ingresar

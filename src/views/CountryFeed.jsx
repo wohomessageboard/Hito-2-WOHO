@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import db from '../data/db.json';
+import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import { Button, Chip, Input } from '@heroui/react';
-import { Search, Grid, Briefcase, Home, Users, Globe, MapPin, ArrowLeft } from 'lucide-react';
+import { Search, Grid, Briefcase, Home, Users, Globe, MapPin, ArrowLeft, Heart } from 'lucide-react';
 import PostCard from '../components/ui/PostCard';
+import { useScrollRestore } from '../hooks/useScrollRestore';
 
 const CATEGORY_ICONS = {
   'Todos': Grid,
@@ -17,7 +18,7 @@ const CATEGORY_ICONS = {
 const CountryFeed = () => {
   const { countryName } = useParams();
   const navigate = useNavigate();
-  const { currentUser, isAuthenticated } = useUser();
+  const { currentUser, isAuthenticated, followedCountryIds, toggleFollowedCountryId } = useUser();
 
   // Redirigir si no hay sesión iniciada
   useEffect(() => {
@@ -29,11 +30,45 @@ const CountryFeed = () => {
   // Si no está autenticado, no renderizamos nada para evitar parpadeos
   if (!isAuthenticated) return null;
 
-  // 1. Encontrar la información del país en la Base de Datos
-  const countryInfo = useMemo(() => db.countries.find(c => c.name.toLowerCase() === countryName.toLowerCase()), [countryName]);
-  
-  // 2. Extraer todos los anuncios que correspondan a este país
-  const countryPosts = useMemo(() => db.posts.filter(p => p.country.toLowerCase() === countryName.toLowerCase()), [countryName]);
+  // 1. Estados Dinámicos cargados por API
+  const [countryInfo, setCountryInfo] = useState(null);
+  const [countryPosts, setCountryPosts] = useState([]);
+  const [categories, setCategories] = useState([
+    { key: 'Alojamiento', label: 'Alojamiento' },
+    { key: 'Trabajo', label: 'Trabajo' },
+    { key: 'Social', label: 'Social' },
+    { key: 'Otro', label: 'Otro' }
+  ]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // (User status importado arriba)
+
+  // Hook Scroll
+  useScrollRestore(`country_scroll_${countryName}`, !isLoading);
+
+  // Fetch de los datos del país específico
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    
+    const fetchCountryData = async () => {
+      setIsLoading(true);
+      try {
+        const [cRes, pRes, catRes] = await Promise.all([
+          api.get(`/countries/${countryName}`).catch(() => ({ data: { name: countryName, flag: "🏳️", image: "https://placholder.co/600", id: 999 } })),
+          api.get(`/posts?country=${countryName}`).catch(() => ({ data: [] })),
+          api.get(`/categories`).catch(() => ({ data: [] }))
+        ]);
+        setCountryInfo(cRes.data);
+        setCountryPosts(pRes.data);
+        if(catRes.data && catRes.data.length > 0) setCategories(catRes.data);
+      } catch (error) {
+        console.error("Error al cargar país", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCountryData();
+  }, [countryName, isAuthenticated]);
 
   // 3. Extraer DINÁMICAMENTE todas las ciudades únicas de los posts de este país
   const availableCities = useMemo(() => {
@@ -99,13 +134,17 @@ const CountryFeed = () => {
   }, [countryPosts, selectedCity, selectedCategory, searchQuery]);
 
   // ¿No existe el país? Mostrar un error (404)
-  if (!countryInfo) {
+  if (!isLoading && !countryInfo) {
     return (
       <div className="flex flex-col items-center justify-center p-20 text-center">
         <h1 className="text-4xl font-black uppercase">País no encontrado</h1>
         <Button onPress={() => navigate('/destinos')} className="mt-4 bg-black text-white px-6">Volver al Mapa</Button>
       </div>
     );
+  }
+
+  if (isLoading) {
+    return <div className="p-20 text-center font-bold text-xl">Cargando destino...</div>;
   }
 
   return (
@@ -125,16 +164,44 @@ const CountryFeed = () => {
           <ArrowLeft className="w-5 h-5 text-black" />
         </Button>
 
-        <div className="relative z-10 flex flex-col items-center">
+        {/* Botón Flotante para Seguir el Destino */}
+        {isAuthenticated && countryInfo && (
+          <Button 
+            onPress={async () => {
+              const isFollowed = followedCountryIds?.includes(countryInfo.id);
+              // Actualizamos visual optimista
+              toggleFollowedCountryId(countryInfo.id);
+              try {
+                if (isFollowed) {
+                  await api.delete(`/users/me/follows/countries/${countryInfo.id}`);
+                } else {
+                  await api.post(`/users/me/follows/countries/${countryInfo.id}`);
+                }
+              } catch (e) {
+                // Revert
+                toggleFollowedCountryId(countryInfo.id);
+                console.error("Error toggling follow");
+              }
+            }}
+            variant="solid"
+            className={`absolute top-4 right-4 z-20 font-titulo font-bold border-[2px] border-black hover:-translate-y-1 transition-transform ${followedCountryIds?.includes(countryInfo?.id) ? 'bg-woho-black text-white hover:bg-gray-800' : 'bg-woho-orange text-black hover:bg-yellow-400'}`}
+            startContent={<Heart className={`w-5 h-5 ${followedCountryIds?.includes(countryInfo?.id) ? 'fill-current' : ''}`} />}
+          >
+            {followedCountryIds?.includes(countryInfo?.id) ? "Siguiendo" : "Seguir Destino"}
+          </Button>
+        )}
+
+        <div className="relative z-10 flex flex-col items-center px-4 text-center w-full">
           <span className="text-6xl md:text-8xl drop-shadow-md mb-2">{countryInfo.flag}</span>
-          <h1 className="text-5xl md:text-7xl font-titulo font-black text-white uppercase tracking-widest drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-titulo font-black text-white uppercase tracking-widest drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] break-words">
             {countryInfo.name}
           </h1>
         </div>
       </div>
 
       {/* Caja de Filtros Intermedios Neo-Brutalista */}
-      <div className="mx-4 md:mx-auto mt-6 p-4 bg-white border-[3px] border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] max-w-5xl w-full flex flex-col gap-6 -translate-y-10 relative z-20">
+      <div className="px-4 md:px-8 max-w-5xl w-full mx-auto -translate-y-8 md:-translate-y-10 relative z-20">
+        <div className="p-4 bg-white border-[3px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4 md:gap-6 w-full">
         
         {/* Buscador de Texto */}
         <Input 
@@ -185,7 +252,7 @@ const CountryFeed = () => {
               >
                 Todos
               </Chip>
-              {db.categories.map(cat => {
+              {categories.map(cat => {
                 const Icon = CATEGORY_ICONS[cat.key] || Globe;
                 const isSel = selectedCategory === cat.key;
                 return (
@@ -205,6 +272,7 @@ const CountryFeed = () => {
           </div>
 
         </div>
+        </div>
       </div>
 
       {/* Grilla de Resultados */}
@@ -223,9 +291,9 @@ const CountryFeed = () => {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
             {filteredPosts.map(post => {
-              const owner = db.users.find(u => u.id === post.userId);
+              const owner = post.owner || { id: post.userId, name: "Viajero Anónimo", avatar: null };
               const isMyPost = currentUser?.id === post.userId;
               
               return (

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider } from '@heroui/react';
-import { Pencil, Trash2, Star, Lock } from 'lucide-react';
+import { Pencil, Trash2, Star, Lock, Pin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
+import api from '../../config/api';
 
 // Componente modular y reutilizable para pintar las Tarjetas de los Anuncios.
 // Las variables (props) que recibe por los paréntesis determinan cómo se dibuja:
@@ -11,12 +12,34 @@ import { useUser } from '../../context/UserContext';
 // 3. variant: Puede ser "feed", "creator" o "favorite". Cambia qué botones se muestran abajo.
 // 4. isMyPost: Avisa si el anuncio que estamos viendo es tuyo propio para darte un trato especial.
 const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, currentUser, savedPostIds, toggleSavedPostId } = useUser();
+  
+  // Obtenemos el ID independientemente de si viene como id (Posts) o post_id (Favorites view)
+  const postIdToSave = post.post_id || post.id;
+  // Derivamos si es favorito directamente del Árbol Global para que sobreviva a cambios de vista
+  const isFav = savedPostIds ? savedPostIds.includes(postIdToSave) : false;
   
   // 1. Configuraciones de Color por Categoría
   let typeColor = "text-woho-purple";
   if (post.type === "Trabajo") typeColor = "text-woho-orange";
   if (post.type === "Social") typeColor = "text-green-600";
+
+  // Lógica para añadir/remover favoritos (Simplemente hace el Fetch)
+  const handleToggleFavorite = async (e) => {
+    e.preventDefault(); // Por si está dentro del Link
+    try {
+      if (isFav || variant === "favorite") {
+        await api.delete(`/users/me/favorites/${postIdToSave}`);
+        if(toggleSavedPostId) toggleSavedPostId(postIdToSave);
+      } else {
+        await api.post(`/users/me/favorites/${postIdToSave}`);
+        if(toggleSavedPostId) toggleSavedPostId(postIdToSave);
+      }
+    } catch (err) {
+      console.error(err);
+      // Falla silenciosamente o maneja logs
+    }
+  };
 
   // 2. Renderizar Cabecera según Variante
   const renderHeader = () => {
@@ -62,6 +85,24 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             </div>
           </div>
         </div>
+        
+        {/* BOTÓN MOCK EXCLUSIVO PARA SUPERADMINS (FIJAR POST DESDE EL FEED) */}
+        {currentUser?.role === 'superadmin' && (
+          <Button 
+            isIconOnly 
+            size="sm" 
+            color="warning" 
+            variant="flat" 
+            className="border-[1.5px] border-warning"
+            title="Pinnear Aviso (Solo SuperAdmin)"
+            onClick={(e) => {
+              e.preventDefault(); // Por si el Card tiene Link Wrapper
+              alert(`EJECUCIÓN SUPERADMIN: Simulando PUT /api/admin/posts/${post.id}/pin para destacar aviso en BD.`);
+            }}
+          >
+            <Pin className="w-4 h-4 text-warning-700 font-black" />
+          </Button>
+        )}
       </CardHeader>
     );
   };
@@ -124,10 +165,10 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     if (variant === "favorite") {
       return (
         <CardFooter className="flex justify-between gap-2">
-          <Button variant="solid" radius="md" size="sm" className="font-bold bg-black text-white w-3/4">
-            Contactar
+          <Button as={Link} to={`/post/${postIdToSave}`} variant="solid" radius="md" size="sm" className="font-bold bg-black text-white w-3/4">
+            Ver más
           </Button>
-          <Button variant="flat" radius="md" size="sm" className="w-1/4 px-0 flex justify-center items-center bg-red-100 hover:bg-red-200 text-red-600 transition-colors" title="Quitar de Favoritos">
+          <Button onClick={handleToggleFavorite} variant="flat" radius="md" size="sm" className="w-1/4 px-0 flex justify-center items-center bg-red-100 hover:bg-red-200 text-red-600 transition-colors" title="Quitar de Favoritos">
             <Trash2 className="w-4 h-4" />
           </Button>
         </CardFooter>
@@ -145,19 +186,19 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           <>
             {/* Contactar solo funciona si estás logueado */}
             {isAuthenticated ? (
-              <Button variant="solid" radius="sm" size="sm" className="font-bold bg-black text-white w-3/4">
-                Contactar
+              <Button as={Link} to={`/post/${postIdToSave}`} variant="solid" radius="sm" size="sm" className="font-bold bg-black text-white w-3/4">
+                Ver más
               </Button>
             ) : (
               <Button as={Link} to="/login" variant="flat" radius="sm" size="sm" className="font-bold bg-gray-200 text-gray-500 w-3/4 border border-dashed border-gray-400">
-                Inicia sesión para contactar
+                Inicia sesión para ver
               </Button>
             )}
             
             {/* Favorito envía al login si no tienes sesión */}
             {isAuthenticated ? (
-              <Button variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 bg-white border border-black hover:bg-yellow-50 text-black transition-colors" title="Guardar Favorito">
-                <Star className="w-4 h-4" />
+              <Button onClick={handleToggleFavorite} variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 bg-white border border-black hover:bg-yellow-50 text-black transition-colors" title={isFav ? "Quitar Favorito" : "Guardar Favorito"}>
+                <Star className={`w-4 h-4 ${isFav ? "text-warning" : ""}`} fill={isFav ? "currentColor" : "none"} />
               </Button>
             ) : (
               <Button as={Link} to="/login" variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 bg-gray-100 border border-gray-300 text-gray-400" title="Guardar Favorito">
@@ -175,7 +216,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
   return (
     <Card 
-      className={`w-full border-[2px] border-black rounded-xl ${cardBgClass} shadow-sm flex flex-col hover:-translate-y-1 hover:shadow-md transition-all`}
+      className={`w-full border-[2px] border-black rounded-xl ${cardBgClass} shadow-none flex flex-col transition-all`}
     >
       {renderHeader()}
       <Divider className="bg-black opacity-15" />

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-// Importamos los datos mockeados y el contexto
-import db from '../data/db.json';
+// Importamos la API y el contexto
+import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 // Componentes de la UI
@@ -9,6 +9,8 @@ import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider, 
 import { Search, Grid, Briefcase, Home, Users, Flame, Globe } from 'lucide-react';
 // Componente UI Abstraído
 import PostCard from '../components/ui/PostCard';
+// Hook de Persistencia de Scroll
+import { useScrollRestore } from '../hooks/useScrollRestore';
 
 // Mapeador de Iconos por Categoría, ya que los iconos no se guardan en JSON sino en React
 const CATEGORY_ICONS = {
@@ -20,7 +22,7 @@ const CATEGORY_ICONS = {
 };
 
 const Feed = () => {
-  const { currentUser, isAuthenticated } = useUser();
+  const { currentUser, isAuthenticated, followedCountryIds } = useUser();
   const navigate = useNavigate();
 
   // Redirigir si no hay sesión iniciada
@@ -33,28 +35,47 @@ const Feed = () => {
   // Si no está autenticado, no renderizamos nada para evitar parpadeos
   if (!isAuthenticated) return null;
 
-  // 1. Estados Locales para los filtros de búsqueda
+  // 1. Estados Locales para almacenar datos del Backend
+  const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([
+    { key: 'Alojamiento', label: 'Alojamiento' },
+    { key: 'Trabajo', label: 'Trabajo' },
+    { key: 'Social', label: 'Social' },
+    { key: 'Otro', label: 'Otro' }
+  ]);
+  
   // Qué categoría estamos viendo
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   // Qué texto escribió en el buscador
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 2. Lógica reactiva (useMemo para recalcular rápido sin que explote)
-  // Aquí filtramos db.posts según los lugares que sigue el usuario y las combinaciones de botones
-  const filteredPosts = useMemo(() => {
-    let results = db.posts;
+  // 1.5. Aplicando hook de scroll (le pasamos una llave única y comprobamos si "posts" ya tiene datos)
+  useScrollRestore('feed_scroll', posts.length > 0);
 
-    // Filtro BASE: Solo lugares seguidos
-    if (currentUser?.followedLocations && currentUser.followedLocations.length > 0) {
-      // Tomamos los nombres de los países/ciudades que seguimos
-      const followedNames = currentUser.followedLocations.map(loc => loc.name);
-      
-      // Filtramos los posts si su país o ciudad coinciden con algo de nuestra lista
-      results = results.filter(post => 
-        followedNames.includes(post.country) || followedNames.includes(post.city)
-      );
-    } else {
-      // Si no sigue lugares, vaciamos la lista para mostrar el mensaje correspondiente
+  // Fetch de Posts inicial
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    
+    // El Backend de PostgreSQL se encargará luego de enviarnos los posts
+    api.get('/posts/feed').then(res => {
+      setPosts(res.data);
+    }).catch(err => {
+      console.log('Esperando que el Endpoint Backend exista...', err);
+      setPosts([]);
+    });
+
+    api.get('/categories').then(res => {
+      if(res.data && res.data.length > 0) setCategories(res.data);
+    }).catch(err => console.log(err));
+  }, [isAuthenticated]);
+
+  // 2. Lógica reactiva (Filtros Frontend)
+  const filteredPosts = useMemo(() => {
+    let results = posts;
+
+    // La base de datos ya nos entregó en 'posts' únicamente los avisos de los lugares seguidos (GET /api/posts/feed)
+    // Así que solo aplicaremos filtro por si nuestra lista de follows está vacía (para no renderizar nada).
+    if (!followedCountryIds || followedCountryIds.length === 0) {
       results = [];
     }
 
@@ -106,10 +127,10 @@ const Feed = () => {
     // ----------------------------------------------------------------------
 
     return results;
-  }, [selectedCategory, searchQuery, currentUser]);
+  }, [selectedCategory, searchQuery, posts, followedCountryIds]);
 
   return (
-    <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto">
+    <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto px-4 pb-12">
       
       {/* 
         ========================================
@@ -167,7 +188,7 @@ const Feed = () => {
             </Chip>
 
             {/* 2. Listamos el resto consultando la base de datos centralizada */}
-            {db.categories.map((cat) => {
+            {categories.map((cat) => {
               const Icon = CATEGORY_ICONS[cat.key] || Globe;
               const isSelected = selectedCategory === cat.key;
               
@@ -206,17 +227,17 @@ const Feed = () => {
           <div className="flex flex-col items-center justify-center p-12 text-center border-2 border-dashed border-black rounded-xl bg-gray-50/50">
             <span className="text-4xl mb-4">🌪️</span>
             <h3 className="font-titulo font-black text-2xl mb-2">
-              {currentUser?.followedLocations?.length === 0 
+              {followedCountryIds?.length === 0 
                 ? "Aún no sigues ningún destino" 
                 : "Pueblo Fantasma"}
             </h3>
             <p className="font-cuerpo text-default-500 max-w-md">
-              {currentUser?.followedLocations?.length === 0 
+              {followedCountryIds?.length === 0 
                 ? "Explora nuestra lista de Destinos mundiales y síguelos para ver avisos aquí."
                 : "No encontramos ningún anuncio que coincida con tus filtros. Intenta una búsqueda distinta."}
             </p>
             
-            {currentUser?.followedLocations?.length === 0 ? (
+            {followedCountryIds?.length === 0 ? (
               <Button 
                 as={Link}
                 to="/destinos"
@@ -236,12 +257,12 @@ const Feed = () => {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
             
             {/* Dibujamos el arreglo usando el componente abstraído modular */}
             {filteredPosts.map((post) => {
-              // Traemos al autor usando su userId contra la BD
-              const owner = db.users.find(u => u.id === post.userId);
+              // Asumimos que la nueva API nos devuelve el objeto owner insertado en el JSON: { ...post, owner: {id, name, avatar} }
+              const owner = post.owner || { id: post.userId, name: "Viajero Anónimo", avatar: null };
               const isMyPost = currentUser?.id === post.userId;
 
               return (

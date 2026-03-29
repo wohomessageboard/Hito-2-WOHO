@@ -7,8 +7,8 @@ import { useUser } from '../context/UserContext';
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider, Tabs, Tab } from '@heroui/react';
 // Iconos varios de Lucide-React
 import { Settings, LogOut, Pencil, Trash2, MapPin, Search, Grid, Heart, Map } from 'lucide-react';
-// Importamos la simulación de Base de Datos que creamos antes
-import db from '../data/db.json';
+// Importamos Axios API configurada
+import api from '../config/api';
 // Componente UI abstraído
 import PostCard from '../components/ui/PostCard';
 
@@ -27,14 +27,34 @@ const Profile = () => {
   // Si aún está calculando, retornamos nulo o una carga para no mostrar errores rotos
   if (!currentUser) return null;
 
-  // 3. Filtrando "Mis Anuncios" desde la Base de Datos Falsa (db.json)
-  // Comparamos el "userId" de cada post con el "id" del usuario actual.
-  const myPosts = db.posts.filter((post) => post.userId === currentUser.id);
+  // 3. Estados Dinámicos cargados por API
+  const [myPosts, setMyPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [followedPlaces, setFollowedPlaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 4. Simulando "Mis Guardados" 
-  // En un entorno real, existiría una tabla de Favoritos en la DB. 
-  // Aquí fingiremos que el anuncio "101" (El de Sofía Gómez) está guardado por nosotros.
-  const savedPosts = db.posts.filter((post) => post.id === "101");
+  // 4. Fetching the specific data for the Profile
+  useEffect(() => {
+    if (!isAuthenticated || !currentUser) return;
+    
+    const fetchProfileData = async () => {
+      try {
+        const [postsRes, favRes, followRes] = await Promise.all([
+          api.get('/users/me/posts').catch(() => ({ data: [] })),
+          api.get('/users/me/favorites').catch(() => ({ data: [] })),
+          api.get('/users/me/follows').catch(() => ({ data: [] }))
+        ]);
+        setMyPosts(postsRes.data);
+        setSavedPosts(favRes.data);
+        setFollowedPlaces(followRes.data);
+      } catch (error) {
+        console.error("Error al cargar perfil:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfileData();
+  }, [isAuthenticated, currentUser]);
 
   // Función local para gestionar el desloguearse y devolverte al Home.
   const handleLogout = () => {
@@ -127,13 +147,19 @@ const Profile = () => {
               </div>
             }
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-              {myPosts.length === 0 ? (
+            <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full mt-4">
+              {isLoading ? (
+                <p className="font-cuerpo font-bold">Cargando...</p>
+              ) : myPosts.length === 0 ? (
                 <p className="font-cuerpo text-gray-500 italic">No tienes anuncios publicados aún.</p>
               ) : (
-                myPosts.map((post) => (
-                  <PostCard key={post.id} post={post} variant="creator" />
-                ))
+                myPosts.map((post) => {
+                  const isMyPost = currentUser?.id === post.user_id;
+                  const owner = { id: post.user_id, name: post.author_name || currentUser?.name, avatar: currentUser?.avatar };
+                  return (
+                    <PostCard key={post.id} post={post} owner={owner} variant="creator" isMyPost={isMyPost} />
+                  );
+                })
               )}
             </div>
           </Tab>
@@ -148,14 +174,16 @@ const Profile = () => {
               </div>
             }
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-              {savedPosts.length === 0 ? (
+            <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full mt-4">
+              {isLoading ? (
+                <p className="font-cuerpo font-bold">Cargando...</p>
+              ) : savedPosts.length === 0 ? (
                 <p className="font-cuerpo text-gray-500 italic">No tienes ningún aviso guardado.</p>
               ) : (
                 savedPosts.map((post) => {
-                  const owner = db.users.find(u => u.id === post.userId);
+                  const owner = { id: post.user_id, name: post.author_name || "Anónimo", avatar: null };
                   return (
-                    <PostCard key={post.id} post={post} owner={owner} variant="favorite" />
+                    <PostCard key={post.post_id || post.id} post={post} owner={owner} variant="favorite" />
                   );
                 })
               )}
@@ -173,24 +201,24 @@ const Profile = () => {
             }
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-              {currentUser?.followedLocations?.length > 0 ? (
-                currentUser.followedLocations.map((loc) => (
-                  <Card key={loc.id} className="border-[2px] border-black rounded-xl bg-white shadow-sm hover:translate-y-[-2px] transition-transform">
+              {followedPlaces.length > 0 ? (
+                followedPlaces.map((loc) => (
+                  <Card key={`${loc.country_id}-${loc.city_id || '0'}`} className="border-[2px] border-black rounded-xl bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] transition-transform cursor-pointer" isPressable onPress={() => navigate(`/destinos/${loc.name}`)}>
                     <CardBody className="p-4 flex flex-row items-center gap-4">
-                      <div className="text-4xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center border-[2px] border-black pb-1">
-                        {loc.flag}
+                      <div className="text-4xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center border-[2px] border-black pb-1 shrink-0">
+                        {loc.flag || '🗺️'}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-titulo font-extrabold text-black text-lg leading-tight">{loc.name}</h4>
+                      <div className="flex-1 overflow-hidden">
+                        <h4 className="font-titulo font-extrabold text-black text-lg leading-tight truncate">{loc.name}</h4>
                         <span className="text-xs font-cuerpo text-default-500 uppercase font-bold tracking-wider">
-                          {loc.type === 'country' ? 'País' : 'Ciudad'}
+                          {loc.city_id ? 'Ciudad' : 'País'}
                         </span>
                       </div>
                     </CardBody>
                   </Card>
                 ))
               ) : (
-                <p className="font-cuerpo text-gray-500 italic col-span-full">No sigues ninguna ubicación todavía. Ve a explorar para añadir lugares a tu radar.</p>
+                <p className="font-cuerpo text-gray-500 italic col-span-full text-center py-10">No sigues ninguna ubicación todavía. Ve a explorar la vista de <strong>Destinos</strong> para añadir lugares a tu radar.</p>
               )}
             </div>
           </Tab>

@@ -4,35 +4,45 @@ import { Card, CardBody, CardHeader, Button, Input } from '@heroui/react';
 // Importamos los iconos
 import { Mail, Lock, User } from 'lucide-react';
 // Importamos la etiqueta para navegar entre páginas
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // Y el hook global para conectar al usuario con su cuenta
 import { useUser } from '../context/UserContext';
+// Importamos la API que conecta con el Back
+import api from '../config/api';
 
 const Register = () => {
-  // 1. Hook para "iniciar sesión" apenas termine de crearse la cuenta
   const { login } = useUser();
+  const navigate = useNavigate();
 
   // 2. Aquí guardamos las tres variables para crear una cuenta
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 3. Cuando se envía el formulario (botón submit)
-  const handleSubmit = (e) => {
-    // Frena el "refresco" tradicional del navegador
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Aquí en el futuro enviaríamos el "name", "email" y "password" a la Base de Datos
-    console.log('Señal de envío: Registrando a...', name);
-
-    // Para la demo, lo logueamos directamente y pasamos sus datos a nuestro contexto
-    login({
-      id: "new_user_123",        // ID falso hasta que tengamos Base de Datos
-      name: name,                // Lo que escribimos en la Input
-      avatar: "https://i.pravatar.cc/150?u=newuser" // Avatar aleatorio
-    });
-
-    // 💡 NOTA: En la realidad, habría validaciones como `password.length > 5`.
+    setErrorMsg('');
+    setIsLoading(true);
+    try {
+      const res = await api.post('/auth/register', { name, email, password });
+      
+      // Dependiendo de tu backend (auth.controller), puede que te retorne directamente el login:
+      const { token, user } = res.data;
+      if (token && user) {
+        localStorage.setItem('token', token);
+        login(user); // Guardamos la sesión
+        navigate('/feed'); // Lo mandamos directo adentro
+      } else {
+        setErrorMsg("Error inesperado en el servidor");
+      }
+    } catch(err) {
+      console.error(err);
+      setErrorMsg(err.response?.data?.error || "Error creando cuenta. Posiblemente el email ya existe.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -103,11 +113,19 @@ const Register = () => {
               classNames={{ inputWrapper: "border-[2px] border-black" }}
             />
 
+            {/* Mensaje de Error Interno (No Alert) */}
+            {errorMsg && (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm font-bold mt-2">
+                <p>{errorMsg}</p>
+              </div>
+            )}
+
             {/* Botón de Enviar. Nota: Púrpura brillante, como definimos */}
             <Button
               type="submit"
               variant="solid"
               radius="md"
+              isLoading={isLoading}
               className="font-titulo font-bold bg-woho-purple text-white shadow-sm mt-4 h-12 text-lg"
             >
               Crear mi cuenta
