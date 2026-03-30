@@ -41,6 +41,22 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     }
   };
 
+  // Lógica para eliminar el post
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    const confirmed = window.confirm("¿Estás seguro de que quieres eliminar este aviso permanentemente?");
+    if (!confirmed) return;
+
+    try {
+      await api.delete(`/posts/${postIdToSave}`);
+      alert("Aviso eliminado correctamente.");
+      window.location.reload(); // Recarga simple para reflejar el cambio en el perfil
+    } catch (err) {
+      console.error("Error al eliminar post:", err);
+      alert("No se pudo eliminar el aviso.");
+    }
+  };
+
   // 2. Renderizar Cabecera según Variante
   const renderHeader = () => {
     // Si estamos en "creator" (Mi Perfil -> Mis Avisos), no muestro mi propio Avatar, muestro los días restantes
@@ -178,7 +194,13 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           <Button as={Link} to={`/edit-post/${post.id}`} variant="flat" radius="md" size="sm" className="w-1/2 font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">
             <Pencil className="w-4 h-4 mr-1" /> Editar
           </Button>
-          <Button variant="flat" radius="md" size="sm" className="w-1/2 font-bold bg-red-100 text-red-600 hover:bg-red-200">
+          <Button 
+            variant="flat" 
+            radius="md" 
+            size="sm" 
+            className="w-1/2 font-bold bg-red-100 text-red-600 hover:bg-red-200"
+            onClick={handleDelete}
+          >
             <Trash2 className="w-4 h-4 mr-1" /> Eliminar
           </Button>
         </CardFooter>

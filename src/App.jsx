@@ -14,6 +14,7 @@ import Countries from './views/Countries';
 import CountryFeed from './views/CountryFeed';
 import NewPost from './views/NewPost';
 import PostDetail from './views/PostDetail';
+import EditPost from './views/EditPost';
 import EditProfile from './views/EditProfile';
 import UnderConstruction from './views/UnderConstruction';
 import UIKit from './views/UIKit';
@@ -65,7 +66,7 @@ function App() {
               
               {/* Rutas en construcción / Habilitadas */}
               <Route path="/edit-profile" element={<EditProfile />} />
-              <Route path="/edit-post/:id" element={<UnderConstruction title="Aviso" message="La pantalla para editar tus publicaciones está recibiendo sus últimos ajustes." />} />
+              <Route path="/edit-post/:id" element={<EditPost />} />
               
             </Route>
           </Routes>
