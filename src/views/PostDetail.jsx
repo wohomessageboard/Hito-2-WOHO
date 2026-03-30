@@ -44,15 +44,21 @@ const PostDetail = () => {
     );
   }
 
-  // Si el backend viene con JOIN, debería traer un nodo "owner"
-  const owner = post.owner || { id: post.userId, name: "Viajero Oculto", avatar: null };
-  const isMyPost = currentUser?.id === post.userId;
+  // Si el backend viene con JOIN, debería traer datos planos
+  const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero Oculto", avatar: post.author_avatar || null };
+  const isMyPost = currentUser?.id === post.user_id;
   const isPublicViewer = !isAuthenticated;
+
+  // Mapear campos del backend a lo que espera la vista
+  const type = post.type || post.category_name;
+  const country = post.country || post.country_name;
+  const city = post.city || post.city_name;
+  const expiresInDays = post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null;
 
   // 2. Colores por categoría (igual que en los cards)
   let typeColor = "text-woho-purple bg-purple-50 border-purple-200";
-  if (post.type === "Trabajo") typeColor = "text-woho-orange bg-orange-50 border-orange-200";
-  if (post.type === "Social") typeColor = "text-green-600 bg-green-50 border-green-200";
+  if (type === "Trabajo") typeColor = "text-woho-orange bg-orange-50 border-orange-200";
+  if (type === "Social") typeColor = "text-green-600 bg-green-50 border-green-200";
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
@@ -84,7 +90,7 @@ const PostDetail = () => {
 
               <div className="flex items-center gap-2 flex-wrap">
                 <Chip variant="flat" className={`font-bold border-[2px] ${typeColor} text-xs uppercase tracking-widest`}>
-                  {post.type}
+                  {type}
                 </Chip>
                 {post.expiresInDays <= 5 && post.expiresInDays > 0 && (
                   <Chip color="danger" variant="flat" size="sm" className="font-bold border-[2px] border-red-200 text-xs">
@@ -95,11 +101,19 @@ const PostDetail = () => {
 
               <div className="flex flex-wrap items-center gap-4 text-default-600 font-cuerpo font-bold">
                 <span className="flex items-center gap-1 text-black bg-gray-100 px-3 py-1 rounded-full border-[1.5px] border-black text-sm">
-                  <MapPin className="w-4 h-4" /> {post.country}, {post.city} {post.flag}
+                  <MapPin className="w-4 h-4" /> {country}, {city} {post.flag}
                 </span>
-                <span className="flex items-center gap-1 text-sm bg-gray-50 px-3 py-1 rounded-full border border-gray-300">
-                  <Calendar className="w-4 h-4" /> Publicado hace 2 días
-                </span>
+                {expiresInDays !== null && (
+                  <Chip 
+                    size="sm" 
+                    variant="flat" 
+                    color={expiresInDays <= 2 ? "danger" : expiresInDays <= 5 ? "warning" : "success"} 
+                    className="font-bold text-xs border-[1.5px]"
+                  >
+                    <Calendar className="w-3 h-3 inline mr-1" />
+                    {expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${expiresInDays} días`}
+                  </Chip>
+                )}
               </div>
             </div>
 
