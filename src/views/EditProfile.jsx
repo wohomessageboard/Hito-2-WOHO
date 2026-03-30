@@ -51,7 +51,6 @@ const EditProfile = () => {
     
     try {
       // 1. Enviar datos de texto al Backend (PUT /api/users/me)
-      // Nota: El backend actualmente solo soporta name, debes actualizarlo usando la Guia_User_Settings.md
       const payload = {
         name: formData.name,
         bio: formData.bio,
@@ -59,22 +58,28 @@ const EditProfile = () => {
       };
       
       const res = await api.put('/users/me', payload);
+      let updatedUserData = { ...currentUser, ...res.data };
       
-      // 2. Si hay foto, debería ir a un endpoint de subida (ej. POST /api/users/me/avatar) con FormData
+      // 2. Si hay foto, enviarla al endpoint de subida (POST /api/users/me/avatar) con FormData
       if (fileToUpload) {
         const imgData = new FormData();
         imgData.append('avatar', fileToUpload);
-        // await api.post('/users/me/avatar', imgData);
-        alert('ADVERTENCIA: La subida de foto requiere el endpoint backend de multer. Verifica la guía.');
+        
+        // Axios es inteligente, al ver FormData cambia automáticamente el Content-Type multipart/form-data
+        const avatarRes = await api.post('/users/me/avatar', imgData);
+        
+        // El servidor nos devuelve la URL oficial que Cloudinary nos regaló
+        updatedUserData.avatar = avatarRes.data.avatar;
       }
       
-      // Actualizar contexto con la respuesta del servidor
-      login({ ...currentUser, ...res.data });
+      // Actualizar contexto global con la Data compilada y oficial
+      login(updatedUserData);
+      
       alert("¡Perfil actualizado con éxito!");
       navigate('/profile');
     } catch (error) {
-      console.error(error);
-      alert("Hubo un error al actualizar el perfil.");
+      console.error('Error editando perfil:', error);
+      alert("Hubo un error al actualizar tu perfil o foto.");
     } finally {
       setIsLoading(false);
     }
