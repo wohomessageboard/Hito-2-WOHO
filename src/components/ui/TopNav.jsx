@@ -92,8 +92,8 @@ const TopNav = () => {
         {isAuthenticated ? (
           // VISIÓN DE USUARIO LOGUEADO
           <>
-            {/* Si es administrador, le mostramos funciones ocultas */}
-            {currentUser?.role === 'admin' && (
+            {/* Si es administrador o superadmin, le mostramos funciones ocultas */}
+            {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <NavbarItem className="hidden lg:flex">
                 <Button 
                   as={RouterLink} 
@@ -198,7 +198,7 @@ const TopNav = () => {
             // BOTONES MÓVIL LOGUEADO
             <>
               {/* Opción Admin en móvil */}
-              {currentUser?.role === 'admin' && (
+              {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
                 <Button 
                   as={RouterLink} 
                   to="/admin-dashboard" 
