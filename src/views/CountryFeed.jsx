@@ -184,7 +184,7 @@ const CountryFeed = () => {
               }
             }}
             variant="solid"
-            className={`absolute top-4 right-4 z-20 font-titulo font-bold border-[2px] border-black hover:-translate-y-1 transition-transform ${followedCountryIds?.includes(countryInfo?.id) ? 'bg-woho-black text-white hover:bg-gray-800' : 'bg-woho-orange text-black hover:bg-yellow-400'}`}
+            className={`absolute top-4 right-4 z-20 font-titulo font-bold border-[2px] border-black hover:-translate-y-1 transition-transform ${followedCountryIds?.includes(countryInfo?.id) ? 'bg-woho-orange text-black hover:bg-yellow-400' : 'bg-white text-black hover:bg-gray-100'}`}
             startContent={<Heart className={`w-5 h-5 ${followedCountryIds?.includes(countryInfo?.id) ? 'fill-current' : ''}`} />}
           >
             {followedCountryIds?.includes(countryInfo?.id) ? "Siguiendo" : "Seguir Destino"}

@@ -104,15 +104,12 @@ const PostDetail = () => {
                   <MapPin className="w-4 h-4" /> {country}, {city} {post.flag}
                 </span>
                 {expiresInDays !== null && (
-                  <Chip 
-                    size="sm" 
-                    variant="flat" 
-                    color={expiresInDays <= 2 ? "danger" : expiresInDays <= 5 ? "warning" : "success"} 
-                    className="font-bold text-xs border-[1.5px]"
-                  >
-                    <Calendar className="w-3 h-3 inline mr-1" />
+                  <span className={`flex items-center gap-1 px-3 py-1 rounded-full border-[1.5px] text-sm font-bold ${
+                    expiresInDays <= 2 ? 'bg-red-50 border-red-300 text-red-600' : expiresInDays <= 5 ? 'bg-orange-50 border-orange-300 text-orange-600' : 'bg-green-50 border-green-300 text-green-600'
+                  }`}>
+                    <Calendar className="w-4 h-4" />
                     {expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${expiresInDays} días`}
-                  </Chip>
+                  </span>
                 )}
               </div>
             </div>
