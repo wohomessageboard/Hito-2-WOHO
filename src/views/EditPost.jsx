@@ -195,8 +195,11 @@ const EditPost = () => {
                 radius="md"
                 size="lg"
                 isRequired
-                selectedKeys={formData.category_id ? [formData.category_id] : []}
-                onChange={handleSelectChange}
+                selectedKeys={formData.category_id ? new Set([formData.category_id]) : new Set([])}
+                onSelectionChange={(keys) => {
+                  const selectedValue = Array.from(keys)[0];
+                  setFormData(prev => ({ ...prev, category_id: String(selectedValue) }));
+                }}
                 classNames={{ 
                   trigger: "border-[2px] border-black bg-gray-50",
                   label: "font-bold text-black text-sm"
@@ -222,8 +225,11 @@ const EditPost = () => {
                   radius="md"
                   size="lg"
                   isRequired
-                  selectedKeys={formData.country_id ? [formData.country_id] : []}
-                  onChange={handleSelectChange}
+                  selectedKeys={formData.country_id ? new Set([formData.country_id]) : new Set([])}
+                  onSelectionChange={(keys) => {
+                    const selectedValue = Array.from(keys)[0];
+                    setFormData(prev => ({ ...prev, country_id: String(selectedValue), city_id: '' }));
+                  }}
                   classNames={{ 
                     trigger: "border-[2px] border-black bg-gray-50",
                     label: "font-bold text-black text-sm"
@@ -242,8 +248,11 @@ const EditPost = () => {
                   radius="md"
                   size="lg"
                   isRequired
-                  selectedKeys={formData.city_id ? [formData.city_id] : []}
-                  onChange={handleSelectChange}
+                  selectedKeys={formData.city_id ? new Set([formData.city_id]) : new Set([])}
+                  onSelectionChange={(keys) => {
+                    const selectedValue = Array.from(keys)[0];
+                    setFormData(prev => ({ ...prev, city_id: String(selectedValue) }));
+                  }}
                   isDisabled={!formData.country_id}
                   classNames={{ 
                     trigger: "border-[2px] border-black bg-gray-50",
