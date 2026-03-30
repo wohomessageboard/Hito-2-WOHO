@@ -126,7 +126,7 @@ const Home = () => {
           radius="md" 
           className="font-titulo font-bold bg-woho-orange text-white border-2 border-white w-full md:w-auto hover:bg-white hover:text-woho-orange transition-colors"
         >
-          Unirse a la familia
+          Únete a la aventura
         </Button>
       </section>
 
