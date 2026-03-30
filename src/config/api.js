@@ -11,9 +11,6 @@ import axios from 'axios';
 // Ese doble slash (//) confundirá a tu servidor en Render y te dará un error 404 (Not Found).
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api', // Conexión Dinámica Nube/Local
-  headers: {
-    'Content-Type': 'application/json',
-  }
 });
 
 // Interceptor para inyectar automáticamente el Token JWT si existe
