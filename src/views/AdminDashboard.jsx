@@ -67,10 +67,12 @@ const AdminDashboard = () => {
 
   // --- LÓGICA PARA CAMBIAR ROL (USER/ADMIN) ---
   const handleToggleRole = async (userId) => {
+    const targetUser = users.find(u => u.id === userId);
+    const newRole = targetUser?.role === 'admin' ? 'user' : 'admin';
     setUsers(prevUsers => prevUsers.map(user => 
-      user.id === userId ? { ...user, role: user.role === 'admin' ? 'user' : 'admin' } : user
+      user.id === userId ? { ...user, role: newRole } : user
     ));
-    await api.put(`/admin/users/${userId}/role`).catch(err => console.log(err));
+    await api.put(`/admin/users/${userId}/role`, { role: newRole }).catch(err => console.log(err));
   };
 
   // --- LÓGICA PARA ELIMINACIÓN DEFINITIVA (HARD DELETE) ---
