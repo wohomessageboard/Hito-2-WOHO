@@ -79,7 +79,18 @@ const EditProfile = () => {
       navigate('/profile');
     } catch (error) {
       console.error('Error editando perfil:', error);
-      alert("Hubo un error al actualizar tu perfil o foto.");
+      const status = error?.response?.status;
+      const serverMsg = error?.response?.data?.error;
+      
+      if (status === 413 || (serverMsg && serverMsg.includes('large'))) {
+        alert('La imagen es demasiado pesada. Intenta con una menor a 5 MB.');
+      } else if (status === 400) {
+        alert('No se pudo procesar la imagen. Asegúrate de que sea JPG, PNG o WEBP.');
+      } else if (status === 401) {
+        alert('Tu sesión expiró. Cierra sesión, vuelve a entrar e intenta de nuevo.');
+      } else {
+        alert(`Error al actualizar: ${serverMsg || 'Verifica tu conexión o intenta con otra imagen.'}`);
+      }
     } finally {
       setIsLoading(false);
     }

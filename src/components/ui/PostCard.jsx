@@ -51,8 +51,8 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             <span className="text-2xl">{post.flag}</span>
             <h5 className="text-sm font-titulo font-bold text-black">{post.country}, {post.city}</h5>
           </div>
-          <Chip size="sm" variant="flat" color={post.expiresInDays < 5 ? "danger" : "success"} className="font-bold text-xs">
-            Expira en {post.expiresInDays} días
+          <Chip size="sm" variant="flat" color={post.expiresInDays <= 2 ? "danger" : post.expiresInDays <= 5 ? "warning" : "success"} className="font-bold text-xs">
+            {post.expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${post.expiresInDays} días`}
           </Chip>
         </CardHeader>
       );
