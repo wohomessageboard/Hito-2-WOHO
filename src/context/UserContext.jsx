@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
   // 2. Estado local para saber quién es el usuario.
   // Inicializamos en 'null' para que la app arranque en "Modo Público" (nadie ha iniciado sesión).
   const [currentUser, setCurrentUser] = useState(null);
+  const [isInitializing, setIsInitializing] = useState(true); // Bloqueo visual inicial para la Sesión
   
   // Arreglo global con IDs de posts favoritos y países seguidos
   const [savedPostIds, setSavedPostIds] = useState([]);
@@ -34,6 +35,22 @@ export const UserProvider = ({ children }) => {
     }
   }, [currentUser]);
 
+  // Chequear JWT al abrir la App (Recuperar sesión al actualizar página)
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.get('/users/me')
+        .then(res => setCurrentUser(res.data))
+        .catch(err => {
+          console.error('La sesión expiró o el token es inválido.');
+          localStorage.removeItem('token');
+        })
+        .finally(() => setIsInitializing(false));
+    } else {
+      setIsInitializing(false);
+    }
+  }, []);
+
   // Método Optimista Favoritos
   const toggleSavedPostId = (postId) => {
     if (savedPostIds.includes(postId)) {
@@ -57,10 +74,23 @@ export const UserProvider = ({ children }) => {
   const login = (user) => setCurrentUser(user);
   
   // Simula el Cerrar Sesión: borra al usuario devolviendo el estado a 'null'.
-  const logout = () => setCurrentUser(null);
+  const logout = () => {
+    localStorage.removeItem('token');
+    setCurrentUser(null);
+  };
 
   // 4. Variable rápida booleana (true/false) para saber de un vistazo si hay sesión
   const isAuthenticated = !!currentUser;
+
+  // Mientras averiguamos si estás logueado en la nube, evitamos que "flashes" y te expulse a /login
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-woho-black flex flex-col items-center justify-center p-4">
+        <h1 className="text-4xl text-white font-titulo font-black uppercase mb-4 animate-pulse">Desembalando mochila...</h1>
+        <div className="w-16 h-16 border-4 border-white border-t-woho-orange rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     // 5. El Provider envuelve a {children} (toda nuestra app).

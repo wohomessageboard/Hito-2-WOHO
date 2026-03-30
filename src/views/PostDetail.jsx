@@ -74,42 +74,41 @@ const PostDetail = () => {
         {/* COLUMNA IZQUIERDA: Contenido Principal */}
         <div className="w-full lg:w-2/3 flex flex-col gap-6">
           
-          {/* Cabecera del Documento */}
-          <div className="flex flex-col gap-4">
+          {/* Caja Unificada del Post */}
+          <div className="bg-white border-[3px] border-black rounded-xl p-6 md:p-8 flex flex-col gap-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-titulo font-black text-black leading-none tracking-tighter">
-              {post.title}
-            </h1>
+            <div className="flex flex-col gap-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-titulo font-black text-black leading-none tracking-tighter">
+                {post.title}
+              </h1>
 
-            <div className="flex items-center gap-2 flex-wrap">
-              <Chip variant="flat" className={`font-bold border-[2px] ${typeColor} text-xs uppercase tracking-widest`}>
-                {post.type}
-              </Chip>
-              {post.expiresInDays <= 5 && post.expiresInDays > 0 && (
-                <Chip color="danger" variant="flat" size="sm" className="font-bold border-[2px] border-red-200 text-xs">
-                  Expira pronto ({post.expiresInDays} días)
+              <div className="flex items-center gap-2 flex-wrap">
+                <Chip variant="flat" className={`font-bold border-[2px] ${typeColor} text-xs uppercase tracking-widest`}>
+                  {post.type}
                 </Chip>
-              )}
+                {post.expiresInDays <= 5 && post.expiresInDays > 0 && (
+                  <Chip color="danger" variant="flat" size="sm" className="font-bold border-[2px] border-red-200 text-xs">
+                    Expira pronto ({post.expiresInDays} días)
+                  </Chip>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 text-default-600 font-cuerpo font-bold">
+                <span className="flex items-center gap-1 text-black bg-gray-100 px-3 py-1 rounded-full border-[1.5px] border-black text-sm">
+                  <MapPin className="w-4 h-4" /> {post.country}, {post.city} {post.flag}
+                </span>
+                <span className="flex items-center gap-1 text-sm bg-gray-50 px-3 py-1 rounded-full border border-gray-300">
+                  <Calendar className="w-4 h-4" /> Publicado hace 2 días
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 text-default-600 font-cuerpo font-bold">
-              <span className="flex items-center gap-1 text-black bg-gray-100 px-3 py-1 rounded-full border-[1.5px] border-black text-sm">
-                <MapPin className="w-4 h-4" /> {post.country}, {post.city} {post.flag}
-              </span>
-              <span className="flex items-center gap-1 text-sm bg-gray-50 px-3 py-1 rounded-full border border-gray-300">
-                <Calendar className="w-4 h-4" /> Publicado hace 2 días
-              </span>
-            </div>
-          </div>
+            <Divider className="bg-black opacity-20" />
 
-          <Divider className="bg-black opacity-20" />
-
-          {/* Cuerpo del Mensaje */}
-          <div className="bg-white border-[3px] border-black rounded-xl p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-2xl font-titulo font-black uppercase text-black mb-4">El Detalle</h2>
             <div className="font-cuerpo text-lg text-default-800 leading-relaxed whitespace-pre-wrap">
               {post.description}
             </div>
+            
           </div>
 
           {/* Galería de Imágenes Gigante (Si tiene) */}
@@ -139,11 +138,7 @@ const PostDetail = () => {
         <div className="w-full lg:w-1/3 flex flex-col gap-6 sticky top-24">
           
           {/* Tarjeta del Autor Neo-Brutalista */}
-          <div className="bg-woho-black text-white border-[3px] border-black rounded-xl p-6 shadow-[8px_8px_0px_0px_rgba(242,166,90,1)] flex flex-col items-center text-center relative overflow-hidden">
-            
-            <div className="absolute top-0 right-0 p-3 opacity-20">
-              {isPublicViewer ? <Lock className="w-24 h-24" /> : <AlertCircle className="w-24 h-24" />}
-            </div>
+          <div className="bg-woho-black text-white border-[3px] border-black rounded-xl p-6 flex flex-col items-center text-center relative overflow-hidden">
 
             <div className="relative z-10 flex flex-col items-center">
               {isPublicViewer ? (
