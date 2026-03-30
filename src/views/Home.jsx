@@ -14,11 +14,11 @@ const Home = () => {
             La comunidad oficial Working Holiday
           </div>
           <h1 className="text-5xl md:text-7xl font-titulo font-black text-black leading-none tracking-tighter">
-            VIAJA LEJOS,<br />
-            <span className="text-woho-purple underline decoration-black decoration-[4px] underline-offset-8">CONECTA DE CERCA.</span>
+            EL CORAJE DE MIGRAR,<br />
+            <span className="text-woho-purple underline decoration-black decoration-[4px] underline-offset-8">LA FUERZA DE UNIRSE.</span>
           </h1>
           <p className="text-xl md:text-2xl font-cuerpo text-default-700 max-w-lg">
-            El tablón de anuncios neo-brutalista diseñado para backpackers. Encuentra trabajos por temporada, habitaciones baratas y compañeros de viaje en tu zona.
+            Un ecosistema de apoyo mutuo diseñado para viajeros. Encuentra trabajo, hogar y la mano amiga que necesitas para triunfar en tu destino.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button 
@@ -34,13 +34,13 @@ const Home = () => {
             </Button>
             <Button 
               as={Link} 
-              to="/uikit" 
+              to="/manifiesto" 
               size="lg"
               variant="flat" 
               radius="md" 
               className="font-titulo font-bold bg-white text-black border-2 border-black w-full sm:w-auto h-14 text-lg"
             >
-              Ver UI Kit
+              Ver Manifiesto
             </Button>
           </div>
         </div>
@@ -59,9 +59,9 @@ const Home = () => {
               className="w-full h-64 object-cover rounded-t-xl border-b-[3px] border-black block"
             />
             <CardBody className="p-6">
-              <h3 className="font-titulo font-extrabold text-2xl mb-2">Comunidad global</h3>
+              <h3 className="font-titulo font-extrabold text-2xl mb-2">Nadie se salva solo</h3>
               <p className="font-cuerpo text-default-600 block">
-                Únete a miles de viajeros que ya están compartiendo datos, gastos y experiencias únicas alrededor de Australia, Japón, Nueva Zelanda y toda Europa.
+                Únete a una red donde quienes ya recorrieron el camino iluminan el sendero a los que recién llegan. Solidaridad real en cada rincón del mundo.
               </p>
             </CardBody>
           </Card>
@@ -115,18 +115,18 @@ const Home = () => {
       {/* Mini CTA Bottom */}
       <section className="bg-woho-black text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center justify-between gap-8 border-2 border-black shadow-sm">
         <div className="space-y-2 text-center md:text-left">
-          <h2 className="text-3xl font-titulo font-black text-woho-white">¿Listo para publicar?</h2>
-          <p className="font-cuerpo text-gray-300">Crea tu cuenta gratis en menos de 1 minuto y sube tu primer aviso.</p>
+          <h2 className="text-3xl font-titulo font-black text-woho-white">¿Listo para sumarte?</h2>
+          <p className="font-cuerpo text-gray-300">Crea tu cuenta y empieza a construir tu red global hoy mismo.</p>
         </div>
         <Button 
           as={Link} 
-          to="/login" 
+          to="/register" 
           size="lg"
           variant="solid" 
           radius="md" 
           className="font-titulo font-bold bg-woho-orange text-white border-2 border-white w-full md:w-auto hover:bg-white hover:text-woho-orange transition-colors"
         >
-          Crear una cuenta gratis
+          Unirse a la familia
         </Button>
       </section>
 
