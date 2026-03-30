@@ -134,7 +134,7 @@ const EditProfile = () => {
       if (status === 413 || (serverMsg && serverMsg.includes('large'))) {
         alert('La imagen es demasiado pesada. Intenta con una menor a 5 MB.');
       } else if (status === 400) {
-        alert('No se pudo procesar la imagen. Asegúrate de que sea JPG, PNG o WEBP.');
+        alert(serverMsg || 'No se pudo procesar la imagen. Asegúrate de que sea JPG, PNG o WEBP.');
       } else if (status === 401) {
         alert('Tu sesión expiró. Cierra sesión, vuelve a entrar e intenta de nuevo.');
       } else {

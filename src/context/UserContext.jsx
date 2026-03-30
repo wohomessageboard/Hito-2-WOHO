@@ -82,6 +82,18 @@ export const UserProvider = ({ children }) => {
   // 4. Variable rápida booleana (true/false) para saber de un vistazo si hay sesión
   const isAuthenticated = !!currentUser;
 
+  // Sanitizamos el valor antes de pasarlo para evitar el error de React "Objects are not valid as child"
+  // Esto previene fallos si alguna propiedad llegara como objeto por error
+  const sanitizedUser = currentUser ? {
+    ...currentUser,
+    name: String(currentUser.name || ""),
+    avatar: currentUser.avatar ? String(currentUser.avatar) : null,
+    bio: currentUser.bio ? String(currentUser.bio) : "",
+    instagram_handle: currentUser.instagram_handle ? String(currentUser.instagram_handle) : "",
+    phone_whatsapp: currentUser.phone_whatsapp ? String(currentUser.phone_whatsapp) : "",
+    facebook_url: currentUser.facebook_url ? String(currentUser.facebook_url) : ""
+  } : null;
+
   // Mientras averiguamos si estás logueado en la nube, evitamos que "flashes" y te expulse a /login
   if (isInitializing) {
     return (
@@ -96,7 +108,7 @@ export const UserProvider = ({ children }) => {
     // 5. El Provider envuelve a {children} (toda nuestra app).
     // Exportamos en el 'value' todo lo que otras pantallas puedan necesitar.
     <UserContext.Provider value={{ 
-      currentUser, isAuthenticated, login, logout, 
+      currentUser: sanitizedUser, isAuthenticated, login, logout, 
       savedPostIds, toggleSavedPostId,
       followedCountryIds, toggleFollowedCountryId
     }}>
