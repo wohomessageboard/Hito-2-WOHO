@@ -14,13 +14,12 @@ const PostDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showContact, setShowContact] = useState(false);
 
-  // 1. Encontrar la info real llamando a la API
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const res = await api.get(`/posts/${id}`);
         setPost(res.data);
-        // Guardar título en sesión para los Breadcrumbs
+
         window.sessionStorage.setItem('last_post_title', res.data.title);
       } catch (error) {
         console.error("Error al cargar el aviso", error);
@@ -46,18 +45,15 @@ const PostDetail = () => {
     );
   }
 
-  // Si el backend viene con JOIN, debería traer datos planos
   const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero Oculto", avatar: post.author_avatar || null };
   const isMyPost = currentUser?.id === post.user_id;
   const isPublicViewer = !isAuthenticated;
 
-  // Mapear campos del backend a lo que espera la vista
   const type = post.type || post.category_name;
   const country = post.country || post.country_name;
   const city = post.city || post.city_name;
   const expiresInDays = post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null;
 
-  // 2. Colores por categoría (igual que en los cards)
   let typeColor = "text-woho-purple bg-purple-50 border-purple-200";
   if (type === "Trabajo") typeColor = "text-woho-orange bg-orange-50 border-orange-200";
   if (type === "Social") typeColor = "text-green-600 bg-green-50 border-green-200";
@@ -65,7 +61,7 @@ const PostDetail = () => {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
       
-      {/* Botón Volver */}
+      
       <div className="flex">
         <Button 
           variant="flat" 
@@ -79,10 +75,10 @@ const PostDetail = () => {
 
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         
-        {/* COLUMNA IZQUIERDA: Contenido Principal */}
+        
         <div className="w-full lg:w-2/3 flex flex-col gap-6">
           
-          {/* Caja Unificada del Post */}
+          
           <div className="bg-white border-[3px] border-black rounded-xl p-6 md:p-8 flex flex-col gap-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             
             <div className="flex flex-col gap-4">
@@ -124,7 +120,7 @@ const PostDetail = () => {
             
           </div>
 
-          {/* Galería de Imágenes Gigante (Si tiene) */}
+          
           {(() => {
             let displayImages = [];
             try {
@@ -138,11 +134,11 @@ const PostDetail = () => {
             return (
               <div className="flex flex-col gap-4 mt-2">
                 <h3 className="text-xl font-titulo font-black uppercase text-black">Material Audiovisual</h3>
-                {/* Imagen Hero */}
+                
                 <div className="w-full aspect-video rounded-xl border-[4px] border-black overflow-hidden bg-gray-100">
                   <img src={displayImages[0]} alt="Principal" className="w-full h-full object-cover" />
                 </div>
-                {/* Grilla Secundaria */}
+                
                 {displayImages.length > 1 && (
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {displayImages.slice(1).map((imgUrl, idx) => (
@@ -158,10 +154,10 @@ const PostDetail = () => {
 
         </div>
 
-        {/* COLUMNA DERECHA: Pizarra del Creador y Acciones (Sticky) */}
+        
         <div className="w-full lg:w-1/3 flex flex-col gap-6 sticky top-24">
           
-          {/* Tarjeta del Autor Neo-Brutalista */}
+          
           <div className="bg-woho-black text-white border-[3px] border-black rounded-xl p-6 flex flex-col items-center text-center relative overflow-hidden">
 
             <div className="relative z-10 flex flex-col items-center">
@@ -181,14 +177,14 @@ const PostDetail = () => {
 
               <div className="w-full flex flex-col gap-3">
                 {isMyPost ? (
-                  // ES MI POST
+
                   <Button as={Link} to={`/edit-post/${post.id}`} className="w-full h-12 font-bold bg-white text-black border-2 border-black hover:bg-gray-200">
                     Editar mi publicación
                   </Button>
                 ) : (
-                  // ES POST DE OTRO
+
                   <>
-                    {/* Botón Contactar Inteligente */}
+                    
                     {isAuthenticated ? (
                       !showContact ? (
                         <Button 
@@ -220,7 +216,7 @@ const PostDetail = () => {
             </div>
           </div>
 
-          {/* Tarjeta Secundaria de Utilidades */}
+          
           <div className="bg-white border-[3px] border-black rounded-xl p-4 flex flex-col gap-2">
             <h4 className="font-titulo font-black text-black">Acciones Adicionales</h4>
             <div className="flex gap-2">

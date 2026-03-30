@@ -1,18 +1,17 @@
 import React, { useState, useMemo, useEffect } from 'react';
-// Importamos la API y el contexto
+
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
-// Componentes de la UI
+
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider, Input } from '@heroui/react';
-// Iconos
+
 import { Search, Grid, Briefcase, Home, Users, Flame, Globe } from 'lucide-react';
-// Componente UI Abstraído
+
 import PostCard from '../components/ui/PostCard';
-// Hook de Persistencia de Scroll
+
 import { useScrollRestore } from '../hooks/useScrollRestore';
 
-// Mapeador de Iconos por Categoría, ya que los iconos no se guardan en JSON sino en React
 const CATEGORY_ICONS = {
   'Todos': Grid,
   'Alojamiento': Home,
@@ -25,17 +24,14 @@ const Feed = () => {
   const { currentUser, isAuthenticated, followedCountryIds } = useUser();
   const navigate = useNavigate();
 
-  // Redirigir si no hay sesión iniciada
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
 
-  // Si no está autenticado, no renderizamos nada para evitar parpadeos
   if (!isAuthenticated) return null;
 
-  // 1. Estados Locales para almacenar datos del Backend
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([
     { key: 'Alojamiento', label: 'Alojamiento' },
@@ -43,20 +39,16 @@ const Feed = () => {
     { key: 'Social', label: 'Social' },
     { key: 'Otro', label: 'Otro' }
   ]);
-  
-  // Qué categoría estamos viendo
+
   const [selectedCategory, setSelectedCategory] = useState('Todos');
-  // Qué texto escribió en el buscador
+
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 1.5. Aplicando hook de scroll (le pasamos una llave única y comprobamos si "posts" ya tiene datos)
   useScrollRestore('feed_scroll', posts.length > 0);
 
-  // Fetch de Posts inicial
   useEffect(() => {
     if (!isAuthenticated) return;
-    
-    // El Backend de PostgreSQL se encargará luego de enviarnos los posts
+
     api.get('/posts/feed').then(res => {
       setPosts(res.data);
     }).catch(err => {
@@ -69,22 +61,17 @@ const Feed = () => {
     }).catch(err => console.log(err));
   }, [isAuthenticated]);
 
-  // 2. Lógica reactiva (Filtros Frontend)
   const filteredPosts = useMemo(() => {
     let results = posts;
 
-    // La base de datos ya nos entregó en 'posts' únicamente los avisos de los lugares seguidos (GET /api/posts/feed)
-    // Así que solo aplicaremos filtro por si nuestra lista de follows está vacía (para no renderizar nada).
     if (!followedCountryIds || followedCountryIds.length === 0) {
       results = [];
     }
 
-    // Filtro A: Categoría (Si no es 'Todos')
     if (selectedCategory !== 'Todos') {
       results = results.filter(post => post.type === selectedCategory);
     }
 
-    // Filtro B: Buscador de texto
     if (searchQuery.trim() !== '') {
       const lowerQuery = searchQuery.toLowerCase();
       results = results.filter(post => 
@@ -94,49 +81,13 @@ const Feed = () => {
       );
     }
 
-    // ----------------------------------------------------------------------
-    // EJEMPLO DE CÓMO SE HARÍA ESTE FILTRADO POR QUERY SQL EN EL BACKEND
-    // (Para cuando conectes tu base de datos PostgreSQL con Node.js)
-    // 
-    // const fetchFilteredPosts = async () => {
-    //   // 1. Array de lugares que sigue el usuario
-    //   const followedNames = currentUser.followedLocations.map(loc => loc.name);
-    //   
-    //   // 2. Query base
-    //   let sqlQuery = `SELECT * FROM posts WHERE (country = ANY($1) OR city = ANY($1))`;
-    //   let queryParams = [followedNames];  // $1
-    //
-    //   // 3. Añadir Categoría
-    //   if (selectedCategory !== 'Todos') {
-    //     sqlQuery += ` AND type = $${queryParams.length + 1}`;
-    //     queryParams.push(selectedCategory);
-    //   }
-    //
-    //   // 4. Añadir Buscador Textual (ILIKE ignora mayúsculas/minúsculas en postgres)
-    //   if (searchQuery.trim() !== '') {
-    //     const searchParam = `%${searchQuery}%`;
-    //     const pId = `$${queryParams.length + 1}`;
-    //     sqlQuery += ` AND (title ILIKE ${pId} OR description ILIKE ${pId} OR city ILIKE ${pId})`;
-    //     queryParams.push(searchParam);
-    //   }
-    //   
-    //   // 5. Ejecución real
-    //   // const { rows } = await pool.query(sqlQuery, queryParams);
-    //   // return rows; // <-- Estos serían tus filteredPosts
-    // };
-    // ----------------------------------------------------------------------
-
     return results;
   }, [selectedCategory, searchQuery, posts, followedCountryIds]);
 
   return (
     <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto px-4 pb-12">
       
-      {/* 
-        ========================================
-        SECCIÓN 1: CABEZAL EXPLORADOR Y BUSCADOR
-        ========================================
-      */}
+      
       <section className="flex flex-col gap-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
@@ -148,7 +99,7 @@ const Feed = () => {
             </p>
           </div>
           
-          {/* Barra de Búsqueda Textual */}
+          
           <div className="w-full md:w-96 flex-shrink-0">
             <Input 
               classNames={{
@@ -166,12 +117,12 @@ const Feed = () => {
           </div>
         </div>
 
-        {/* CONTROLES: Filtros y Pestañas Inteligente de Seguimiento */}
+        
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-gray-50 border-[2px] border-black p-4 rounded-xl shadow-sm">
           
-          {/* Chips Neobrutalistas para el filtrado rápido por categoría */}
+          
           <div className="flex flex-wrap gap-2">
-            {/* 1. Agregamos el Chip "Todos" manualmente */}
+            
             <Chip
               key="Todos"
               variant={selectedCategory === "Todos" ? "solid" : "bordered"}
@@ -187,7 +138,7 @@ const Feed = () => {
               <span className="px-1 text-sm">Todos</span>
             </Chip>
 
-            {/* 2. Listamos el resto consultando la base de datos centralizada */}
+            
             {categories.map((cat) => {
               const Icon = CATEGORY_ICONS[cat.key] || Globe;
               const isSelected = selectedCategory === cat.key;
@@ -211,18 +162,12 @@ const Feed = () => {
             })}
           </div>
 
-
-
         </div>
       </section>
 
-      {/* 
-        ========================================
-        SECCIÓN 2: LA GRILLA (LA PARED DE ANUNCIOS)
-        ========================================
-      */}
+      
       <section className="pb-16">
-        {/* Renderizamos mensajes de vacío condicionales si no hay match */}
+        
         {filteredPosts.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 text-center border-2 border-dashed border-black rounded-xl bg-gray-50/50">
             <span className="text-4xl mb-4">🌪️</span>
@@ -259,7 +204,7 @@ const Feed = () => {
         ) : (
           <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
             
-            {/* Dibujamos el arreglo usando el componente abstraído modular */}
+            
             {filteredPosts.map((post) => {
               const owner = post.owner || { 
                 id: post.user_id, 

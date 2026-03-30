@@ -6,7 +6,6 @@ import api from '../../config/api';
 const AdminCountriesTab = ({ countries, setCountries }) => {
   const [newCountry, setNewCountry] = useState({ name: '', flag: '', image: '' });
 
-  // Estado para el modal de edición
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [editingCountry, setEditingCountry] = useState(null);
 
@@ -16,7 +15,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
     
     try {
       const res = await api.post('/admin/countries', newCountry);
-      // El backend nos devuelve el país real con su ID oficial
+
       setCountries([res.data, ...countries]);
       setNewCountry({ name: '', flag: '', image: '' });
     } catch (error) {
@@ -37,7 +36,6 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
     }
   };
 
-  // Abrir modal con datos precargados del país a editar
   const openEditModal = (country) => {
     setEditingCountry({
       id: country.id,
@@ -48,7 +46,6 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
     onOpen();
   };
 
-  // Guardar cambios de edición
   const handleSaveEdit = async () => {
     if (!editingCountry) return;
 
@@ -58,7 +55,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
         flag: editingCountry.flag,
         image: editingCountry.image
       });
-      // Actualizamos la lista local con los datos nuevos del servidor
+
       setCountries(countries.map(c => c.id === editingCountry.id ? res.data : c));
       onClose();
     } catch (error) {
@@ -142,7 +139,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
         </div>
       </div>
 
-      {/* Modal de Edición de País */}
+      
       <Modal isOpen={isOpen} onClose={onClose} placement="center">
         <ModalContent>
           <ModalHeader className="font-titulo font-black text-xl">Editar País</ModalHeader>

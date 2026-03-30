@@ -15,10 +15,9 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
   const rowsPerPage = 5;
 
   const filteredPosts = useMemo(() => {
-    // 1. REGLA DE NEGOCIO ACTUALIZADA: La pestaña de Admin "Avisos" SOLO DEBE MOSTRAR los que están Pineados.
+
     let currentPosts = posts.filter(post => post.is_pinned === true);
-    
-    // 2. Filtro Secundario (Buscador por Título)
+
     if (Boolean(filterValue)) {
       currentPosts = currentPosts.filter((post) =>
         post.title.toLowerCase().includes(filterValue.toLowerCase())
@@ -79,7 +78,7 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
 
         return (
           <div className="relative flex items-center gap-2 justify-end">
-            {/* BOTÓN DE PINNEAR */}
+            
             <Tooltip color={post.is_pinned ? "default" : "warning"} content={post.is_pinned ? "Quitar Pin" : "Pinnear Aviso"}>
               <span 
                 className={`text-lg cursor-pointer active:opacity-50 transition-colors ${post.is_pinned ? 'text-gray-400 hover:text-danger' : 'text-default-400 hover:text-warning'}`}
@@ -89,7 +88,7 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
               </span>
             </Tooltip>
             
-            {/* BOTÓN DE ELIMINAR */}
+            
             <Tooltip color="danger" content="Borrar Aviso">
               <span 
                 className="text-lg text-danger cursor-pointer active:opacity-50 hover:opacity-80 transition-opacity"

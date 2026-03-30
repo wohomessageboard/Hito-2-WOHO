@@ -5,26 +5,17 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import api from '../../config/api';
 
-// Componente modular y reutilizable para pintar las Tarjetas de los Anuncios.
-// Las variables (props) que recibe por los paréntesis determinan cómo se dibuja:
-// 1. post: Los datos puros del anuncio (título, ciudad, etc)
-// 2. owner: Los datos de quien creó el anuncio (foto, nombre)
-// 3. variant: Puede ser "feed", "creator" o "favorite". Cambia qué botones se muestran abajo.
-// 4. isMyPost: Avisa si el anuncio que estamos viendo es tuyo propio para darte un trato especial.
 const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   const { isAuthenticated, currentUser, savedPostIds, toggleSavedPostId } = useUser();
-  
-  // Obtenemos el ID independientemente de si viene como id (Posts) o post_id (Favorites view)
+
   const postIdToSave = post.post_id || post.id;
-  // Derivamos si es favorito directamente del Árbol Global para que sobreviva a cambios de vista
+
   const isFav = savedPostIds ? savedPostIds.includes(postIdToSave) : false;
-  
-  // 1. Configuraciones de Color por Categoría
+
   let typeColor = "text-woho-purple";
   if (post.type === "Trabajo") typeColor = "text-woho-orange";
   if (post.type === "Social") typeColor = "text-green-600";
 
-  // Lógica para añadir/remover favoritos (Simplemente hace el Fetch)
   const handleToggleFavorite = async (e) => {
     e.preventDefault(); // Por si está dentro del Link
     try {
@@ -37,11 +28,10 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
       }
     } catch (err) {
       console.error(err);
-      // Falla silenciosamente o maneja logs
+
     }
   };
 
-  // Lógica para eliminar el post
   const handleDelete = async (e) => {
     e.preventDefault();
     const confirmed = window.confirm("¿Estás seguro de que quieres eliminar este aviso permanentemente?");
@@ -57,9 +47,8 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     }
   };
 
-  // 2. Renderizar Cabecera según Variante
   const renderHeader = () => {
-    // Si estamos en "creator" (Mi Perfil -> Mis Avisos), no muestro mi propio Avatar, muestro los días restantes
+
     if (variant === "creator") {
       return (
         <CardHeader className="justify-between">
@@ -74,21 +63,19 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
       );
     }
 
-    // Lógica de censura para el Feed público
     const isPublicFeed = variant === "feed" && !isAuthenticated;
 
-    // Si estamos en "feed" o "favorite", sí mostramos la foto del autor original del post
     return (
       <CardHeader className="justify-between">
         <div className="flex gap-3">
-          {/* Si está oculto, mostramos un avatar por defecto. Si no, la foto del autor. */}
+          
           {isPublicFeed ? (
             <Avatar size="sm" className="border-[1.5px] border-dashed border-gray-400 bg-gray-100" />
           ) : (
             <Avatar src={owner?.avatar} size="sm" className="border-[1.5px] border-black bg-white" />
           )}
           <div className="flex flex-col gap-1 items-start justify-center">
-            {/* Título y censura de nombre */}
+            
             <h4 className="text-sm font-titulo font-extrabold leading-none text-black flex items-center gap-1">
               {variant === "feed" && isMyPost 
                 ? "Yo (Tu aviso)" 
@@ -102,7 +89,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           </div>
         </div>
         
-        {/* BOTÓN PARA SUPERADMINS (DESTACAR POST DESDE EL FEED) */}
+        
         {currentUser?.role === 'superadmin' && (
           <Button 
             isIconOnly 
@@ -114,9 +101,9 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             onClick={async (e) => {
               e.preventDefault();
               try {
-                // Llamada real al backend de administración
+
                 const res = await api.put(`/admin/posts/${post.id}/pin`);
-                // Feedback visual rápido
+
                 alert(res.data.is_pinned ? "¡Post destacado con éxito!" : "Post quitado de destacados.");
                 window.location.reload(); // Recarga simple para ver el cambio (el icono cambiará)
               } catch (err) {
@@ -132,7 +119,6 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     );
   };
 
-  // 3. Renderizar Cuerpo del Card
   const renderBody = () => (
     <CardBody className="px-4 py-4 flex-1">
       <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest mb-2 block ${variant === "feed" ? typeColor : (post.type === "Trabajo" ? "text-woho-orange" : "text-woho-purple")}`}>
@@ -151,13 +137,10 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     </CardBody>
   );
 
-  // 4. Renderizar Imágenes (Solo el Feed muestra un thumbnail rápido si existen)
   const renderImages = () => {
-    // Si no es el feed o no hay imágenes, no pintamos nada
+
     if (variant !== "feed" || !post.images) return null;
 
-    // A veces, PostgreSQL o el Backend pueden devolver las imágenes como un string de JSON
-    // en lugar de un arreglo real. Aquí nos aseguramos de que sea un Arreglo antes de continuar.
     let displayImages = [];
     try {
       displayImages = typeof post.images === "string" ? JSON.parse(post.images) : post.images;
@@ -186,7 +169,6 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     );
   };
 
-  // 5. Renderizar Botonera Inferior según Variante
   const renderFooter = () => {
     if (variant === "creator") {
       return (
@@ -220,7 +202,6 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
       );
     }
 
-    // Por descarte, si estamos en el Feed
     return (
       <CardFooter className="flex justify-between gap-2 bg-gray-50/50 rounded-b-xl">
         {isMyPost ? (
@@ -229,7 +210,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
            </Button>
         ) : (
           <>
-            {/* Contactar solo funciona si estás logueado */}
+            
             {isAuthenticated ? (
               <Button as={Link} to={`/post/${postIdToSave}`} variant="solid" radius="sm" size="sm" className="font-bold bg-black text-white w-3/4">
                 Ver más
@@ -240,7 +221,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               </Button>
             )}
             
-            {/* Favorito envía al login si no tienes sesión */}
+            
             {isAuthenticated ? (
               <Button onClick={handleToggleFavorite} variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 bg-white border border-black hover:bg-yellow-50 text-black transition-colors" title={isFav ? "Quitar Favorito" : "Guardar Favorito"}>
                 <Star className={`w-4 h-4 ${isFav ? "text-warning" : ""}`} fill={isFav ? "currentColor" : "none"} />
@@ -256,7 +237,6 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     );
   };
 
-  // 6. Decidir Fondo de la Tarjeta base
   const cardBgClass = variant === "favorite" ? "bg-gray-50" : "bg-white";
 
   return (

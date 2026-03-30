@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className="flex flex-col gap-16 md:gap-24 mb-12">
       
-      {/* Hero Section */}
+      
       <section className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-8 lg:mt-16">
         <div className="flex-1 space-y-8">
           <div className="inline-block px-4 py-1 bg-woho-orange text-white font-bold font-titulo rounded-full border-2 border-black transform -rotate-2">
@@ -45,7 +45,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Hero Illustration / Concept */}
+        
         <div className="flex-1 flex justify-center lg:justify-end relative w-full max-w-lg lg:max-w-none">
           <div className="absolute inset-0 bg-woho-orange rounded-full blur-3xl opacity-20 transform translate-x-10 translate-y-10"></div>
           
@@ -68,7 +68,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      
       <section className="space-y-10">
         <div className="text-center space-y-4">
           <h2 className="text-4xl md:text-5xl font-titulo font-black text-black">
@@ -112,7 +112,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Mini CTA Bottom */}
+      
       <section className="bg-woho-black text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center justify-between gap-8 border-2 border-black shadow-sm">
         <div className="space-y-2 text-center md:text-left">
           <h2 className="text-3xl font-titulo font-black text-woho-white">¿Listo para sumarte?</h2>

@@ -5,7 +5,7 @@ const Manifiesto = () => {
   return (
     <div className="flex flex-col gap-12 w-full max-w-4xl mx-auto px-4 py-8">
       
-      {/* Cabecera */}
+      
       <header className="flex flex-col items-center text-center gap-6 border-b-[3px] border-black pb-12">
         <div className="bg-woho-purple p-6 rounded-full border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <Globe2 className="w-16 h-16 text-white" />
@@ -18,10 +18,10 @@ const Manifiesto = () => {
         </p>
       </header>
 
-      {/* Contenido Principal */}
+      
       <div className="space-y-12">
         
-        {/* Pilar 1 */}
+        
         <section className="bg-white border-[3px] border-black rounded-xl p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
           <div className="flex items-center gap-4 mb-4">
             <span className="bg-woho-orange text-white w-12 h-12 flex items-center justify-center rounded-xl border-[2px] border-black text-2xl font-black">
@@ -36,7 +36,7 @@ const Manifiesto = () => {
           </p>
         </section>
 
-        {/* Pilar 2 */}
+        
         <section className="bg-[#fdfdfd] border-[3px] border-black rounded-xl p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
           <div className="flex items-center gap-4 mb-4">
             <span className="bg-[#4ade80] text-black w-12 h-12 flex items-center justify-center rounded-xl border-[2px] border-black text-2xl font-black">
@@ -51,7 +51,7 @@ const Manifiesto = () => {
           </p>
         </section>
 
-        {/* Pilar 3 */}
+        
         <section className="bg-woho-white border-[3px] border-black rounded-xl p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
           <div className="flex items-center gap-4 mb-4">
             <span className="bg-[yellow] text-black w-12 h-12 flex items-center justify-center rounded-xl border-[2px] border-black text-2xl font-black">
@@ -68,7 +68,7 @@ const Manifiesto = () => {
 
       </div>
 
-      {/* Cierre */}
+      
       <footer className="mt-8 text-center bg-black text-white p-12 rounded-xl border-[3px] border-black">
         <HeartHandshake className="w-16 h-16 text-woho-orange mx-auto mb-6" />
         <h3 className="text-3xl font-titulo font-black mb-4">

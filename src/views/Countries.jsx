@@ -24,7 +24,7 @@ const Countries = () => {
   return (
     <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto px-4 py-8">
       
-      {/* Cabecera Principal */}
+      
       <section className="flex justify-between items-end gap-4 border-b-[3px] border-black pb-6">
         <div className="space-y-2">
           <h1 className="text-4xl md:text-5xl font-titulo font-black text-black tracking-tighter uppercase flex items-center gap-3">
@@ -37,7 +37,7 @@ const Countries = () => {
         </div>
       </section>
 
-      {/* Grilla de Países Simple */}
+      
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {isLoading ? (
           <div className="w-full text-center p-12 text-xl font-bold col-span-full">Cargando destinos mundiales...</div>

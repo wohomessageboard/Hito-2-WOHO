@@ -31,8 +31,7 @@ const AdminCategoriesTab = () => {
     
     try {
       const res = await api.post('/admin/categories', { name: newCatName });
-      
-      // Actualizamos estado local con la respuesta oficial
+
       setCategories([...categories, res.data]);
       setNewCatName('');
     } catch (error) {

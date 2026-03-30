@@ -29,7 +29,6 @@ const EditPost = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 1. Cargar Metadatos y Datos del Post
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,7 +44,7 @@ const EditPost = () => {
         setCities(cityRes.data);
 
         const p = postRes.data;
-        // Solo puede editar el dueño
+
         if (p.user_id !== currentUser?.id && currentUser?.role !== 'admin' && currentUser?.role !== 'superadmin') {
           alert("No tienes permiso para editar este aviso.");
           navigate('/profile');
@@ -61,11 +60,9 @@ const EditPost = () => {
           price: p.price || '',
           duration_days: String(p.duration_days || '')
         });
-        
-        // Guardar título en sesión para los Breadcrumbs
+
         window.sessionStorage.setItem('last_post_title', p.title);
 
-        // Previsualizar imágenes existentes si las hay
         if (p.images) {
           const existingImages = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
           setPreviews(existingImages);
@@ -122,7 +119,6 @@ const EditPost = () => {
       formToSend.append('city_id', formData.city_id);
       if (formData.price) formToSend.append('price', formData.price);
 
-      // Si hay archivos nuevos seleccionados, se envían para reemplazar los anteriores
       if (selectedFiles.length > 0) {
         selectedFiles.forEach(file => {
           formToSend.append('images', file);

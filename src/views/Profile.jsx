@@ -1,39 +1,35 @@
 import React, { useState, useEffect } from 'react';
-// Importamos herramientas de React Router para redirigir si no hay sesión
+
 import { useNavigate, Link } from 'react-router-dom';
-// Hook global para identificar a quién le pertenece este perfil
+
 import { useUser } from '../context/UserContext';
-// Componentes de HeroUI para armar tarjetas y botones
+
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider, Tabs, Tab } from '@heroui/react';
-// Iconos varios de Lucide-React
+
 import { Settings, LogOut, Pencil, Trash2, MapPin, Search, Grid, Heart, Map } from 'lucide-react';
-// Importamos Axios API configurada
+
 import api from '../config/api';
-// Componente UI abstraído
+
 import PostCard from '../components/ui/PostCard';
 
 const Profile = () => {
-  // 1. Herramientas básicas de estado y navegación
+
   const { currentUser, isAuthenticated, logout } = useUser();
   const navigate = useNavigate();
 
-  // 2. Protegiendo la ruta: Si alguien intenta entrar a "/profile" sin Iniciar Sesión, lo pateamos a Home.
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
-  // Si aún está calculando, retornamos nulo o una carga para no mostrar errores rotos
   if (!currentUser) return null;
 
-  // 3. Estados Dinámicos cargados por API
   const [myPosts, setMyPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [followedPlaces, setFollowedPlaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 4. Fetching the specific data for the Profile
   useEffect(() => {
     if (!isAuthenticated || !currentUser) return;
     
@@ -56,24 +52,19 @@ const Profile = () => {
     fetchProfileData();
   }, [isAuthenticated, currentUser]);
 
-  // Función local para gestionar el desloguearse y devolverte al Home.
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
   return (
-    // Contenedor principal del Perfil
+
     <div className="flex flex-col gap-10">
 
-      {/* 
-        ========================================
-        SECCIÓN 1: CABECERA DEL USUARIO
-        ========================================
-      */}
+      
       <section className="bg-woho-purple text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center gap-8 border-[2px] border-black shadow-sm">
         
-        {/* Foto de perfil grande */}
+        
         <div className="w-32 h-32 md:w-40 md:h-40 relative flex-shrink-0">
           <Avatar 
             src={currentUser.avatar} 
@@ -82,7 +73,7 @@ const Profile = () => {
           />
         </div>
 
-        {/* Datos y estado del usuario */}
+        
         <div className="flex-1 text-center md:text-left space-y-3">
           <h1 className="text-4xl md:text-5xl font-titulo font-black uppercase tracking-tighter leading-none">
             {currentUser.name}
@@ -92,7 +83,7 @@ const Profile = () => {
             Viajero apasionado
           </p>
           
-          {/* Botones de acción directos */}
+          
           <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
             <Button 
               as={Link}
@@ -117,16 +108,9 @@ const Profile = () => {
         </div>
       </section>
 
-      {/* 
-        ========================================
-        SECCIÓN DE PESTAÑAS (TABS): ANUNCIOS Y GUARDADOS
-        ========================================
-      */}
+      
       <section className="space-y-6">
-        {/*
-          Componente Tabs de HeroUI.
-          Le damos un radio medium (radius="md"), tamaño grande y color personalizado a la selección
-        */}
+        
         <Tabs 
           aria-label="Contenido del perfil" 
           radius="md" 
@@ -137,7 +121,7 @@ const Profile = () => {
             tabContent: "group-data-[selected=true]:text-white font-titulo font-bold text-black"
           }}
         >
-          {/* PRIMERA PESTAÑA: MIS ANUNCIOS */}
+          
           <Tab 
             key="mis-anuncios" 
             title={
@@ -175,7 +159,7 @@ const Profile = () => {
             </div>
           </Tab>
 
-          {/* SEGUNDA PESTAÑA: MIS GUARDADOS */}
+          
           <Tab 
             key="guardados" 
             title={
@@ -208,7 +192,7 @@ const Profile = () => {
             </div>
           </Tab>
 
-          {/* TERCERA PESTAÑA: LUGARES SEGUIDOS */}
+          
           <Tab 
             key="seguidos" 
             title={

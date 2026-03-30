@@ -8,13 +8,13 @@ const MainLayout = () => {
     <div className="flex flex-col min-h-screen bg-woho-white w-full">
       <TopNav />
       
-      {/* Container principal para las vistas */}
+      
       <main className="flex-1 w-full max-w-7xl mx-auto py-8 px-4 sm:px-6">
         <AppBreadcrumbs />
         <Outlet />
       </main>
 
-      {/* Footer Minimalista */}
+      
       <footer className="border-t-[2px] border-black bg-woho-white py-6 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-cuerpo font-bold text-sm text-black">

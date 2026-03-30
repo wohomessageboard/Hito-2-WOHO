@@ -1,15 +1,13 @@
 import React from 'react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Avatar, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from '@heroui/react';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
-// 1. Importamos nuestro propio hook de Contexto
+
 import { useUser } from '../../context/UserContext';
 
 const TopNav = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  
-  // 2. Extraemos las herramientas de la "caja fuerte" global
-  // isAuthenticated: true/false. currentUser: los datos. logout: la funcion para salir.
+
   const { isAuthenticated, currentUser, logout } = useUser();
 
   return (
@@ -52,7 +50,7 @@ const TopNav = () => {
 
       <NavbarBrand className="mr-4">
         <RouterLink to="/" className="flex items-center gap-2">
-          {/* Logo de Cloudinary */}
+          
           <img 
             src="https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png" 
             alt="WOHO Logo" 
@@ -89,12 +87,12 @@ const TopNav = () => {
 
       </NavbarContent>
 
-      {/* 3. Renderizado Condicional de los Botones Derechos (Escritorio) */}
+      
       <NavbarContent justify="end">
         {isAuthenticated ? (
-          // VISIÓN DE USUARIO LOGUEADO
+
           <>
-            {/* Si es administrador o superadmin, le mostramos funciones ocultas */}
+            
             {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <NavbarItem className="hidden lg:flex">
                 <Button 
@@ -121,14 +119,14 @@ const TopNav = () => {
               </Button>
             </NavbarItem>
             <NavbarItem>
-              {/* Al hacer click en el Avatar ahora nos lleva a la página de Mi Perfil en vez de desloguearnos */}
+              
               <RouterLink to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Ir a Mi Perfil">
                 <Avatar isBordered radius="full" size="lg" src={currentUser?.avatar} className="cursor-pointer" />
               </RouterLink>
             </NavbarItem>
           </>
         ) : (
-          // VISIÓN DE USUARIO DESCONECTADO (PÚBLICA)
+
           <>
             <NavbarItem className="hidden lg:flex">
               <Button 
@@ -156,7 +154,7 @@ const TopNav = () => {
         )}
       </NavbarContent>
 
-      {/* Menú Móvil */}
+      
       <NavbarMenu className="bg-white/70 backdrop-blur-lg pt-8 mt-5  rounded-xl  border-[2px] border-black pb-8 flex flex-col items-center gap-6 !w-[95%] mx-auto left-0 right-0 h-max max-h-[80vh] shadow-sm">
         {!isAuthenticated && (
           <>
@@ -196,14 +194,13 @@ const TopNav = () => {
           </Link>
         </NavbarMenuItem>
 
-
         
-        {/* 4. Renderizado Condicional del Menú Móvil */}
+        
         <NavbarMenuItem className="w-full flex flex-col justify-center mt-4 px-6 gap-3">
           {isAuthenticated ? (
-            // BOTONES MÓVIL LOGUEADO
+
             <>
-              {/* Opción Admin en móvil */}
+              
               {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
                 <Button 
                   as={RouterLink} 
@@ -254,7 +251,7 @@ const TopNav = () => {
               </Button>
             </>
           ) : (
-            // BOTONES MÓVIL DESCONECTADO (PÚBLICO)
+
             <>
               <Button 
                 as={RouterLink} 

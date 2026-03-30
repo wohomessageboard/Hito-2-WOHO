@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en ello." }) => {
   const navigate = useNavigate();
-  // Solo la vista de editar post recibe un id dinámicamente en la URL, podemos extraerlo para mostrar un guiño.
+
   const { id } = useParams();
 
   return (
@@ -25,14 +25,14 @@ const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en
         {message}
       </p>
 
-      {/* Si es una ruta que detectó un ID como /edit-post/100, pintamos un chip rústico del id */}
+      
       {id && (
          <div className="bg-black text-white px-4 py-1.5 rounded-full font-cuerpo font-black uppercase text-xs tracking-widest mb-8 border border-white">
            Recurso ID: {id} en espera
          </div>
       )}
 
-      {/* Botón de regreso neo-brutalista */}
+      
       <Button 
         onPress={() => navigate(-1)} 
         className="h-14 mt-4 md:mt-8 px-8 font-titulo font-black text-lg bg-white border-[3px] border-black text-black hover:bg-black hover:text-white transition-all hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"

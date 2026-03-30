@@ -99,7 +99,7 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
               </span>
             </Tooltip>
 
-            {/* BOTÓN PELIGROSO: BORRADO DEFINITIVO (Solo si el currentUser tiene rol superadmin) */}
+            
             {currentUser?.role === 'superadmin' && (
               <Tooltip color="danger" content="Borrado Total (Destructivo)">
                 <span 

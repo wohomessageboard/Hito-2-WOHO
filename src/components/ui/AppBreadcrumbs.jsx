@@ -6,7 +6,6 @@ const AppBreadcrumbs = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
 
-  // Si estamos en home, ocultamos los breadcrumbs
   if (pathnames.length === 0) {
     return null;
   }
@@ -34,8 +33,7 @@ const AppBreadcrumbs = () => {
         {pathnames.map((value, index) => {
           const last = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-          
-          // Asignación manual del título según la ruta actual ("value")
+
           let title = "";
 
           switch (value) {
@@ -73,9 +71,9 @@ const AppBreadcrumbs = () => {
               title = "Anuncio";
               break;
             default:
-              // Si el anterior es edit-post o post, es un ID, así que intentamos que se vea mejor
+
               if (index > 0 && (pathnames[index-1] === 'edit-post' || pathnames[index-1] === 'post')) {
-                // Intentamos recuperar un título guardado en sesión por la vista
+
                 const savedTitle = window.sessionStorage.getItem('last_post_title');
                 title = savedTitle ? `"${savedTitle}"` : "Detalle";
               } else {

@@ -5,7 +5,7 @@ const UIKit = () => {
   return (
     <div className="min-h-screen bg-woho-white p-8 md:p-12">
       <div className="max-w-6xl mx-auto space-y-12">
-        {/* Encabezado */}
+        
         <div>
           <h1 className="text-5xl font-titulo font-black mb-4">WOHO UI Kit</h1>
           <p className="text-xl text-gray-600 font-cuerpo">
@@ -15,7 +15,7 @@ const UIKit = () => {
 
         <hr className="border-[1.5px] border-woho-black" />
 
-        {/* Sección: Tipografía */}
+        
         <section>
           <h2 className="text-3xl font-titulo font-extrabold mb-6 flex items-center gap-4">
             <span className="bg-woho-purple text-woho-white w-10 h-10 flex items-center justify-center rounded-neo border-neo border-woho-black shadow-sm">1</span>
@@ -33,7 +33,7 @@ const UIKit = () => {
           </div>
         </section>
 
-        {/* Sección: Botones */}
+        
         <section>
           <h2 className="text-3xl font-titulo font-extrabold mb-6 flex items-center gap-4">
             <span className="bg-woho-orange text-woho-white w-10 h-10 flex items-center justify-center rounded-neo border-neo border-woho-black shadow-sm">2</span>
@@ -47,7 +47,7 @@ const UIKit = () => {
           </div>
         </section>
 
-        {/* Sección: Inputs & Formularios */}
+        
         <section>
           <h2 className="text-3xl font-titulo font-extrabold mb-6 flex items-center gap-4">
             <span className="bg-yellow-400 text-woho-black w-10 h-10 flex items-center justify-center rounded-neo border-neo border-woho-black shadow-sm">3</span>
@@ -61,7 +61,7 @@ const UIKit = () => {
           </div>
         </section>
 
-        {/* Sección: Tarjetas Minimalistas (HeroUI Original) */}
+        
         <section>
           <h2 className="text-3xl font-titulo font-extrabold mb-6 flex items-center gap-4">
             <span className="bg-[#4ade80] text-woho-black w-10 h-10 flex items-center justify-center rounded-neo border-neo border-woho-black shadow-none">4</span>
@@ -148,7 +148,7 @@ const UIKit = () => {
                   Alquilo habitación doble céntrica 🏡
                 </h3>
                 
-                {/* Cuadrícula de 4 fotos */}
+                
                 <div className="grid grid-cols-2 gap-2">
                   <img alt="Foto 1" className="object-cover h-24 w-full rounded-md border border-black/10" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=300" />
                   <img alt="Foto 2" className="object-cover h-24 w-full rounded-md border border-black/10" src="https://images.unsplash.com/photo-1502672260266-1c1de2d93688?auto=format&fit=crop&q=80&w=300" />
@@ -206,7 +206,7 @@ const UIKit = () => {
           </div>
         </section>
 
-        {/* Sección: Elementos HeroUI */}
+        
         <section>
           <h2 className="text-3xl font-titulo font-extrabold mb-6 flex items-center gap-4">
             <span className="bg-blue-400 text-woho-black w-10 h-10 flex items-center justify-center rounded-neo border-neo border-woho-black shadow-sm">5</span>

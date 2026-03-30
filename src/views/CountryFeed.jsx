@@ -20,17 +20,14 @@ const CountryFeed = () => {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated, followedCountryIds, toggleFollowedCountryId } = useUser();
 
-  // Redirigir si no hay sesión iniciada
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
 
-  // Si no está autenticado, no renderizamos nada para evitar parpadeos
   if (!isAuthenticated) return null;
 
-  // 1. Estados Dinámicos cargados por API
   const [countryInfo, setCountryInfo] = useState(null);
   const [countryPosts, setCountryPosts] = useState([]);
   const [categories, setCategories] = useState([
@@ -41,12 +38,8 @@ const CountryFeed = () => {
   ]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // (User status importado arriba)
-
-  // Hook Scroll
   useScrollRestore(`country_scroll_${countryName}`, !isLoading);
 
-  // Fetch de los datos del país específico
   useEffect(() => {
     if (!isAuthenticated) return;
     
@@ -70,18 +63,15 @@ const CountryFeed = () => {
     fetchCountryData();
   }, [countryName, isAuthenticated]);
 
-  // 3. Extraer DINÁMICAMENTE todas las ciudades únicas de los posts de este país
   const availableCities = useMemo(() => {
     const cities = new Set(countryPosts.map(p => p.city));
     return ['Todas', ...Array.from(cities)];
   }, [countryPosts]);
 
-  // 4. Estados de los Filtros Locales (Ciudad, Categoría y Texto)
   const [selectedCity, setSelectedCity] = useState('Todas');
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 5. Aplicar Filtros sobre los anuncios del país
   const filteredPosts = useMemo(() => {
     let results = countryPosts;
 
@@ -95,45 +85,10 @@ const CountryFeed = () => {
         post.description.toLowerCase().includes(lowerQ)
       );
     }
-    
-    // ----------------------------------------------------------------------
-    // EJEMPLO: CÓMO SE HARÍA POR QUERY SQL EN NODE.JS + POSTGRESQL (pg)
-    //
-    // const fetchCountryPosts = async () => {
-    //   // 1. Array de valores iniciales (El país es fijo aquí)
-    //   let queryParams = [countryName];
-    //   let sqlQuery = `SELECT * FROM posts WHERE country ILIKE $1`;
-    //   
-    //   // 2. Filtro de ciudad exacta
-    //   if (selectedCity !== 'Todas') {
-    //     sqlQuery += ` AND city = $${queryParams.length + 1}`;
-    //     queryParams.push(selectedCity);
-    //   }
-    //
-    //   // 3. Filtro de categoría
-    //   if (selectedCategory !== 'Todos') {
-    //     sqlQuery += ` AND type = $${queryParams.length + 1}`;
-    //     queryParams.push(selectedCategory);
-    //   }
-    //   
-    //   // 4. Buscador textual libre
-    //   if (searchQuery.trim() !== '') {
-    //     const searchParam = `%${searchQuery}%`;
-    //     const pId = `$${queryParams.length + 1}`;
-    //     sqlQuery += ` AND (title ILIKE ${pId} OR description ILIKE ${pId})`;
-    //     queryParams.push(searchParam);
-    //   }
-    //   
-    //   // 5. Ejecución real contra la Base de Datos
-    //   // const { rows } = await pool.query(sqlQuery, queryParams);
-    //   // return rows; // <-- Estos serían tus filteredPosts desde backend
-    // };
-    // ----------------------------------------------------------------------
 
     return results;
   }, [countryPosts, selectedCity, selectedCategory, searchQuery]);
 
-  // ¿No existe el país? Mostrar un error (404)
   if (!isLoading && !countryInfo) {
     return (
       <div className="flex flex-col items-center justify-center p-20 text-center">
@@ -150,11 +105,11 @@ const CountryFeed = () => {
   return (
     <div className="flex flex-col w-full max-w-7xl mx-auto pb-12">
       
-      {/* Banner Superior con la Foto del País */}
+      
       <div className="relative w-full h-64 md:h-80 border-b-[4px] border-black bg-black flex items-center justify-center overflow-hidden">
         <img src={countryInfo.image_url} alt={countryInfo.name} className="absolute inset-0 w-full h-full object-cover opacity-60" />
         
-        {/* Botón Flotante para Retroceder arriba a la izq */}
+        
         <Button 
           onPress={() => navigate('/destinos')}
           isIconOnly
@@ -164,12 +119,12 @@ const CountryFeed = () => {
           <ArrowLeft className="w-5 h-5 text-black" />
         </Button>
 
-        {/* Botón Flotante para Seguir el Destino */}
+        
         {isAuthenticated && countryInfo && (
           <Button 
             onPress={async () => {
               const isFollowed = followedCountryIds?.includes(countryInfo.id);
-              // Actualizamos visual optimista
+
               toggleFollowedCountryId(countryInfo.id);
               try {
                 if (isFollowed) {
@@ -178,7 +133,7 @@ const CountryFeed = () => {
                   await api.post(`/users/me/follows/countries/${countryInfo.id}`);
                 }
               } catch (e) {
-                // Revert
+
                 toggleFollowedCountryId(countryInfo.id);
                 console.error("Error toggling follow");
               }
@@ -199,11 +154,11 @@ const CountryFeed = () => {
         </div>
       </div>
 
-      {/* Caja de Filtros Intermedios Neo-Brutalista */}
+      
       <div className="px-4 md:px-8 max-w-5xl w-full mx-auto -translate-y-8 md:-translate-y-10 relative z-20">
         <div className="p-4 bg-white border-[3px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4 md:gap-6 w-full">
         
-        {/* Buscador de Texto */}
+        
         <Input 
           classNames={{ inputWrapper: "border-[2px] border-black h-14 bg-gray-50 focus-within:bg-white", input: "font-cuerpo text-lg" }}
           placeholder={`Buscar en ${countryInfo.name}...`}
@@ -217,7 +172,7 @@ const CountryFeed = () => {
 
         <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-4 md:items-start">
           
-          {/* Fila A: Ciudades Dinámicas */}
+          
           <div className="flex-1 space-y-2">
             <span className="text-sm font-titulo font-black uppercase text-woho-black flex items-center gap-1"><MapPin className="w-4 h-4"/> Ciudad / Región</span>
             <div className="flex flex-wrap gap-2">
@@ -239,11 +194,11 @@ const CountryFeed = () => {
             </div>
           </div>
 
-          {/* Fila B: Categorías Oficiales */}
+          
           <div className="flex-1 space-y-2">
             <span className="text-sm font-titulo font-black uppercase text-woho-black flex items-center gap-1"><Grid className="w-4 h-4"/> ¿Qué buscas?</span>
             <div className="flex flex-wrap gap-2">
-              {/* Chip "Todos" */}
+              
               <Chip
                 variant={selectedCategory === "Todos" ? "solid" : "bordered"}
                 radius="sm"
@@ -275,7 +230,7 @@ const CountryFeed = () => {
         </div>
       </div>
 
-      {/* Grilla de Resultados */}
+      
       <div className="px-4 mt-4">
         {filteredPosts.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 text-center border-2 border-dashed border-black rounded-xl bg-gray-50/50 max-w-3xl mx-auto">

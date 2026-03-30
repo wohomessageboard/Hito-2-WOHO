@@ -3,11 +3,11 @@ import { Card, CardBody } from '@heroui/react';
 import { Users, Globe, FileText, Star } from 'lucide-react';
 
 const AdminMetricsTab = ({ users, countries, posts = [] }) => {
-  // --- CÁLCULOS ESTADÍSTICOS BÁSICOS EN BASE A PROPS ---
+
   const totalUsers = users.length;
   const totalCountries = countries.length;
   const totalPosts = posts.length;
-  // (MOCK SQL: SELECT country_id, COUNT(*) FROM posts GROUP BY country_id ORDER BY COUNT DESC LIMIT 1)
+
   const mostPopularCountry = useMemo(() => {
     if (posts.length === 0) return "N/A";
     const counts = {};
