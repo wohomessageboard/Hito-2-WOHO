@@ -137,18 +137,32 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
   // 4. Renderizar Imágenes (Solo el Feed muestra un thumbnail rápido si existen)
   const renderImages = () => {
-    if (variant !== "feed" || !post.images || post.images.length === 0) return null;
+    // Si no es el feed o no hay imágenes, no pintamos nada
+    if (variant !== "feed" || !post.images) return null;
+
+    // A veces, PostgreSQL o el Backend pueden devolver las imágenes como un string de JSON
+    // en lugar de un arreglo real. Aquí nos aseguramos de que sea un Arreglo antes de continuar.
+    let displayImages = [];
+    try {
+      displayImages = typeof post.images === "string" ? JSON.parse(post.images) : post.images;
+    } catch (e) {
+      console.warn("Fallo al parsear imágenes:", e);
+      displayImages = [];
+    }
+
+    if (!Array.isArray(displayImages) || displayImages.length === 0) return null;
+
     return (
       <div className="px-4 pb-4">
         <div className="w-full h-24 rounded-lg border-2 border-black overflow-hidden relative">
           <img 
-            src={post.images[0]} 
+            src={displayImages[0]} 
             alt="Thumbnail" 
             className="w-full h-full object-cover"
           />
-          {post.images.length > 1 && (
+          {displayImages.length > 1 && (
              <div className="absolute bottom-1 right-1 bg-black text-white text-[10px] font-bold px-2 py-1 rounded-sm border border-white">
-               +{post.images.length - 1} fotos
+               +{displayImages.length - 1} fotos
              </div>
           )}
         </div>

@@ -123,25 +123,36 @@ const PostDetail = () => {
           </div>
 
           {/* Galería de Imágenes Gigante (Si tiene) */}
-          {post.images && post.images.length > 0 && (
-             <div className="flex flex-col gap-4 mt-2">
-               <h3 className="text-xl font-titulo font-black uppercase text-black">Material Audiovisual</h3>
-               {/* Imagen Hero */}
-               <div className="w-full aspect-video rounded-xl border-[4px] border-black overflow-hidden bg-gray-100">
-                 <img src={post.images[0]} alt="Principal" className="w-full h-full object-cover" />
-               </div>
-               {/* Grilla Secundaria */}
-               {post.images.length > 1 && (
-                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                   {post.images.slice(1).map((imgUrl, idx) => (
-                     <div key={idx} className="aspect-square rounded-lg border-[2px] border-black overflow-hidden bg-gray-50 hover:scale-[1.02] transition-transform cursor-pointer">
-                       <img src={imgUrl} alt={`Detalle ${idx+1}`} className="w-full h-full object-cover" />
-                     </div>
-                   ))}
-                 </div>
-               )}
-             </div>
-          )}
+          {(() => {
+            let displayImages = [];
+            try {
+              displayImages = typeof post.images === "string" ? JSON.parse(post.images) : post.images;
+            } catch (e) {
+              displayImages = [];
+            }
+            
+            if (!Array.isArray(displayImages) || displayImages.length === 0) return null;
+
+            return (
+              <div className="flex flex-col gap-4 mt-2">
+                <h3 className="text-xl font-titulo font-black uppercase text-black">Material Audiovisual</h3>
+                {/* Imagen Hero */}
+                <div className="w-full aspect-video rounded-xl border-[4px] border-black overflow-hidden bg-gray-100">
+                  <img src={displayImages[0]} alt="Principal" className="w-full h-full object-cover" />
+                </div>
+                {/* Grilla Secundaria */}
+                {displayImages.length > 1 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {displayImages.slice(1).map((imgUrl, idx) => (
+                      <div key={idx} className="aspect-square rounded-lg border-[2px] border-black overflow-hidden bg-gray-50 hover:scale-[1.02] transition-transform cursor-pointer">
+                        <img src={imgUrl} alt={`Detalle ${idx+1}`} className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
         </div>
 

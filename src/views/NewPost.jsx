@@ -54,6 +54,9 @@ const NewPost = () => {
     duration_days: ''
   });
 
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 3. Manejador de cambios (Actualiza el estado cuando escriben en un input)
@@ -67,6 +70,19 @@ const NewPost = () => {
   const handleSelectChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 5) {
+      alert("Solo puedes subir un máximo de 5 imágenes.");
+      return;
+    }
+    setSelectedFiles(files);
+    
+    // Crear URLs de previsualización para mostrar al usuario
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    setPreviews(newPreviews);
   };
 
   // 4. Submit: Real conectado al backend PostgreSQL
@@ -83,6 +99,11 @@ const NewPost = () => {
       if (formData.category_id) formToSend.append('category_id', formData.category_id);
       if (formData.country_id) formToSend.append('country_id', formData.country_id);
       if (formData.city_id) formToSend.append('city_id', formData.city_id);
+
+      // Añadir imágenes reales seleccionadas
+      selectedFiles.forEach(file => {
+        formToSend.append('images', file);
+      });
 
       await api.post('/posts', formToSend, {
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -300,11 +321,47 @@ const NewPost = () => {
                 />
               </div>
 
-              {/* Falso Botón de Subida de Fotos para el prototipo */}
-              <div className="border-[2px] border-black border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer">
-                <ImageIcon className="w-10 h-10 mb-2 opacity-50" />
-                <span className="font-bold font-cuerpo text-black">Añadir Fotos (Opcional)</span>
-                <span className="text-xs mt-1">Arrastra y suelta imágenes aquí</span>
+              {/* SUBIDA REAL DE FOTOS */}
+              <div className="space-y-3">
+                <input 
+                  type="file" 
+                  id="images-upload" 
+                  multiple 
+                  accept="image/*" 
+                  className="hidden" 
+                  onChange={handleFileChange} 
+                />
+                <label 
+                  htmlFor="images-upload"
+                  className="border-[2px] border-black border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
+                  <span className="font-bold font-cuerpo text-black">Añadir Fotos (Máx 5)</span>
+                  <span className="text-xs mt-1">Sube fotos de alta calidad para destacar</span>
+                </label>
+
+                {/* Previsualización de Imágenes Seleccionadas */}
+                {previews.length > 0 && (
+                  <div className="grid grid-cols-5 gap-2 mt-2">
+                    {previews.map((src, i) => (
+                      <div key={i} className="aspect-square border-[2px] border-black rounded-lg overflow-hidden relative">
+                        <img src={src} alt={`Preview ${i}`} className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const newFiles = selectedFiles.filter((_, idx) => idx !== i);
+                            const newPrevs = previews.filter((_, idx) => idx !== i);
+                            setSelectedFiles(newFiles);
+                            setPreviews(newPrevs);
+                          }}
+                          className="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold border-l-2 border-b-2 border-black"
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -313,11 +370,11 @@ const NewPost = () => {
               <Button 
                 type="submit" 
                 form="new-post-form"
-                isLoading={isSubmitting} // Si isSubmitting es true, muestra un spinner automáticamente
+                isLoading={isSubmitting} 
                 className="w-full h-16 bg-woho-black text-white font-titulo font-black text-xl uppercase tracking-widest rounded-xl hover:bg-black transition-colors"
                 endContent={!isSubmitting && <Send className="w-5 h-5 ml-2" />}
               >
-                {isSubmitting ? "Publicando Aviso..." : "Lanzar Publicación"}
+                {isSubmitting ? "Lanzando Aviso a la Nube..." : "Publicar Anuncio"}
               </Button>
             </div>
 
