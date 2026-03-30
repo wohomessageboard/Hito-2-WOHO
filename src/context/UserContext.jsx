@@ -6,7 +6,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 
   const [currentUser, setCurrentUser] = useState(null);
-  const [isInitializing, setIsInitializing] = useState(true); // Bloqueo visual inicial para la Sesión
+  const [isInitializing, setIsInitializing] = useState(true);
 
   const [savedPostIds, setSavedPostIds] = useState([]);
   const [followedCountryIds, setFollowedCountryIds] = useState([]);

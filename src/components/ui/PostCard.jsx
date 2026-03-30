@@ -17,7 +17,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   if (post.type === "Social") typeColor = "text-green-600";
 
   const handleToggleFavorite = async (e) => {
-    e.preventDefault(); // Por si está dentro del Link
+    e.preventDefault(); 
     try {
       if (isFav || variant === "favorite") {
         await api.delete(`/users/me/favorites/${postIdToSave}`);
@@ -40,7 +40,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     try {
       await api.delete(`/posts/${postIdToSave}`);
       alert("Aviso eliminado correctamente.");
-      window.location.reload(); // Recarga simple para reflejar el cambio en el perfil
+      window.location.reload(); 
     } catch (err) {
       console.error("Error al eliminar post:", err);
       alert("No se pudo eliminar el aviso.");
@@ -105,7 +105,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
                 const res = await api.put(`/admin/posts/${post.id}/pin`);
 
                 alert(res.data.is_pinned ? "¡Post destacado con éxito!" : "Post quitado de destacados.");
-                window.location.reload(); // Recarga simple para ver el cambio (el icono cambiará)
+                window.location.reload();
               } catch (err) {
                 console.error("Error al pinear post:", err);
                 alert("No se pudo destacar el post. Verifica permisos.");

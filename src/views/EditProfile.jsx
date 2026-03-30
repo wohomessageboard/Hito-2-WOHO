@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Input, Button, Avatar, Textarea } from '@heroui/react';
 import { Camera, Instagram, User as UserIcon, Phone, Facebook } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';  // Hook del Contexto Global de usuario
-import api from '../config/api';                   // Instancia de Axios con baseURL del backend
+import { useUser } from '../context/UserContext';  
+import api from '../config/api';                   
 
 const EditProfile = () => {
 
@@ -14,20 +14,20 @@ const EditProfile = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: '',                // VARCHAR(100) NOT NULL
-    bio: '',                 // TEXT - Biografía personal
-    instagram_handle: '',    // VARCHAR(50) - Sin el @, ej: "lucasviajero"
-    phone_whatsapp: '',      // VARCHAR(20) - Con código de país, ej: "+56 9 1234 5678"
-    facebook_url: ''         // TEXT - URL completa del perfil de Facebook
+    name: '',                
+    bio: '',                 
+    instagram_handle: '',    
+    phone_whatsapp: '',      
+    facebook_url: ''         
   });
 
-  const [avatarPreview, setAvatarPreview] = useState(null);   // URL temporal para la vista previa
-  const [fileToUpload, setFileToUpload] = useState(null);     // El archivo real (File object del input)
-  const [isLoading, setIsLoading] = useState(false);          // Spinner del botón "Guardar"
+  const [avatarPreview, setAvatarPreview] = useState(null);   
+  const [fileToUpload, setFileToUpload] = useState(null);     
+  const [isLoading, setIsLoading] = useState(false);          
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');  // Protección de ruta: si no hay sesión, al login
+      navigate('/login');   
     } else if (currentUser) {
       setFormData({
         name: currentUser.name || '',
@@ -46,16 +46,16 @@ const EditProfile = () => {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];  // Solo tomamos el primer archivo seleccionado
+    const file = e.target.files[0];  
     if (file) {
-      setFileToUpload(file);                           // Guardamos el File para el submit
-      setAvatarPreview(URL.createObjectURL(file));     // URL.createObjectURL = Vista previa local
+      setFileToUpload(file);                           
+      setAvatarPreview(URL.createObjectURL(file));     
     }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();    // Evitar que el form recargue la página (comportamiento por defecto de HTML)
-    setIsLoading(true);    // Activar el spinner del botón
+    e.preventDefault();    
+    setIsLoading(true);    
     
     try {
 
@@ -84,13 +84,13 @@ const EditProfile = () => {
       login(updatedUserData);
       
       alert("¡Perfil actualizado con éxito!");
-      navigate('/profile');  // Redirigir al perfil para ver los cambios
+      navigate('/profile');   
 
     } catch (error) {
       console.error('Error editando perfil:', error);
 
-      const status = error?.response?.status;              // Ej: 413, 400, 401, 500
-      const serverMsg = error?.response?.data?.error;      // Ej: "Formato no permitido"
+      const status = error?.response?.status;              
+      const serverMsg = error?.response?.data?.error;      
       
       if (status === 413 || (serverMsg && serverMsg.includes('large'))) {
         alert('La imagen es demasiado pesada. Intenta con una menor a 5 MB.');
@@ -102,7 +102,7 @@ const EditProfile = () => {
         alert(`Error al actualizar: ${serverMsg || 'Verifica tu conexión o intenta con otra imagen.'}`);
       }
     } finally {
-      setIsLoading(false);  // Desactivar spinner pase lo que pase
+      setIsLoading(false);  
     }
   };
 

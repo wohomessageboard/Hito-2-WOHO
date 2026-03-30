@@ -30,8 +30,8 @@ const Register = () => {
       const { token, user } = res.data;
       if (token && user) {
         localStorage.setItem('token', token);
-        login(user); // Guardamos la sesión
-        navigate('/feed'); // Lo mandamos directo adentro
+        login(user); 
+        navigate('/feed'); 
       } else {
         setErrorMsg("Error inesperado en el servidor");
       }
@@ -70,9 +70,9 @@ const Register = () => {
               type="text"
               label="Nombre completo"
               placeholder="Ej. Lucas Viajero"
-              labelPlacement="inside"               // El label queda flotando por dentro del input
-              variant="bordered"                    // Queremos que nuestro input tenga contorno
-              radius="md"                           // Curvatura estricta que elegimos al principio
+              labelPlacement="inside"
+              variant="bordered"
+              radius="md"
               value={name}
 
               onChange={(e) => setName(e.target.value)}

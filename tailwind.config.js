@@ -23,7 +23,7 @@ export default {
         titulo: ['"Kanit"', 'sans-serif'],
       },
       borderRadius: {
-        'neo': '0.75rem', // equivale a rounded-xl
+        'neo': '0.75rem', 
       }
     },
   },

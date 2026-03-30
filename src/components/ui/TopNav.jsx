@@ -243,8 +243,8 @@ const TopNav = () => {
                 fullWidth
                 className="font-bold bg-gray-100 text-red-600 shadow-sm h-12 text-lg"
                 onPress={() => {
-                  logout(); // Cierra sesión
-                  setIsMenuOpen(false); // Cierra el cajón
+                  logout();
+                  setIsMenuOpen(false); 
                 }}
               >
                 Cerrar Sesión

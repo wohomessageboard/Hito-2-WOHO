@@ -23,7 +23,7 @@ const PostDetail = () => {
         window.sessionStorage.setItem('last_post_title', res.data.title);
       } catch (error) {
         console.error("Error al cargar el aviso", error);
-        setPost(null); // Fuerzo la caída al 404
+        setPost(null); 
       } finally {
         setIsLoading(false);
       }
