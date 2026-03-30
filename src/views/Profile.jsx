@@ -156,8 +156,15 @@ const Profile = () => {
                 myPosts.map((post) => {
                   const isMyPost = currentUser?.id === post.user_id;
                   const owner = { id: post.user_id, name: post.author_name || currentUser?.name, avatar: currentUser?.avatar };
+                  const mappedPost = {
+                    ...post,
+                    country: post.country || post.country_name,
+                    city: post.city || post.city_name,
+                    type: post.type || post.category_name,
+                    expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
+                  };
                   return (
-                    <PostCard key={post.id} post={post} owner={owner} variant="creator" isMyPost={isMyPost} />
+                    <PostCard key={post.id} post={mappedPost} owner={owner} variant="creator" isMyPost={isMyPost} />
                   );
                 })
               )}
@@ -182,8 +189,15 @@ const Profile = () => {
               ) : (
                 savedPosts.map((post) => {
                   const owner = { id: post.user_id, name: post.author_name || "Anónimo", avatar: null };
+                  const mappedPost = {
+                    ...post,
+                    country: post.country || post.country_name,
+                    city: post.city || post.city_name,
+                    type: post.type || post.category_name,
+                    expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
+                  };
                   return (
-                    <PostCard key={post.post_id || post.id} post={post} owner={owner} variant="favorite" />
+                    <PostCard key={post.post_id || post.id} post={mappedPost} owner={owner} variant="favorite" />
                   );
                 })
               )}

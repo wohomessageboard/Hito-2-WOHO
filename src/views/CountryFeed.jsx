@@ -293,13 +293,21 @@ const CountryFeed = () => {
         ) : (
           <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
             {filteredPosts.map(post => {
-              const owner = post.owner || { id: post.userId, name: "Viajero Anónimo", avatar: null };
-              const isMyPost = currentUser?.id === post.userId;
+              const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero Anónimo", avatar: post.author_avatar || null };
+              const isMyPost = currentUser?.id === post.user_id;
+
+              const mappedPost = {
+                ...post,
+                country: post.country || post.country_name,
+                city: post.city || post.city_name,
+                type: post.type || post.category_name,
+                expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
+              };
               
               return (
                 <PostCard 
                   key={post.id} 
-                  post={post} 
+                  post={mappedPost} 
                   owner={owner}
                   variant="feed"
                   isMyPost={isMyPost}
