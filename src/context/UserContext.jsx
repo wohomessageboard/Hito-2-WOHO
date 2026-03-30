@@ -98,7 +98,7 @@ export const UserProvider = ({ children }) => {
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-woho-black flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl text-white font-titulo font-black uppercase mb-4 animate-pulse">Desembalando mochila...</h1>
+        <h1 className="text-4xl text-white font-titulo font-black uppercase mb-4 animate-pulse">Desempacando la mochila...</h1>
         <div className="w-16 h-16 border-4 border-white border-t-woho-orange rounded-full animate-spin"></div>
       </div>
     );
