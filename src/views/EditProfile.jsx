@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Input, Button, Avatar, Textarea } from '@heroui/react';
-import { Camera, Instagram, User as UserIcon } from 'lucide-react';
+import { Camera, Instagram, User as UserIcon, Phone, Facebook } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import api from '../config/api';
@@ -13,7 +13,9 @@ const EditProfile = () => {
   const [formData, setFormData] = useState({
     name: '',
     bio: '',
-    instagram_handle: ''
+    instagram_handle: '',
+    phone_whatsapp: '',
+    facebook_url: ''
   });
   
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -27,7 +29,9 @@ const EditProfile = () => {
       setFormData({
         name: currentUser.name || '',
         bio: currentUser.bio || '',
-        instagram_handle: currentUser.instagram_handle || ''
+        instagram_handle: currentUser.instagram_handle || '',
+        phone_whatsapp: currentUser.phone_whatsapp || '',
+        facebook_url: currentUser.facebook_url || ''
       });
       setAvatarPreview(currentUser.avatar || null);
     }
@@ -54,7 +58,9 @@ const EditProfile = () => {
       const payload = {
         name: formData.name,
         bio: formData.bio,
-        instagram_handle: formData.instagram_handle
+        instagram_handle: formData.instagram_handle,
+        phone_whatsapp: formData.phone_whatsapp,
+        facebook_url: formData.facebook_url
       };
       
       const res = await api.put('/users/me', payload);
@@ -153,6 +159,32 @@ const EditProfile = () => {
               value={formData.instagram_handle}
               onChange={handleChange}
               startContent={<Instagram className="text-xl text-default-400 font-bold mr-2" />}
+              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+            />
+
+            <Input
+              name="phone_whatsapp"
+              label="WhatsApp / Teléfono (Opcional)"
+              placeholder="+56 9 1234 5678"
+              labelPlacement="inside"
+              variant="bordered"
+              radius="md"
+              value={formData.phone_whatsapp}
+              onChange={handleChange}
+              startContent={<Phone className="text-xl text-default-400 font-bold mr-2" />}
+              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+            />
+
+            <Input
+              name="facebook_url"
+              label="Enlace de Facebook (Opcional)"
+              placeholder="https://facebook.com/tu_perfil"
+              labelPlacement="inside"
+              variant="bordered"
+              radius="md"
+              value={formData.facebook_url}
+              onChange={handleChange}
+              startContent={<Facebook className="text-xl text-default-400 font-bold mr-2" />}
               classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
             />
 
