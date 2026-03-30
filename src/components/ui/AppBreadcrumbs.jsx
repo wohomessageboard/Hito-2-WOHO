@@ -63,9 +63,24 @@ const AppBreadcrumbs = () => {
             case 'manifiesto':
               title = "Manifiesto";
               break;
+            case 'edit-profile':
+              title = "Editar Perfil";
+              break;
+            case 'edit-post':
+              title = "Editar";
+              break;
+            case 'post':
+              title = "Anuncio";
+              break;
             default:
-              // Si no la conocemos manualmentee (ej: un ID de post), ponemos la primera letra en mayúscula
-              title = value.charAt(0).toUpperCase() + value.slice(1);
+              // Si el anterior es edit-post o post, es un ID, así que intentamos que se vea mejor
+              if (index > 0 && (pathnames[index-1] === 'edit-post' || pathnames[index-1] === 'post')) {
+                // Intentamos recuperar un título guardado en sesión por la vista
+                const savedTitle = window.sessionStorage.getItem('last_post_title');
+                title = savedTitle ? `"${savedTitle}"` : "Detalle";
+              } else {
+                title = value.charAt(0).toUpperCase() + value.slice(1);
+              }
               break;
           }
 

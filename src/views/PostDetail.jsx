@@ -20,6 +20,8 @@ const PostDetail = () => {
       try {
         const res = await api.get(`/posts/${id}`);
         setPost(res.data);
+        // Guardar título en sesión para los Breadcrumbs
+        window.sessionStorage.setItem('last_post_title', res.data.title);
       } catch (error) {
         console.error("Error al cargar el aviso", error);
         setPost(null); // Fuerzo la caída al 404

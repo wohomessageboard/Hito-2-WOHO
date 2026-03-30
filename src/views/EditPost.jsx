@@ -61,6 +61,9 @@ const EditPost = () => {
           price: p.price || '',
           duration_days: String(p.duration_days || '')
         });
+        
+        // Guardar título en sesión para los Breadcrumbs
+        window.sessionStorage.setItem('last_post_title', p.title);
 
         // Previsualizar imágenes existentes si las hay
         if (p.images) {
