@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Card, CardBody, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, User, Tooltip, Pagination } from '@heroui/react';
 import { Search, Eye, Edit, Trash2, Ban, CheckCircle2 } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const userColumns = [
   { name: "USUARIO", uid: "name" },
@@ -75,9 +76,9 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
         return (
           <div className="relative flex items-center gap-2 justify-end">
             <Tooltip content="Ver perfil">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-black transition-colors">
+              <RouterLink to={`/profile/${user.id}`} className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-black transition-colors">
                 <Eye className="w-5 h-5"/>
-              </span>
+              </RouterLink>
             </Tooltip>
             
             <Tooltip content="Ascender / Degradar (Rol)">
