@@ -54,7 +54,7 @@ const Countries = () => {
                 <span className="text-6xl mb-4 group-hover:scale-125 transition-transform duration-300">
                   {country.flag}
                 </span>
-                <h2 className="text-lg sm:text-2xl font-titulo font-black text-black uppercase tracking-wide sm:tracking-widest truncate w-full">
+                <h2 className="text-sm sm:text-xl lg:text-2xl font-titulo font-black text-black uppercase text-center leading-tight">
                   {country.name}
                 </h2>
               </CardBody>
