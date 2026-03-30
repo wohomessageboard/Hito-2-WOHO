@@ -152,7 +152,7 @@ const CountryFeed = () => {
       
       {/* Banner Superior con la Foto del País */}
       <div className="relative w-full h-64 md:h-80 border-b-[4px] border-black bg-black flex items-center justify-center overflow-hidden">
-        <img src={countryInfo.image} alt={countryInfo.name} className="absolute inset-0 w-full h-full object-cover opacity-60" />
+        <img src={countryInfo.image_url} alt={countryInfo.name} className="absolute inset-0 w-full h-full object-cover opacity-60" />
         
         {/* Botón Flotante para Retroceder arriba a la izq */}
         <Button 
