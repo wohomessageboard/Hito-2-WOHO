@@ -70,10 +70,10 @@ export const UserProvider = ({ children }) => {
   };
 
   // 3. Funciones de ayuda
-  // Simula el Iniciar Sesión: toma un usuario de mentira y lo guarda en el estado.
+  // Iniciar Sesión vinculando con el contexto
   const login = (user) => setCurrentUser(user);
   
-  // Simula el Cerrar Sesión: borra al usuario devolviendo el estado a 'null'.
+  // Cerrar Sesión: limpia storage y estado
   const logout = () => {
     localStorage.removeItem('token');
     setCurrentUser(null);

@@ -293,7 +293,11 @@ const CountryFeed = () => {
         ) : (
           <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
             {filteredPosts.map(post => {
-              const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero Anónimo", avatar: post.author_avatar || null };
+              const owner = post.owner || { 
+                id: post.user_id, 
+                name: String(post.author_name || "Viajero Anónimo"), 
+                avatar: post.author_avatar ? String(post.author_avatar) : null 
+              };
               const isMyPost = currentUser?.id === post.user_id;
 
               const mappedPost = {

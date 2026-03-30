@@ -86,21 +86,30 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           </div>
         </div>
         
-        {/* BOTÓN MOCK EXCLUSIVO PARA SUPERADMINS (FIJAR POST DESDE EL FEED) */}
+        {/* BOTÓN PARA SUPERADMINS (DESTACAR POST DESDE EL FEED) */}
         {currentUser?.role === 'superadmin' && (
           <Button 
             isIconOnly 
             size="sm" 
-            color="warning" 
-            variant="flat" 
-            className="border-[1.5px] border-warning"
-            title="Pinnear Aviso (Solo SuperAdmin)"
-            onClick={(e) => {
-              e.preventDefault(); // Por si el Card tiene Link Wrapper
-              alert(`EJECUCIÓN SUPERADMIN: Simulando PUT /api/admin/posts/${post.id}/pin para destacar aviso en BD.`);
+            color={post.is_pinned ? "warning" : "default"}
+            variant={post.is_pinned ? "solid" : "flat"} 
+            className={`border-[1.5px] ${post.is_pinned ? 'border-black' : 'border-warning'}`}
+            title={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
+            onClick={async (e) => {
+              e.preventDefault();
+              try {
+                // Llamada real al backend de administración
+                const res = await api.put(`/admin/posts/${post.id}/pin`);
+                // Feedback visual rápido
+                alert(res.data.is_pinned ? "¡Post destacado con éxito!" : "Post quitado de destacados.");
+                window.location.reload(); // Recarga simple para ver el cambio (el icono cambiará)
+              } catch (err) {
+                console.error("Error al pinear post:", err);
+                alert("No se pudo destacar el post. Verifica permisos.");
+              }
             }}
           >
-            <Pin className="w-4 h-4 text-warning-700 font-black" />
+            <Pin className={`w-4 h-4 ${post.is_pinned ? 'text-black' : 'text-warning-700'} font-black`} />
           </Button>
         )}
       </CardHeader>

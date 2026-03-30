@@ -155,7 +155,11 @@ const Profile = () => {
               ) : (
                 myPosts.map((post) => {
                   const isMyPost = currentUser?.id === post.user_id;
-                  const owner = { id: post.user_id, name: post.author_name || currentUser?.name, avatar: currentUser?.avatar };
+                  const owner = { 
+                    id: post.user_id, 
+                    name: String(post.author_name || currentUser?.name || "Yo"), 
+                    avatar: post.author_avatar ? String(post.author_avatar) : (currentUser?.avatar ? String(currentUser.avatar) : null)
+                  };
                   const mappedPost = {
                     ...post,
                     country: post.country || post.country_name,
