@@ -62,11 +62,13 @@ const TopNav = () => {
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-8" justify="center">
-        <NavbarItem isActive={location.pathname === '/'}>
-          <Link as={RouterLink} to="/" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
-            Inicio
-          </Link>
-        </NavbarItem>
+        {!isAuthenticated && (
+          <NavbarItem isActive={location.pathname === '/'}>
+            <Link as={RouterLink} to="/" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
+              Inicio
+            </Link>
+          </NavbarItem>
+        )}
         {isAuthenticated && (
           <NavbarItem isActive={location.pathname === '/feed'}>
             <Link as={RouterLink} to="/feed" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
@@ -156,13 +158,17 @@ const TopNav = () => {
 
       {/* Menú Móvil */}
       <NavbarMenu className="bg-white/70 backdrop-blur-lg pt-8 mt-5  rounded-xl  border-[2px] border-black pb-8 flex flex-col items-center gap-6 !w-[95%] mx-auto left-0 right-0 h-max max-h-[80vh] shadow-sm">
-        <NavbarMenuItem isActive={location.pathname === '/'} className="w-full flex justify-center">
-          <Link as={RouterLink} to="/" className="w-full font-titulo font-extrabold text-2xl text-black justify-center" onPress={() => setIsMenuOpen(false)}>
-            Inicio
-          </Link>
-        </NavbarMenuItem>
-        
-        <div className="w-1/2 h-[2px] bg-black opacity-20 rounded-full" />
+        {!isAuthenticated && (
+          <>
+            <NavbarMenuItem isActive={location.pathname === '/'} className="w-full flex justify-center">
+              <Link as={RouterLink} to="/" className="w-full font-titulo font-extrabold text-2xl text-black justify-center" onPress={() => setIsMenuOpen(false)}>
+                Inicio
+              </Link>
+            </NavbarMenuItem>
+            
+            <div className="w-1/2 h-[2px] bg-black opacity-20 rounded-full" />
+          </>
+        )}
 
         {isAuthenticated && (
           <>
