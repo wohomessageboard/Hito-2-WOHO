@@ -30,15 +30,14 @@ const AdminCategoriesTab = () => {
     setIsSubmitting(true);
     
     try {
-      // Intentamos crearlo en el backend real mediante el Endoint que debes programar
       const res = await api.post('/admin/categories', { name: newCatName });
       
-      // Actualizamos estado local con la respuesta (o simplemente refetch)
+      // Actualizamos estado local con la respuesta oficial
       setCategories([...categories, res.data]);
       setNewCatName('');
     } catch (error) {
       console.error('Error creando categoría', error);
-      alert('Error creando categoría. Probablemente el Backend aún no soporte POST /api/admin/categories. Revisa la guía.');
+      alert('Error creando categoría en la BD.');
     } finally {
       setIsLoading(false);
       setIsSubmitting(false);
@@ -49,12 +48,11 @@ const AdminCategoriesTab = () => {
     if (!window.confirm("¿Seguro que deseas ELIMINAR esta categoría? Esto podría afectar a los posts asociados.")) return;
     
     try {
-      // Simular borrado en backend
       await api.delete(`/admin/categories/${id}`);
       setCategories(categories.filter(c => c.id !== id));
     } catch (error) {
       console.error('Error borrando categoría', error);
-      alert('Error eliminando categoría. Revisa si el Endpoint Backend existe y si hay conflicto de llaves foráneas en los Posts.');
+      alert('Error eliminando categoría. Podría haber posts que aún dependen de ella.');
     }
   };
 

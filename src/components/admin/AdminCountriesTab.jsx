@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, Button, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import api from '../../config/api';
 
 const AdminCountriesTab = ({ countries, setCountries }) => {
   const [newCountry, setNewCountry] = useState({ name: '', flag: '', image: '' });
 
-  const handleAddCountry = (e) => {
+  const handleAddCountry = async (e) => {
     e.preventDefault();
     if (!newCountry.name) return;
     
-    // Simula POST /api/admin/countries
-    setCountries([{ id: Date.now().toString(), ...newCountry }, ...countries]);
-    setNewCountry({ name: '', flag: '', image: '' });
+    try {
+      const res = await api.post('/admin/countries', newCountry);
+      // El backend nos devuelve el país real con su ID oficial
+      setCountries([res.data, ...countries]);
+      setNewCountry({ name: '', flag: '', image: '' });
+    } catch (error) {
+      console.error(error);
+      alert('Error al intentar guardar el país en la Base de Datos.');
+    }
+  };
+
+  const handleDeleteCountry = async (id) => {
+    if (!window.confirm('¿Alerta permanente: Seguro que deseas eliminar este país de la base de datos?')) return;
+    
+    try {
+      await api.delete(`/admin/countries/${id}`);
+      setCountries(countries.filter(c => c.id !== id));
+    } catch (error) {
+      console.error(error);
+      alert('Error al eliminar país. Asegúrate de borrar antes sus ciudades.');
+    }
   };
 
   return (
@@ -75,7 +94,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
                       <Button size="sm" isIconOnly variant="flat" color="primary">
                         <Edit className="w-4 h-4" />
                       </Button>
-                      <Button size="sm" isIconOnly variant="flat" color="danger">
+                      <Button size="sm" isIconOnly variant="flat" color="danger" onPress={() => handleDeleteCountry(country.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </TableCell>

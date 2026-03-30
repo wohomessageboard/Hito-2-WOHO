@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, Button, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from '@heroui/react';
 import { Plus, Trash2 } from 'lucide-react';
+import api from '../../config/api';
 
 const AdminCitiesTab = ({ cities, setCities, countries }) => {
   const [newCity, setNewCity] = useState({ country_id: '', name: '' });
 
-  const handleAddCity = (e) => {
+  const handleAddCity = async (e) => {
     e.preventDefault();
     if (!newCity.name || !newCity.country_id) return;
     
-    // Simula POST /api/admin/cities
-    setCities([{ id: Date.now().toString(), ...newCity }, ...cities]);
-    setNewCity({ country_id: '', name: '' });
+    try {
+      const res = await api.post('/admin/cities', newCity);
+      setCities([res.data, ...cities]);
+      setNewCity({ country_id: '', name: '' });
+    } catch (error) {
+      console.error(error);
+      alert('Error guardando la ciudad en BD.');
+    }
+  };
+
+  const handleDeleteCity = async (id) => {
+    if (!window.confirm('¿Borrar definitivamente esta ciudad?')) return;
+    try {
+      await api.delete(`/admin/cities/${id}`);
+      setCities(cities.filter(c => c.id !== id));
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo borrar la ciudad.');
+    }
   };
 
   return (
@@ -84,7 +101,7 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
                         )}
                       </TableCell>
                       <TableCell className="text-right flex justify-end gap-2">
-                        <Button size="sm" isIconOnly variant="light" color="danger">
+                        <Button size="sm" isIconOnly variant="light" color="danger" onPress={() => handleDeleteCity(city.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </TableCell>
