@@ -90,31 +90,45 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
         </div>
         
         
-        {currentUser?.role === 'superadmin' && (
-          <Button 
-            isIconOnly 
-            size="sm" 
-            color={post.is_pinned ? "warning" : "default"}
-            variant={post.is_pinned ? "solid" : "flat"} 
-            className={`border-[1.5px] ${post.is_pinned ? 'border-black' : 'border-warning'}`}
-            title={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
-            onClick={async (e) => {
-              e.preventDefault();
-              try {
+        <div className="flex gap-2">
+          {currentUser?.role === 'superadmin' && (
+            <Button 
+              isIconOnly 
+              size="sm" 
+              color={post.is_pinned ? "warning" : "default"}
+              variant={post.is_pinned ? "solid" : "flat"} 
+              className={`border-[1.5px] ${post.is_pinned ? 'border-black' : 'border-warning'}`}
+              title={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
+              onClick={async (e) => {
+                e.preventDefault();
+                try {
+                  const res = await api.put(`/admin/posts/${post.id}/pin`);
+                  alert(res.data.is_pinned ? "¡Post destacado con éxito!" : "Post quitado de destacados.");
+                  window.location.reload();
+                } catch (err) {
+                  console.error("Error al pinear post:", err);
+                  alert("No se pudo destacar el post. Verifica permisos.");
+                }
+              }}
+            >
+              <Pin className={`w-4 h-4 ${post.is_pinned ? 'text-black' : 'text-warning-700'} font-black`} />
+            </Button>
+          )}
 
-                const res = await api.put(`/admin/posts/${post.id}/pin`);
-
-                alert(res.data.is_pinned ? "¡Post destacado con éxito!" : "Post quitado de destacados.");
-                window.location.reload();
-              } catch (err) {
-                console.error("Error al pinear post:", err);
-                alert("No se pudo destacar el post. Verifica permisos.");
-              }
-            }}
-          >
-            <Pin className={`w-4 h-4 ${post.is_pinned ? 'text-black' : 'text-warning-700'} font-black`} />
-          </Button>
-        )}
+          {(currentUser?.role === 'superadmin' || currentUser?.role === 'admin') && (
+            <Button 
+              isIconOnly 
+              size="sm" 
+              color="danger"
+              variant="flat" 
+              className="border-[1.5px] border-red-600"
+              title="Eliminar como Administrador"
+              onClick={handleDelete}
+            >
+              <Trash2 className="w-4 h-4 text-red-600" />
+            </Button>
+          )}
+        </div>
       </CardHeader>
     );
   };
@@ -205,9 +219,22 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     return (
       <CardFooter className="flex justify-between gap-2 bg-gray-50/50 rounded-b-xl">
         {isMyPost ? (
-           <Button as={Link} to="/profile" variant="flat" radius="sm" size="sm" className="w-full font-bold bg-gray-200 text-black border border-black border-dashed">
-             Gestionar en Perfil
-           </Button>
+          <div className="flex gap-2 w-full">
+            <Button as={Link} to="/profile" variant="flat" radius="sm" size="sm" className="flex-1 font-bold bg-gray-200 text-black border border-black border-dashed">
+              Gestionar
+            </Button>
+            <Button 
+              onClick={handleDelete} 
+              variant="flat" 
+              radius="sm" 
+              size="sm" 
+              isIconOnly 
+              className="bg-red-50 border border-red-200 text-red-600 hover:bg-red-100"
+              title="Eliminar mi aviso"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
         ) : (
           <>
             
