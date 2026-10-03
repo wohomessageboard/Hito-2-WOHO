@@ -22,7 +22,6 @@ const EditPost = () => {
     country_id: '',
     city_id: '',
     description: '',
-    price: '',
     duration_days: ''
   });
 
@@ -59,7 +58,6 @@ const EditPost = () => {
           country_id: String(p.country_id || ''),
           city_id: String(p.city_id || ''),
           description: p.description || '',
-          price: p.price || '',
           duration_days: String(p.duration_days || '')
         });
 
@@ -116,7 +114,6 @@ const EditPost = () => {
       formToSend.append('category_id', formData.category_id);
       formToSend.append('country_id', formData.country_id);
       formToSend.append('city_id', formData.city_id);
-      if (formData.price) formToSend.append('price', formData.price);
 
       if (selectedFiles.length > 0) {
         selectedFiles.forEach(file => {
@@ -278,26 +275,13 @@ const EditPost = () => {
                 }}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                <Input
-                  name="price"
-                  type="number"
-                  label="Precio (opcional)"
-                  startContent={<span className="text-ws-ink/75 font-bold">$</span>}
-                  variant="bordered"
-                  radius="sm"
-                  size="lg"
-                  value={formData.price}
-                  onChange={handleChange}
-                  classNames={{ 
-                    inputWrapper: "ws-input-border",
-                    label: "font-bold text-ws-ink text-sm"
-                  }}
-                />
+              <div className="grid grid-cols-1 gap-4 mt-2">
                 
                 <Input
                   name="duration_days"
                   type="number"
+                  min={1}
+                  max={365}
                   label="Días de duración"
                   variant="bordered"
                   radius="sm"

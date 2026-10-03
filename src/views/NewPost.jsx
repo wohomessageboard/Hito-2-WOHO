@@ -46,7 +46,6 @@ const NewPost = () => {
     country_id: '',
     city_id: '',
     description: '',
-    price: '',
     duration_days: ''
   });
 
@@ -267,34 +266,14 @@ const NewPost = () => {
               />
 
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                
-                <Input
-                  name="price"
-                  type="number"
-                  label="Precio (opcional)"
-                  startContent={
-                    <div className="pointer-events-none flex items-center font-bold">
-                      <span className="text-ws-ink/75 text-sm">$</span>
-                    </div>
-                  }
-                  placeholder="0.00"
-                  labelPlacement="inside"
-                  variant="bordered"
-                  radius="sm"
-                  size="lg"
-                  value={formData.price}
-                  onChange={handleChange}
-                  classNames={{ 
-                    inputWrapper: "ws-input-border",
-                    label: "font-bold text-ws-ink text-sm"
-                  }}
-                />
+              <div className="grid grid-cols-1 gap-4 mt-2">
                 
                 
                 <Input
                   name="duration_days"
                   type="number"
+                  min={1}
+                  max={365}
                   label="Días de duración del aviso"
                   placeholder="Ej: 15"
                   labelPlacement="inside"

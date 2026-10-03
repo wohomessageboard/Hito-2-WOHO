@@ -21,7 +21,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
       setNewCountry({ name: '', flag: '', image: '' });
     } catch (error) {
       console.error(error);
-      alert('Error al intentar guardar el país en la Base de Datos.');
+      alert(error?.response?.data?.error || 'Error al intentar guardar el país en la Base de Datos.');
     }
   };
 
@@ -61,7 +61,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
       onClose();
     } catch (error) {
       console.error(error);
-      alert('Error al actualizar el país.');
+      alert(error?.response?.data?.error || 'Error al actualizar el país.');
     }
   };
 

@@ -47,7 +47,7 @@ const MainLayout = () => {
             <Link as={RouterLink} to="/manifiesto" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard">Manifiesto</Link>
             <a href="#" className="underline underline-offset-4 hover:text-ws-mustard">Términos</a>
             <a href="#" className="underline underline-offset-4 hover:text-ws-mustard">Privacidad</a>
-            <a href="#" className="underline underline-offset-4 hover:text-ws-mustard">Contacto</a>
+            <Link as={RouterLink} to="/contacto" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard">Contacto</Link>
           </nav>
           <Stamp
             solid

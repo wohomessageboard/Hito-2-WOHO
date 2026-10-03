@@ -53,9 +53,10 @@ const TIPS = [
 
 const FAQ = [
   ['¿Tiene costo?', 'Crear la cuenta y usar WOHO es gratis.'],
-  ['¿Quién ve mi correo y mi teléfono?', 'Se muestran a las personas con sesión iniciada cuando pulsan «Contactar» en uno de tus anuncios. Puedes editar tus datos de contacto desde tu perfil.'],
+  ['¿Quién ve mi correo y mi teléfono?', 'Tu correo (y tu teléfono, si lo agregaste) se muestran a las personas con sesión iniciada cuando pulsan «Contactar» en uno de tus anuncios. Sin sesión no se ve nada de quien publica. Puedes editar tus datos desde tu perfil.'],
   ['¿Cuánto dura un anuncio?', 'Lo eliges tú al publicar, en días. Cuando vence, deja de aparecer en Explorar.'],
   ['¿Puedo editar o borrar mi anuncio?', 'Sí. En tu perfil, dentro de «Mis avisos», puedes editar o eliminar tus publicaciones.'],
+  ['¿Cómo aviso de un anuncio sospechoso?', 'Abre el anuncio y pulsa «Reportar». Llega al equipo de WOHO, que puede eliminarlo. Para otras dudas, usa la página de Contacto.'],
   ['¿Qué destinos hay?', 'Los de la sección Destinos. Allí entras a cada país, ves sus anuncios y puedes seguirlo.'],
 ];
 

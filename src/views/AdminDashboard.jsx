@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { Chip, Tabs, Tab } from '@heroui/react';
-import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText } from '../components/ui/icons';
+import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText, Mail } from '../components/ui/icons';
 import api from '../config/api';
 
 import AdminMetricsTab from '../components/admin/AdminMetricsTab';
@@ -11,6 +11,7 @@ import AdminCountriesTab from '../components/admin/AdminCountriesTab';
 import AdminCitiesTab from '../components/admin/AdminCitiesTab';
 import AdminPostsTab from '../components/admin/AdminPostsTab';
 import AdminCategoriesTab from '../components/admin/AdminCategoriesTab';
+import AdminInboxTab from '../components/admin/AdminInboxTab';
 
 const AdminDashboard = () => {
   const { isAuthenticated, currentUser } = useUser();
@@ -26,18 +27,21 @@ const AdminDashboard = () => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [inboxOpen, setInboxOpen] = useState(0);
 
   useEffect(() => {
     if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return;
 
     const fetchData = async () => {
       try {
-        const [usersRes, countriesRes, citiesRes, postsRes] = await Promise.all([
+        const [usersRes, countriesRes, citiesRes, postsRes, inboxRes] = await Promise.all([
           api.get('/admin/users').catch(() => ({ data: [] })),
           api.get('/countries').catch(() => ({ data: [] })),
           api.get('/cities').catch(() => ({ data: [] })),
-          api.get('/admin/posts').catch(() => ({ data: [] }))
+          api.get('/admin/posts').catch(() => ({ data: [] })),
+          api.get('/admin/inbox').catch(() => ({ data: { open_count: 0 } }))
         ]);
+        setInboxOpen(inboxRes.data.open_count || 0);
         setUsers(usersRes.data);
         setCountries(countriesRes.data);
         setCities(citiesRes.data);
@@ -96,6 +100,7 @@ const AdminDashboard = () => {
 
   const handleDeleteUser = async (userId) => {
     if (userId.toString() === currentUser.id?.toString()) return alert("No puedes borrarte a ti mismo.");
+    if (!window.confirm('¿Eliminar definitivamente esta cuenta, sus avisos y sus fotos? No se puede deshacer.')) return;
     setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
     await api.delete(`/admin/users/${userId}`).catch(err => console.log(err));
   };
@@ -108,6 +113,7 @@ const AdminDashboard = () => {
   };
 
   const handleDeletePost = async (postId) => {
+    if (!window.confirm('¿Eliminar definitivamente este aviso y sus fotos? No se puede deshacer.')) return;
     setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
     await api.delete(`/admin/posts/${postId}`).catch(err => console.log(err));
   };
@@ -144,6 +150,13 @@ const AdminDashboard = () => {
         }}
       >
         
+ <Tab
+          key="inbox"
+          title={<><Mail className="w-5 h-5"/> <span className="hidden sm:inline">Bandeja</span>{inboxOpen > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{inboxOpen}</span>}</>}
+        >
+          <AdminInboxTab onOpenCountChange={setInboxOpen} />
+        </Tab>
+
         <Tab 
           key="stats" 
           title={<><BarChart3 className="w-5 h-5"/> <span className="hidden sm:inline">Métricas</span></>}

@@ -55,6 +55,9 @@ const AppBreadcrumbs = () => {
             case 'destinos':
               title = "Destinos";
               break;
+            case 'contacto':
+              title = "Contacto";
+              break;
             case 'como-funciona':
               title = "Cómo funciona";
               break;

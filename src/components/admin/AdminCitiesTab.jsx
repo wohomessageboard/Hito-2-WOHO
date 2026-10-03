@@ -17,7 +17,7 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
       setNewCity({ country_id: '', name: '' });
     } catch (error) {
       console.error(error);
-      alert('Error guardando la ciudad en BD.');
+      alert(error?.response?.data?.error || 'Error guardando la ciudad en BD.');
     }
   };
 

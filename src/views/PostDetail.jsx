@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Button, Avatar } from '@heroui/react';
+import { Button, Avatar, useDisclosure } from '@heroui/react';
 import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle, Mail, Phone } from '../components/ui/icons';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import EmptyState from '../components/ui/EmptyState';
 import Stamp from '../components/ui/Stamp';
+import ReportDialog from '../components/ui/ReportDialog';
 
 const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
 
@@ -18,6 +19,8 @@ const PostDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showContact, setShowContact] = useState(false);
   const [shared, setShared] = useState(false);
+  const report = useDisclosure();
+  const [reportNotice, setReportNotice] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -211,16 +214,26 @@ const PostDetail = () => {
               <Button onPress={handleShare} radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<Share2 className="w-5 h-5" aria-hidden="true" />}>
                 {shared ? '¡Enlace copiado!' : 'Compartir'}
               </Button>
-              <Button radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<AlertCircle className="w-5 h-5" aria-hidden="true" />}>
-                Reportar
-              </Button>
+              {isMyPost ? null : isAuthenticated ? (
+                <Button onPress={report.onOpen} radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<AlertCircle className="w-5 h-5" aria-hidden="true" />}>
+                  Reportar
+                </Button>
+              ) : (
+                <Button as={Link} to="/login" radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<AlertCircle className="w-5 h-5" aria-hidden="true" />}>
+                  Inicia sesión para reportar
+                </Button>
+              )}
             </div>
-            <p role="status" className="sr-only">{shared ? 'Enlace copiado al portapapeles' : ''}</p>
+            <p role="status" className={reportNotice ? 'font-cuerpo text-sm font-bold bg-ws-citron rounded-[6px] p-3' : 'sr-only'}>
+              {reportNotice || (shared ? 'Enlace copiado al portapapeles' : '')}
+            </p>
           </div>
 
         </aside>
 
       </div>
+
+      <ReportDialog postId={post.id} isOpen={report.isOpen} onOpenChange={report.onOpenChange} onSent={setReportNotice} />
     </div>
   );
 };

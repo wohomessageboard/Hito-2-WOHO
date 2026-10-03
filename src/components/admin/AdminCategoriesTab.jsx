@@ -36,7 +36,7 @@ const AdminCategoriesTab = () => {
       setNewCatName('');
     } catch (error) {
       console.error('Error creando categoría', error);
-      alert('Error creando categoría en la BD.');
+      alert(error?.response?.data?.error || 'Error creando categoría en la BD.');
     } finally {
       setIsLoading(false);
       setIsSubmitting(false);
