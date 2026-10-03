@@ -230,7 +230,7 @@ const CountryFeed = () => {
             Nadie ha publicado anuncios que coincidan con estos filtros aquí. ¡Sé el primero en crear una publicación!
           </EmptyState>
         ) : (
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          <div className="grid md:grid-cols-2 gap-6 items-start">
             {filteredPosts.map(post => {
               const owner = post.owner || {
                 id: post.user_id,

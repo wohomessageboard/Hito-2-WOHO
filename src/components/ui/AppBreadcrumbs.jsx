@@ -82,7 +82,7 @@ const AppBreadcrumbs = () => {
           return (
             <BreadcrumbItem key={to} isCurrent={last}>
               {last ? (
-                <span className="bg-ws-mustard px-1.5">{title}</span>
+                <span className="bg-ws-paper-light px-1.5">{title}</span>
               ) : (
                 <RouterLink to={to} className="hover:underline underline-offset-4">
                   {title}

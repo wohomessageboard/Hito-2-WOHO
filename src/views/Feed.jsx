@@ -175,7 +175,7 @@ const Feed = () => {
           <div className="flex flex-col gap-6">
 
             {isAuthenticated && !isPersonalized && (
-              <div className="flex items-center gap-3 bg-ws-mustard/40 rounded-[8px] p-4">
+              <div className="flex items-center gap-3 bg-ws-paper-light rounded-[8px] p-4">
                 <Compass className="w-6 h-6 shrink-0" aria-hidden="true" />
                 <p className="font-cuerpo text-sm font-bold text-ws-ink">
                   Aún no sigues ningún destino, así que te mostramos lo más reciente de toda la comunidad.{' '}
@@ -188,7 +188,7 @@ const Feed = () => {
             )}
 
             {!isAuthenticated && (
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-ws-mustard/40 rounded-[8px] p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-ws-paper-light rounded-[8px] p-4">
                 <p className="font-cuerpo text-sm font-bold text-ws-ink flex-1">
                   Estás explorando como visitante. Con una cuenta puedes guardar anuncios, contactar a quien publica y seguir destinos.
                 </p>
@@ -198,7 +198,7 @@ const Feed = () => {
               </div>
             )}
 
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+            <div className="grid md:grid-cols-2 gap-6 items-start">
               {filteredPosts.map((post) => {
                 const owner = post.owner || {
                   id: post.user_id,

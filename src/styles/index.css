@@ -26,7 +26,7 @@
   .font-display em { font-style: italic; }
 
   /* Superficies del navegador que también llevan la marca. */
-  ::selection { background: var(--ws-mustard); color: var(--ws-ink); }
+  ::selection { background: var(--ws-ink); color: var(--ws-paper-light); }
   input, textarea { caret-color: var(--ws-tomato); }
   html { scrollbar-color: var(--ws-ink) var(--ws-paper-deep); }
 
@@ -121,7 +121,7 @@
 .ws-btn-ocean, .ws-btn-blue { background: var(--ws-ocean); color: var(--ws-paper-light); }
 .ws-btn-mustard, .ws-btn-sun { background: var(--ws-mustard); color: var(--ws-ink); }
 .ws-btn-ink { background: var(--ws-ink); color: var(--ws-paper-light); }
-.ws-btn-quiet { background: var(--ws-paper-deep); color: var(--ws-ink); }
+.ws-btn-quiet { background: var(--ws-paper-light); color: var(--ws-ink); }
 
 /* Acción secundaria / dentro de listas: relleno suave. */
 .ws-pill {
@@ -151,15 +151,15 @@
 .ws-divider { background: var(--ws-line); height: 1px; }
 
 .ws-chip-idle {
-  background: var(--ws-paper-deep);
+  background: var(--ws-paper-light);
   color: var(--ws-ink);
   border: 0;
   border-radius: 6px;
 }
-.ws-chip-idle:hover { background: color-mix(in srgb, var(--ws-mustard) 45%, var(--ws-paper-deep)); }
+.ws-chip-idle:hover { background: #fff; }
 .ws-chip-selected {
-  background: var(--ws-mustard);
-  color: var(--ws-ink);
+  background: var(--ws-ink);
+  color: var(--ws-paper-light);
   border: 0;
   border-radius: 6px;
 }

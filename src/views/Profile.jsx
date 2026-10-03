@@ -78,7 +78,7 @@ const Profile = () => {
     <div className="flex flex-col gap-10">
 
       {notice && (
-        <div role="status" className="ws-enter flex items-center gap-4 rounded-[8px] bg-ws-mustard px-5 py-3">
+        <div role="status" className="ws-enter flex items-center gap-4 rounded-[8px] bg-ws-paper-light px-5 py-3">
           <Stamp variant="oval" center="LISTO" rotate={-5} animate className="w-24 shrink-0 text-ws-tomato-deep" />
           <p className="font-cuerpo font-bold text-lg text-ws-ink flex-1">{notice}</p>
           <button type="button" onClick={() => setNotice('')} aria-label="Cerrar aviso" className="ws-pill ws-pill-soft min-h-11 min-w-11 px-3">Cerrar</button>
@@ -137,8 +137,8 @@ const Profile = () => {
             base: "w-full",
             tabList: "gap-2 p-0 pb-3 w-full rounded-none border-b border-ws-line bg-transparent",
             tab: "h-11 px-4",
-            cursor: "bg-ws-mustard rounded-[6px] shadow-none",
-            tabContent: "font-bold text-ws-ink group-data-[selected=true]:text-ws-ink"
+            cursor: "bg-ws-ink rounded-[6px] shadow-none",
+            tabContent: "font-bold text-ws-ink group-data-[selected=true]:text-ws-paper-light"
           }}
         >
           
@@ -151,7 +151,7 @@ const Profile = () => {
               </div>
             }
           >
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start w-full mt-4">
+            <div className="grid md:grid-cols-2 gap-6 items-start w-full mt-4">
               {isLoading ? (
                 <p role="status" className="ws-mono col-span-full">Cargando…</p>
               ) : myPosts.length === 0 ? (
@@ -189,7 +189,7 @@ const Profile = () => {
               </div>
             }
           >
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start w-full mt-4">
+            <div className="grid md:grid-cols-2 gap-6 items-start w-full mt-4">
               {isLoading ? (
                 <p role="status" className="ws-mono col-span-full">Cargando…</p>
               ) : savedPosts.length === 0 ? (

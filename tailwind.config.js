@@ -1,12 +1,12 @@
 import plugin from "tailwindcss/plugin";
 import { heroui } from "@heroui/react";
 
-// Paleta "editorial de viaje vintage": papel crema + tintas planas de imprenta.
+// Paleta "editorial de viaje retro": fondo de color vivo, superficies crema y tintas planas.
 // Una sola fuente de verdad: se expone como clases Tailwind (bg-ws-tomato) y
 // como variables CSS (--ws-tomato) para los tokens de src/styles/index.css.
 const ws = {
-  paper: '#F3EBDA',      // fondo (con textura de grano encima)
-  'paper-light': '#FBF6EA', // superficies: tickets, tarjetas, campos
+  paper: '#FFD23F',      // fondo de página: amarillo vivo (cámbialo aquí para probar otro color)
+  'paper-light': '#FFF9EA', // superficies: tickets, tarjetas, campos (crema)
   'paper-deep': '#E6DAC1',  // separadores y fondos hundidos
   ink: '#18130F',        // tinta de texto y filetes
   tomato: '#EE4B2B',     // rojo imprenta (texto encima: tinta)

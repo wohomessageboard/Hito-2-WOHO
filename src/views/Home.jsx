@@ -130,7 +130,7 @@ const Home = () => {
       </section>
 
       {/* CTA final */}
-      <section className="ws-band ws-band-mustard ws-bleed py-14 md:py-20">
+      <section className="ws-band ws-band-teal ws-bleed py-14 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
           <div className="space-y-4">
             <h2 className="font-display text-5xl md:text-7xl">¿Listo para <em>sumarte?</em></h2>
@@ -145,7 +145,7 @@ const Home = () => {
           >
             Únete a la aventura
           </Button>
-          <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={14} className="hidden lg:block absolute -right-2 -bottom-24 w-36 text-ws-tomato-deep" />
+          <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={14} className="hidden lg:block absolute -right-2 -bottom-24 w-36 text-ws-plum" />
         </div>
       </section>
 

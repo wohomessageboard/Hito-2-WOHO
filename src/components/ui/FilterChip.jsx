@@ -4,8 +4,8 @@ import { Chip } from '@heroui/react';
 // Selected-state fill + matching text/icon color. Add a key here if a
 // filter group ever needs a third accent color.
 const SELECTED_STYLES = {
-  purple: { fill: 'ws-chip-selected', text: '', icon: 'text-ws-ink' },
-  orange: { fill: 'ws-chip-selected', text: '', icon: 'text-ws-ink' },
+  purple: { fill: 'ws-chip-selected', text: '', icon: 'text-ws-paper-light' },
+  orange: { fill: 'ws-chip-selected', text: '', icon: 'text-ws-paper-light' },
 };
 
 /**

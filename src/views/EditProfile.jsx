@@ -215,7 +215,7 @@ const EditProfile = () => {
 
             
             <div className="pt-4 flex gap-4">
-              <Button as="button" type="button" onClick={() => navigate('/profile')} variant="flat" radius="sm" className="ws-btn ws-btn-quiet w-1/3">
+              <Button as="button" type="button" onClick={() => navigate('/profile')} variant="flat" radius="sm" className="ws-pill ws-pill-line w-1/3 h-12">
                 Cancelar
               </Button>
               <Button type="submit" isLoading={isLoading} variant="solid" radius="sm" className="ws-btn ws-btn-tomato w-2/3">

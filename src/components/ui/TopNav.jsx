@@ -95,7 +95,7 @@ const TopNav = () => {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button as={RouterLink} to="/register" radius="sm" className="ws-btn ws-btn-quiet h-10 px-4">
+              <Button as={RouterLink} to="/register" radius="sm" className="ws-pill ws-pill-line h-10 px-4">
                 Regístrate
               </Button>
             </NavbarItem>
@@ -137,7 +137,7 @@ const TopNav = () => {
               <Button as={RouterLink} to="/new-post" radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base" onPress={() => setIsMenuOpen(false)}>
                 Crear publicación
               </Button>
-              <Button as={RouterLink} to="/profile" radius="sm" fullWidth className="ws-btn ws-btn-quiet h-12 text-base" onPress={() => setIsMenuOpen(false)}>
+              <Button as={RouterLink} to="/profile" radius="sm" fullWidth className="ws-pill ws-pill-line h-12 text-base" onPress={() => setIsMenuOpen(false)}>
                 Mi perfil
               </Button>
               <Button radius="sm" fullWidth className="ws-pill h-12 text-base text-ws-tomato-deep bg-transparent" onPress={() => { logout(); setIsMenuOpen(false); }}>
@@ -146,7 +146,7 @@ const TopNav = () => {
             </>
           ) : (
             <>
-              <Button as={RouterLink} to="/register" radius="sm" fullWidth className="ws-btn ws-btn-quiet h-12 text-base" onPress={() => setIsMenuOpen(false)}>
+              <Button as={RouterLink} to="/register" radius="sm" fullWidth className="ws-pill ws-pill-line h-12 text-base" onPress={() => setIsMenuOpen(false)}>
                 Regístrate
               </Button>
               <Button as={RouterLink} to="/login" radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base" onPress={() => setIsMenuOpen(false)}>
