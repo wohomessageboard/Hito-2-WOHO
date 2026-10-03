@@ -6,7 +6,8 @@ import SurfaceCard from '../components/ui/SurfaceCard';
 import { Camera, Instagram, User as UserIcon, Phone, Facebook } from '../components/ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';  
-import api from '../config/api';                   
+import api from '../config/api';
+import { compressImage } from '../utils/compressImage';                   
 
 const EditProfile = () => {
 
@@ -46,8 +47,9 @@ const EditProfile = () => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];  
+  const handleImageChange = async (e) => {
+    const picked = e.target.files[0];
+    const file = picked ? await compressImage(picked) : null;
     if (file) {
       setFileToUpload(file);                           
       setAvatarPreview(URL.createObjectURL(file));     

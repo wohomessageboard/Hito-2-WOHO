@@ -5,6 +5,7 @@ import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divi
 import SurfaceCard from '../components/ui/SurfaceCard';
 import { MapPin, Target, Save, Image as ImageIcon, ArrowLeft } from '../components/ui/icons';
 import api from '../config/api';
+import { compressImages } from '../utils/compressImage';
 
 const EditPost = () => {
   const { id } = useParams();
@@ -89,16 +90,18 @@ const EditPost = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 5) {
+  const handleFileChange = async (e) => {
+    const picked = Array.from(e.target.files);
+    if (picked.length > 5) {
       alert("Solo puedes subir un máximo de 5 imágenes.");
       return;
     }
+    // Se reducen antes de subir: las fotos del celular pesan varios MB.
+    const files = await compressImages(picked);
     setSelectedFiles(files);
-    
-    const newPreviews = files.map(file => URL.createObjectURL(file));
-    setPreviews(newPreviews);
+
+    previews.forEach(url => URL.revokeObjectURL(url));
+    setPreviews(files.map(file => URL.createObjectURL(file)));
   };
 
   const handleSubmit = async (e) => {
