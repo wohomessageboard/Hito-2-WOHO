@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { CardBody, CardHeader, Button, Input } from '@heroui/react';
+import { CardBody, CardHeader, Button, Input, Checkbox } from '@heroui/react';
 
 import { Mail, Lock, User } from '../components/ui/icons';
 
@@ -21,13 +21,18 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+    if (!acceptedTerms) {
+      setErrorMsg('Para crear tu cuenta debes aceptar los Términos y Condiciones y la Política de Privacidad.');
+      return;
+    }
     setIsLoading(true);
     try {
-      const res = await api.post('/auth/register', { name, email, password });
+      const res = await api.post('/auth/register', { name, email, password, accepted_terms: acceptedTerms });
 
       const { token, user } = res.data;
       if (token && user) {
@@ -114,6 +119,18 @@ const Register = () => {
             />
 
             
+            <Checkbox
+              isSelected={acceptedTerms}
+              onValueChange={setAcceptedTerms}
+              radius="sm"
+              classNames={{ label: "font-cuerpo text-sm leading-relaxed text-ws-ink" }}
+            >
+              Acepto los{' '}
+              <Link to="/terminos" target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-4" onClick={(e) => e.stopPropagation()}>Términos y Condiciones</Link>{' '}
+              y la{' '}
+              <Link to="/privacidad" target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-4" onClick={(e) => e.stopPropagation()}>Política de Privacidad</Link>
+            </Checkbox>
+
             {errorMsg && (
               <div role="alert" className="bg-ws-tomato/15 text-ws-ink rounded-[6px] p-3 text-sm font-bold mt-2">
                 <p>{errorMsg}</p>

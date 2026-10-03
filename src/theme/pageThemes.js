@@ -19,6 +19,7 @@ const THEMES = [
   [(p) => p.startsWith('/manifiesto'), PINK],
   [(p) => p.startsWith('/como-funciona'), ORANGE],
   [(p) => p.startsWith('/contacto'), SKY],
+  [(p) => p.startsWith('/terminos') || p.startsWith('/privacidad'), CREAM],
   [(p) => p.startsWith('/login') || p.startsWith('/register') || p.startsWith('/olvide-') || p.startsWith('/restablecer'), MINT],
   [(p) => p.startsWith('/profile') || p.startsWith('/edit-') || p.startsWith('/new-post'), LIME],
   [(p) => p.startsWith('/admin'), CREAM],

@@ -21,6 +21,8 @@ import Manifiesto from './views/Manifiesto';
 import ComoFunciona from './views/ComoFunciona';
 import Contacto from './views/Contacto';
 import ForgotPassword from './views/ForgotPassword';
+import Terminos from './views/Terminos';
+import Privacidad from './views/Privacidad';
 import ResetPassword from './views/ResetPassword';
 import AdminDashboard from './views/AdminDashboard';
 
@@ -53,6 +55,8 @@ function App() {
               <Route path="/manifiesto" element={<Manifiesto />} />
               <Route path="/como-funciona" element={<ComoFunciona />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/terminos" element={<Terminos />} />
+              <Route path="/privacidad" element={<Privacidad />} />
               <Route path="/olvide-mi-contrasena" element={<ForgotPassword />} />
               <Route path="/restablecer" element={<ResetPassword />} />
               

@@ -61,6 +61,12 @@ const AppBreadcrumbs = () => {
             case 'restablecer':
               title = "Contraseña nueva";
               break;
+            case 'terminos':
+              title = "Términos y Condiciones";
+              break;
+            case 'privacidad':
+              title = "Política de Privacidad";
+              break;
             case 'contacto':
               title = "Contacto";
               break;
