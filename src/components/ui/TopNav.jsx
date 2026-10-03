@@ -26,7 +26,7 @@ const TopNav = () => {
       maxWidth="xl"
       height="4.25rem"
       position="sticky"
-      className="top-0 z-50 bg-ws-paper-light border-b-2 border-ws-ink"
+      className="top-0 z-50 bg-ws-paper-light border-b border-ws-line"
       classNames={{
         base: "bg-ws-paper-light",
         wrapper: "px-4 sm:px-6",
@@ -62,7 +62,7 @@ const TopNav = () => {
                 as={RouterLink}
                 to={to}
                 aria-current={active ? 'page' : undefined}
-                className={`px-3 py-1.5 text-sm font-bold text-ws-ink rounded-[2px] border-[1.5px] transition-colors ${active ? 'bg-ws-mustard border-ws-ink' : 'border-transparent hover:border-ws-ink'}`}
+                className={`px-3 py-1.5 text-sm font-bold text-ws-ink rounded-[6px] transition-colors ${active ? 'bg-ws-mustard' : 'hover:bg-ws-paper-deep'}`}
               >
                 {label}
               </Link>
@@ -88,7 +88,7 @@ const TopNav = () => {
             </NavbarItem>
             <NavbarItem>
               <RouterLink to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Ir a mi perfil">
-                <Avatar radius="sm" size="sm" src={currentUser?.avatar} className="cursor-pointer border-[1.5px] border-ws-ink" />
+                <Avatar radius="sm" size="sm" src={currentUser?.avatar} className="cursor-pointer" />
               </RouterLink>
             </NavbarItem>
           </>
@@ -118,7 +118,7 @@ const TopNav = () => {
                 to={to}
                 aria-current={active ? 'page' : undefined}
                 onPress={() => setIsMenuOpen(false)}
-                className={`w-full font-display text-4xl text-ws-ink px-3 py-1 border-[1.5px] rounded-[2px] ${active ? 'bg-ws-mustard border-ws-ink' : 'border-transparent'}`}
+                className={`w-full font-display text-4xl text-ws-ink px-3 py-1 rounded-[6px] ${active ? 'bg-ws-mustard' : ''}`}
               >
                 {label}
               </Link>
@@ -126,7 +126,7 @@ const TopNav = () => {
           );
         })}
 
-        <NavbarMenuItem className="w-full flex flex-col mt-4 gap-3 border-t-2 border-ws-ink pt-6">
+        <NavbarMenuItem className="w-full flex flex-col mt-4 gap-3 border-t border-ws-line pt-6">
           {isAuthenticated ? (
             <>
               {isAdmin && (

@@ -130,10 +130,10 @@ const EditProfile = () => {
                 <Avatar 
                   src={avatarPreview} 
                   name={currentUser.name} 
-                  className="w-24 h-24 border-2 border-ws-ink bg-ws-paper-deep text-3xl font-bold" 
+                  className="w-24 h-24 bg-ws-paper-deep text-3xl font-bold" 
                 />
                 
-                <label className="absolute inset-0 bg-ws-ink/60 text-ws-paper-light rounded-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                <label className="absolute inset-0 bg-ws-ink/60 text-ws-paper-light rounded-[6px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                   <Camera className="w-6 h-6 mb-1" />
                   <span className="text-[10px] font-bold">Cambiar</span>
                   

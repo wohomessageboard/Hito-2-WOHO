@@ -68,7 +68,7 @@ const Home = () => {
         </div>
 
         <div className="lg:col-span-5 relative px-3 sm:px-8 lg:px-0 py-6">
-          <div aria-hidden="true" className="absolute inset-x-0 inset-y-0 sm:inset-x-4 bg-ws-teal rotate-[3deg] border-[1.5px] border-ws-ink rounded-[2px]" />
+          <div aria-hidden="true" className="absolute inset-x-0 inset-y-0 sm:inset-x-4 bg-ws-teal rotate-[3deg] rounded-[10px]" />
           <BoardingPass className="relative max-w-md mx-auto" />
         </div>
       </section>
@@ -106,9 +106,9 @@ const Home = () => {
           </p>
         </div>
 
-        <ul className="border-t-2 border-ws-ink">
+        <ul className="border-t border-ws-ink/25">
           {DEPARTURES.map(({ code, name, Icon, text, hover }) => (
-            <li key={code} className="border-b-2 border-ws-ink">
+            <li key={code} className="border-b border-ws-ink/25">
               <Link
                 to="/feed"
                 className={`group grid grid-cols-[auto_1fr_auto] md:grid-cols-[6rem_minmax(0,1fr)_minmax(0,1.1fr)_auto] items-center gap-x-5 gap-y-2 py-6 md:py-8 px-3 md:px-5 transition-colors ${hover}`}
@@ -119,7 +119,7 @@ const Home = () => {
                 </span>
                 <span className="font-display text-4xl md:text-6xl">{name}</span>
                 <span className="col-span-3 md:col-span-1 md:col-start-3 row-start-2 md:row-start-1 font-cuerpo text-base md:text-lg leading-relaxed text-ws-ink/85">{text}</span>
-                <span className="col-start-3 md:col-start-4 row-start-1 grid place-items-center w-11 h-11 border-[1.5px] border-ws-ink rounded-[2px] bg-ws-paper-light group-hover:bg-ws-ink group-hover:text-ws-paper-light transition-colors" aria-hidden="true">
+                <span className="col-start-3 md:col-start-4 row-start-1 grid place-items-center w-11 h-11 rounded-[6px] bg-ws-paper-deep group-hover:bg-ws-ink group-hover:text-ws-paper-light transition-colors" aria-hidden="true">
                   <ArrowRight className="w-6 h-6" />
                 </span>
                 <span className="sr-only">Ver anuncios de {name}</span>

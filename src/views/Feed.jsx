@@ -131,7 +131,7 @@ const Feed = () => {
           </div>
         </div>
 
-        <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap gap-2 py-4 border-y-[1.5px] border-ws-ink">
+        <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap gap-2 py-4 border-y border-ws-line">
           <FilterChip
             label="Todos"
             icon={Grid}
@@ -175,7 +175,7 @@ const Feed = () => {
           <div className="flex flex-col gap-6">
 
             {isAuthenticated && !isPersonalized && (
-              <div className="flex items-center gap-3 bg-ws-mustard/40 border-[1.5px] border-ws-ink rounded-[2px] p-4">
+              <div className="flex items-center gap-3 bg-ws-mustard/40 rounded-[8px] p-4">
                 <Compass className="w-6 h-6 shrink-0" aria-hidden="true" />
                 <p className="font-cuerpo text-sm font-bold text-ws-ink">
                   Aún no sigues ningún destino, así que te mostramos lo más reciente de toda la comunidad.{' '}
@@ -188,7 +188,7 @@ const Feed = () => {
             )}
 
             {!isAuthenticated && (
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-ws-mustard/40 border-[1.5px] border-ws-ink rounded-[2px] p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-ws-mustard/40 rounded-[8px] p-4">
                 <p className="font-cuerpo text-sm font-bold text-ws-ink flex-1">
                   Estás explorando como visitante. Con una cuenta puedes guardar anuncios, contactar a quien publica y seguir destinos.
                 </p>

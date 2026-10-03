@@ -69,32 +69,31 @@
 }
 
 /* ---------- Superficies ---------- */
+/* El peso lo da el relleno, no el contorno: filete fino y esquinas amables. */
 .ws-surface {
   background: var(--ws-paper-light);
-  border: 1.5px solid var(--ws-ink);
-  border-radius: 4px;
+  border: 1px solid var(--ws-line);
+  border-radius: 8px;
   box-shadow: none;
 }
-/* Tarjetas de formulario y acceso: doble filete, como marco de impresión. */
+/* Tarjetas de formulario y acceso: un poco de profundidad suave, sin marco. */
 .ws-surface-elevated {
   background: var(--ws-paper-light);
-  border: 2px solid var(--ws-ink);
-  border-radius: 4px;
-  box-shadow: none;
-  outline: 1.5px solid var(--ws-ink);
-  outline-offset: 4px;
+  border: 1px solid var(--ws-line);
+  border-radius: 10px;
+  box-shadow: 0 1px 0 rgb(24 19 15 / 0.05), 0 18px 40px -20px rgb(24 19 15 / 0.28);
 }
 .ws-surface-hover { transition: background-color 0.15s ease; }
 .ws-surface-hover:hover {
-  background: color-mix(in srgb, var(--ws-mustard) 24%, var(--ws-paper-light));
+  background: color-mix(in srgb, var(--ws-mustard) 22%, var(--ws-paper-light));
 }
 
 /* Ticket: cuerpo + talón separados por perforación, con muescas laterales. */
 .ws-ticket {
   position: relative;
   background: var(--ws-paper-light);
-  border: 1.5px solid var(--ws-ink);
-  border-radius: 4px;
+  border: 1px solid var(--ws-line);
+  border-radius: 8px;
   --notch-y: calc(100% - var(--ws-stub, 4.25rem));
   -webkit-mask:
     radial-gradient(circle 9px at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
@@ -103,60 +102,66 @@
     radial-gradient(circle 9px at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
     radial-gradient(circle 9px at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
 }
-.ws-ticket-stub { border-top: 2px dashed var(--ws-ink); }
+.ws-ticket-stub { border-top: 1.5px dashed rgb(24 19 15 / 0.32); }
 
 /* ---------- Botones ---------- */
-/* Acción prioritaria: rectángulo de tinta plana con filete. */
+/* Acción prioritaria: relleno de color, sin contorno. El contraste es el color. */
 .ws-btn {
-  border-radius: 2px;
-  border: 2px solid var(--ws-ink);
+  border-radius: 6px;
+  border: 0;
   font-weight: 700;
   letter-spacing: 0.01em;
-  transition: transform 0.12s ease, background-color 0.12s ease, color 0.12s ease;
+  transition: transform 0.12s ease, background-color 0.12s ease, filter 0.12s ease;
 }
-.ws-btn:hover { transform: translateY(-2px); }
-.ws-btn:active { transform: translateY(1px); }
-.ws-btn[disabled], .ws-btn[data-disabled="true"] { opacity: 0.5; transform: none; }
+.ws-btn:hover { transform: translateY(-1px); filter: brightness(0.94); }
+.ws-btn:active { transform: translateY(1px); filter: brightness(0.9); }
+.ws-btn[disabled], .ws-btn[data-disabled="true"] { opacity: 0.5; transform: none; filter: none; }
 .ws-btn-tomato, .ws-btn-coral { background: var(--ws-tomato); color: var(--ws-ink); }
 .ws-btn-plum, .ws-btn-purple { background: var(--ws-plum); color: var(--ws-paper-light); }
 .ws-btn-ocean, .ws-btn-blue { background: var(--ws-ocean); color: var(--ws-paper-light); }
 .ws-btn-mustard, .ws-btn-sun { background: var(--ws-mustard); color: var(--ws-ink); }
-.ws-btn-ink { background: var(--ws-ink); color: var(--ws-paper-light); border-color: var(--ws-ink); }
-.ws-btn-quiet { background: var(--ws-paper-light); color: var(--ws-ink); }
+.ws-btn-ink { background: var(--ws-ink); color: var(--ws-paper-light); }
+.ws-btn-quiet { background: var(--ws-paper-deep); color: var(--ws-ink); }
 
-/* Acción secundaria / dentro de listas: rectángulo plano. */
+/* Acción secundaria / dentro de listas: relleno suave. */
 .ws-pill {
-  border-radius: 2px;
+  border-radius: 6px;
   font-weight: 700;
 }
 .ws-pill-ink { background: var(--ws-ink); color: var(--ws-paper-light); }
 .ws-pill-ink:hover { background: #3a3128; }
-.ws-pill-soft { background: var(--ws-paper-deep); color: var(--ws-ink); }
-.ws-pill-soft:hover { background: color-mix(in srgb, var(--ws-mustard) 55%, var(--ws-paper-deep)); }
-.ws-pill-line { background: var(--ws-paper-light); color: var(--ws-ink); border: 1.5px solid var(--ws-ink); }
-.ws-pill-line:hover { background: color-mix(in srgb, var(--ws-mustard) 35%, var(--ws-paper-light)); }
+.ws-pill-soft { background: rgb(24 19 15 / 0.07); color: var(--ws-ink); }
+.ws-pill-soft:hover { background: rgb(24 19 15 / 0.13); }
+.ws-pill-line { background: var(--ws-paper-deep); color: var(--ws-ink); }
+.ws-pill-line:hover { background: color-mix(in srgb, var(--ws-mustard) 55%, var(--ws-paper-deep)); }
 
 /* ---------- Entradas, divisores y chips ---------- */
 .ws-input-border {
-  background: var(--ws-paper-light);
-  border: 1.5px solid var(--ws-ink);
-  border-radius: 2px;
+  background: #FFFDF7;
+  border: 1px solid var(--ws-line-strong);
+  border-radius: 6px;
   box-shadow: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
 }
-.ws-divider { background: var(--ws-ink); height: 1.5px; }
+.ws-input-border:hover { border-color: rgb(24 19 15 / 0.55); }
+.ws-input-border:focus-within {
+  border-color: var(--ws-ocean);
+  box-shadow: 0 0 0 1px var(--ws-ocean);
+}
+.ws-divider { background: var(--ws-line); height: 1px; }
 
 .ws-chip-idle {
-  background: var(--ws-paper-light);
+  background: var(--ws-paper-deep);
   color: var(--ws-ink);
-  border: 1.5px solid var(--ws-ink);
-  border-radius: 2px;
+  border: 0;
+  border-radius: 6px;
 }
-.ws-chip-idle:hover { background: color-mix(in srgb, var(--ws-mustard) 35%, var(--ws-paper-light)); }
+.ws-chip-idle:hover { background: color-mix(in srgb, var(--ws-mustard) 45%, var(--ws-paper-deep)); }
 .ws-chip-selected {
   background: var(--ws-mustard);
   color: var(--ws-ink);
-  border: 1.5px solid var(--ws-ink);
-  border-radius: 2px;
+  border: 0;
+  border-radius: 6px;
 }
 
 /* Etiqueta de equipaje: extremo biselado y ojal. Va solo con relleno plano. */
@@ -196,8 +201,8 @@
   text-transform: uppercase;
 }
 
-/* Fotos: filete de tinta y un leve virado cálido para que convivan con la paleta. */
-.ws-photo { position: relative; overflow: hidden; border: 1.5px solid var(--ws-ink); border-radius: 2px; background: var(--ws-paper-deep); }
+/* Fotos: sin marco y con un leve virado cálido para que convivan con la paleta. */
+.ws-photo { position: relative; overflow: hidden; border-radius: 6px; background: var(--ws-paper-deep); }
 .ws-photo img { filter: sepia(0.14) saturate(1.08) contrast(1.03); }
 
 /* ---------- Sellos ---------- */

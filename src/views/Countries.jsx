@@ -64,7 +64,7 @@ const Countries = () => {
                 />
                 <h2 className="sr-only">{country.name}</h2>
               </span>
-              <span className="ws-mono flex items-center justify-between border-t-[1.5px] border-ws-ink pt-3">
+              <span className="ws-mono flex items-center justify-between border-t border-ws-line pt-3">
                 Ver anuncios
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </span>

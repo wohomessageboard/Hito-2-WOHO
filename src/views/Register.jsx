@@ -115,7 +115,7 @@ const Register = () => {
 
             
             {errorMsg && (
-              <div role="alert" className="bg-ws-tomato/15 border-[1.5px] border-ws-ink text-ws-ink rounded-[2px] p-3 text-sm font-bold mt-2">
+              <div role="alert" className="bg-ws-tomato/15 text-ws-ink rounded-[6px] p-3 text-sm font-bold mt-2">
                 <p>{errorMsg}</p>
               </div>
             )}

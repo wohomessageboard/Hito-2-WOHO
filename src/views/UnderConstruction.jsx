@@ -22,7 +22,7 @@ const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en
       </p>
 
       {id && (
-        <p className="ws-mono bg-ws-ink text-ws-paper-light px-3 py-1.5 rounded-[2px]">
+        <p className="ws-mono bg-ws-ink text-ws-paper-light px-3 py-1.5 rounded-[6px]">
           Recurso ID: {id} en espera
         </p>
       )}

@@ -320,7 +320,7 @@ const NewPost = () => {
                 />
                 <label 
                   htmlFor="images-upload"
-                  className="border-2 border-ws-ink border-dashed rounded-[2px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
+                  className="border-2 border-ws-ink/30 border-dashed rounded-[8px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
                   <span className="font-bold font-cuerpo text-black">Añadir fotos (máx. 5)</span>
@@ -341,7 +341,7 @@ const NewPost = () => {
                             setSelectedFiles(newFiles);
                             setPreviews(newPrevs);
                           }}
-                          className="absolute top-0 right-0 bg-ws-tomato text-ws-ink w-6 h-6 z-10 flex items-center justify-center text-xs font-bold border-l-[1.5px] border-b-[1.5px] border-ws-ink"
+                          className="absolute top-0 right-0 bg-ws-tomato text-ws-ink w-6 h-6 z-10 flex items-center justify-center text-xs font-bold"
                         >
                           X
                         </button>
@@ -354,7 +354,7 @@ const NewPost = () => {
 
 
             {errorMsg && (
-              <div role="alert" className="bg-ws-tomato/15 border-[1.5px] border-ws-ink text-ws-ink rounded-[2px] p-3 text-sm font-bold">
+              <div role="alert" className="bg-ws-tomato/15 text-ws-ink rounded-[6px] p-3 text-sm font-bold">
                 <p>{errorMsg}</p>
               </div>
             )}

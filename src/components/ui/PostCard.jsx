@@ -58,7 +58,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             <span className="text-2xl" aria-hidden="true">{post.flag}</span>
             <h5 className="ws-mono truncate">{post.country}, {post.city}</h5>
           </div>
-          <span className={`ws-mono px-2 py-1 border-[1.5px] border-ws-ink rounded-[2px] ${tone}`}>
+          <span className={`ws-mono px-2 py-1 rounded-[4px] ${tone}`}>
             {days === 0 ? '¡Expira hoy!' : `Expira en ${days} días`}
           </span>
         </header>
@@ -71,9 +71,9 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
       <header className="flex items-start justify-between gap-3 px-4 pt-4">
         <div className="flex gap-3 min-w-0">
           {isPublicFeed ? (
-            <Avatar size="sm" radius="sm" className="border-[1.5px] border-dashed border-ws-ink bg-ws-paper-deep" />
+            <Avatar size="sm" radius="sm" className="bg-ws-paper-deep" />
           ) : (
-            <Avatar src={owner?.avatar} size="sm" radius="sm" className="border-[1.5px] border-ws-ink bg-ws-paper-light" />
+            <Avatar src={owner?.avatar} size="sm" radius="sm" className="bg-ws-paper-deep" />
           )}
           <div className="flex flex-col gap-1 items-start justify-center min-w-0">
             <h4 className="text-sm font-bold leading-none text-ws-ink flex items-center gap-1 truncate">
@@ -95,7 +95,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               isIconOnly
               size="sm"
               radius="sm"
-              className={`min-w-11 min-h-11 border-[1.5px] border-ws-ink ${post.is_pinned ? 'bg-ws-mustard' : 'bg-ws-paper-light'}`}
+              className={`min-w-11 min-h-11 ${post.is_pinned ? 'bg-ws-mustard' : 'bg-ws-paper-deep'}`}
               title={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
               aria-label={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
               onClick={async (e) => {
@@ -119,7 +119,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               isIconOnly
               size="sm"
               radius="sm"
-              className="min-w-11 min-h-11 border-[1.5px] border-ws-ink bg-ws-tomato"
+              className="min-w-11 min-h-11 bg-ws-tomato"
               title="Eliminar como administrador"
               aria-label="Eliminar como administrador"
               onClick={handleDelete}
@@ -171,7 +171,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             className="w-full h-full object-cover"
           />
           {displayImages.length > 1 && (
-            <div className="ws-mono absolute bottom-1.5 right-1.5 z-10 bg-ws-ink text-ws-paper-light px-2 py-1 rounded-[2px]">
+            <div className="ws-mono absolute bottom-1.5 right-1.5 z-10 bg-ws-ink text-ws-paper-light px-2 py-1 rounded-[4px]">
               +{displayImages.length - 1} fotos
             </div>
           )}
@@ -191,7 +191,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           <Button as={Link} to={`/edit-post/${post.id}`} radius="sm" size="sm" className="ws-pill ws-pill-line w-1/2 min-h-11">
             <Pencil className="w-5 h-5 mr-1" /> Editar
           </Button>
-          <Button radius="sm" size="sm" className="ws-pill w-1/2 min-h-11 bg-ws-tomato text-ws-ink border-[1.5px] border-ws-ink" onClick={handleDelete}>
+          <Button radius="sm" size="sm" className="ws-pill w-1/2 min-h-11 bg-ws-tomato text-ws-ink" onClick={handleDelete}>
             <Trash2 className="w-5 h-5 mr-1" /> Eliminar
           </Button>
         </footer>
@@ -223,7 +223,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               radius="sm"
               size="sm"
               isIconOnly
-              className="ws-pill min-h-11 min-w-11 bg-ws-tomato text-ws-ink border-[1.5px] border-ws-ink"
+              className="ws-pill min-h-11 min-w-11 bg-ws-tomato text-ws-ink"
               title="Eliminar mi aviso"
               aria-label="Eliminar mi aviso"
             >

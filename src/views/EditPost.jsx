@@ -313,7 +313,7 @@ const EditPost = () => {
                 <input type="file" id="images-upload" multiple accept="image/*" className="hidden" onChange={handleFileChange} />
                 <label 
                   htmlFor="images-upload"
-                  className="border-2 border-ws-ink border-dashed rounded-[2px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
+                  className="border-2 border-ws-ink/30 border-dashed rounded-[8px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
                   <span className="font-bold font-cuerpo text-black">Cambiar fotos (máx. 5)</span>

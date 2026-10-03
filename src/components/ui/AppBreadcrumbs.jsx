@@ -11,7 +11,7 @@ const AppBreadcrumbs = () => {
   }
 
   return (
-    <div className="mb-6 pb-3 border-b-[1.5px] border-ws-ink">
+    <div className="mb-6 pb-3 border-b border-ws-line">
       <Breadcrumbs
         size="sm"
         variant="light"

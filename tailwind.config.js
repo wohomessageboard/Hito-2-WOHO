@@ -17,6 +17,8 @@ const ws = {
   plum: '#66023C',       // vino (texto encima: papel)
   olive: '#6B7420',      // verde oliva (texto sobre papel)
   citron: '#CAD183',     // verde cidra, fondos suaves
+  line: 'rgb(24 19 15 / 0.16)',        // filete fino: separa sin pesar
+  'line-strong': 'rgb(24 19 15 / 0.34)', // borde de campos y controles
 };
 
 export default {
@@ -53,10 +55,10 @@ export default {
     }),
     heroui({
       layout: {
-        radiusMedium: '4px',
-        radiusLarge: '6px',
-        radiusSmall: '2px',
-        borderWidth: { small: '1.5px', medium: '2px', large: '3px' },
+        radiusMedium: '6px',
+        radiusLarge: '8px',
+        radiusSmall: '4px',
+        borderWidth: { small: '1px', medium: '1.5px', large: '2px' },
       },
       themes: {
         light: {

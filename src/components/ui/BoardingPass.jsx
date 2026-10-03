@@ -13,7 +13,7 @@ const BARS = [3,1,2,1,4,1,1,3,2,1,3,1,2,4,1,2,1,1,3,2,1,4,1,2,3,1,1,2,1,3,4,1,2,
 const BoardingPass = ({ className = '' }) => (
   <div aria-hidden="true" className={`relative ${className}`}>
     <div className="ws-ticket overflow-hidden rotate-[-2deg]" style={{ '--ws-stub': '5.5rem' }}>
-      <div className="flex items-center justify-between bg-ws-tomato text-ws-ink px-5 py-2.5 border-b-[1.5px] border-ws-ink">
+      <div className="flex items-center justify-between bg-ws-tomato text-ws-ink px-5 py-2.5">
         <span className="ws-mono font-medium">Working Holiday Pass</span>
         <span className="ws-mono">N.º 0001</span>
       </div>
@@ -31,7 +31,7 @@ const BoardingPass = ({ className = '' }) => (
           </div>
         </div>
 
-        <dl className="grid grid-cols-3 gap-3 border-t-[1.5px] border-ws-ink pt-4">
+        <dl className="grid grid-cols-3 gap-3 border-t border-ws-line pt-4">
           {[['Pasajero', 'Tú'], ['Visa', 'Working Holiday'], ['Puerta', 'Comunidad']].map(([k, v]) => (
             <div key={k}>
               <dt className="ws-mono text-ws-ink/70">{k}</dt>

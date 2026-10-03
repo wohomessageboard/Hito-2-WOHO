@@ -101,11 +101,11 @@ const PostDetail = () => {
           <article className="ws-surface p-6 md:p-10 flex flex-col gap-6">
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`ws-tag ${TAG_BY_TYPE[type] || 'ws-tag-ink'}`}>{type}</span>
-              <span className="ws-mono flex items-center gap-1.5 border-[1.5px] border-ws-ink px-2 py-1 rounded-[2px] bg-ws-paper-light">
+              <span className="ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] bg-ws-paper-deep">
                 <MapPin className="w-4 h-4" aria-hidden="true" /> {country}, {city} <span aria-hidden="true">{post.flag}</span>
               </span>
               {expiresInDays !== null && (
-                <span className={`ws-mono flex items-center gap-1.5 border-[1.5px] border-ws-ink px-2 py-1 rounded-[2px] text-ws-ink ${expiryTone}`}>
+                <span className={`ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-ws-ink ${expiryTone}`}>
                   <Calendar className="w-4 h-4" aria-hidden="true" />
                   {expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${expiresInDays} días`}
                 </span>
@@ -116,7 +116,7 @@ const PostDetail = () => {
               {post.title}
             </h1>
 
-            <hr className="border-0 border-t-2 border-dashed border-ws-ink" />
+            <hr className="border-0 border-t-[1.5px] border-dashed border-ws-ink/30" />
 
             <div className="font-cuerpo text-lg md:text-xl leading-relaxed whitespace-pre-wrap max-w-2xl">
               {post.description}
@@ -158,7 +158,7 @@ const PostDetail = () => {
 
         <aside className="w-full lg:w-1/3 flex flex-col gap-6 lg:sticky lg:top-28">
 
-          <div className="ws-band ws-band-ink rounded-[4px] border-[1.5px] border-ws-ink p-6 flex flex-col items-center text-center">
+          <div className="ws-band ws-band-ink rounded-[10px] p-6 flex flex-col items-center text-center">
             <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="ANUNCIANTE" rotate={12} className="absolute -top-3 -right-3 w-20 text-ws-mustard" />
 
             {isPublicViewer ? (
@@ -187,7 +187,7 @@ const PostDetail = () => {
                     Contactar
                   </Button>
                 ) : (
-                  <div className="w-full bg-ws-paper-light text-ws-ink p-4 rounded-[2px] flex flex-col items-stretch gap-3 text-left">
+                  <div className="w-full bg-ws-paper-light text-ws-ink p-4 rounded-[6px] flex flex-col items-stretch gap-3 text-left">
                     <p className="ws-mono">Detalles de contacto</p>
                     <a href={owner?.email ? `mailto:${owner.email}` : undefined} className="flex items-center gap-2 font-cuerpo font-bold break-all hover:underline underline-offset-4">
                       <Mail className="w-5 h-5 shrink-0" aria-hidden="true" /> {owner?.email || 'No especifica correo'}

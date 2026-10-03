@@ -78,7 +78,7 @@ const Profile = () => {
     <div className="flex flex-col gap-10">
 
       {notice && (
-        <div role="status" className="ws-enter flex items-center gap-4 border-[1.5px] border-ws-ink rounded-[2px] bg-ws-mustard px-5 py-3">
+        <div role="status" className="ws-enter flex items-center gap-4 rounded-[8px] bg-ws-mustard px-5 py-3">
           <Stamp variant="oval" center="LISTO" rotate={-5} animate className="w-24 shrink-0 text-ws-tomato-deep" />
           <p className="font-cuerpo font-bold text-lg text-ws-ink flex-1">{notice}</p>
           <button type="button" onClick={() => setNotice('')} aria-label="Cerrar aviso" className="ws-pill ws-pill-soft min-h-11 min-w-11 px-3">Cerrar</button>
@@ -86,7 +86,7 @@ const Profile = () => {
       )}
 
       
-      <section className="ws-band ws-band-plum rounded-[4px] border-[1.5px] border-ws-ink p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
+      <section className="ws-band ws-band-plum rounded-[10px] p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
         <Avatar
           src={currentUser.avatar}
           radius="sm"
@@ -135,9 +135,9 @@ const Profile = () => {
           size="lg"
           classNames={{
             base: "w-full",
-            tabList: "gap-2 p-0 pb-3 w-full rounded-none border-b-[1.5px] border-ws-ink bg-transparent",
+            tabList: "gap-2 p-0 pb-3 w-full rounded-none border-b border-ws-line bg-transparent",
             tab: "h-11 px-4",
-            cursor: "bg-ws-mustard border-[1.5px] border-ws-ink rounded-[2px] shadow-none",
+            cursor: "bg-ws-mustard rounded-[6px] shadow-none",
             tabContent: "font-bold text-ws-ink group-data-[selected=true]:text-ws-ink"
           }}
         >
@@ -230,7 +230,7 @@ const Profile = () => {
                     to={`/destinos/${loc.name}`}
                     className="ws-surface ws-surface-hover p-4 flex items-center gap-4"
                   >
-                    <span className="text-4xl w-12 h-12 grid place-items-center border-[1.5px] border-ws-ink rounded-[2px] bg-ws-paper pb-1 shrink-0" aria-hidden="true">
+                    <span className="text-4xl w-12 h-12 grid place-items-center rounded-[6px] bg-ws-paper-deep pb-1 shrink-0" aria-hidden="true">
                       {loc.flag || '🗺️'}
                     </span>
                     <span className="flex-1 overflow-hidden">

@@ -24,7 +24,7 @@ const PhotoSlot = ({ file, ratio = '4 / 3', alt = '', caption, hint = 'Paisaje o
     <figure className={`m-0 ${className}`}>
       <div className="ws-photo w-full" style={{ aspectRatio: ratio }}>
         {missing ? (
-          <div className="absolute inset-0 grid place-items-center text-center p-4 border-2 border-dashed border-ws-ink/60 text-ws-ink">
+          <div className="absolute inset-0 grid place-items-center text-center p-4 border-2 border-dashed border-ws-ink/30 text-ws-ink">
             <div className="flex flex-col items-center gap-2 max-w-xs">
               <ImageIcon className="w-10 h-10" aria-hidden="true" />
               <p className="ws-mono">{hint}</p>

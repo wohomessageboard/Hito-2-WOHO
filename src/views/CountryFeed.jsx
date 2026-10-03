@@ -104,7 +104,7 @@ const CountryFeed = () => {
   return (
     <div className="flex flex-col gap-10 w-full">
 
-      <header className="relative border-[1.5px] border-ws-ink rounded-[2px] overflow-hidden min-h-[16rem] md:min-h-[22rem] flex items-end bg-ws-ocean text-ws-paper-light">
+      <header className="relative rounded-[10px] overflow-hidden min-h-[16rem] md:min-h-[22rem] flex items-end bg-ws-ocean text-ws-paper-light">
         {countryInfo.image_url && !bannerFailed && (
           <div className="ws-photo absolute inset-0 border-0 rounded-none">
             <img
