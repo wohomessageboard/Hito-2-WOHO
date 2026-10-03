@@ -23,7 +23,7 @@ export const PRIVACIDAD = {
             '**Tu actividad:** los avisos que publicas (texto, fotos, país, ciudad, categoría y duración), tus favoritos y los destinos que sigues.',
             '**Contactos:** cuando pulsas «Escribir por WhatsApp» registramos quién contactó y sobre qué aviso, con la fecha. No guardamos el mensaje.',
             '**Reportes y mensajes:** lo que nos escribes en un reporte o en el formulario de Contacto, junto con tu nombre y correo.',
-            '**Aceptación de términos:** la fecha y la versión que aceptaste.',
+            '**Aceptaciones:** la fecha en que confirmaste que eres mayor de edad y la fecha y versión de los Términos que aceptaste.',
             '**Datos técnicos:** los registros del servidor pueden incluir tu dirección IP y datos del navegador, y los usamos solo para seguridad y para limitar abusos.',
           ],
         },
@@ -108,10 +108,32 @@ export const PRIVACIDAD = {
       ],
     },
     {
+      id: 'terceros-navegador',
+      title: 'Seguimiento, analítica y correos',
+      blocks: [
+        {
+          list: [
+            '**No usamos** analítica de terceros, píxeles de seguimiento, publicidad ni herramientas que graben tu sesión o lo que escribes.',
+            'Las tipografías del sitio se sirven desde nuestros propios servidores, no desde Google.',
+            'Las fotos de los avisos y el logo se cargan desde **Cloudinary**; por eso ese proveedor recibe tu dirección IP y datos técnicos de tu navegador cuando se muestran esas imágenes.',
+            'Solo enviamos correos del servicio (por ejemplo, el enlace para recuperar tu contraseña). **No enviamos boletines ni publicidad.** Si algún día lo hiciéramos, te pediremos permiso antes, y cada correo traerá un enlace para darte de baja y nuestra dirección postal.',
+          ],
+        },
+      ],
+    },
+    {
       id: 'cookies',
       title: 'Cookies y almacenamiento',
       blocks: [
         'WOHO no usa cookies de publicidad ni de seguimiento. Guardamos en tu navegador (almacenamiento local) lo necesario para mantener tu sesión y recordar pequeñas preferencias, como la posición en el listado o que ya viste una guía. Puedes borrarlo desde tu navegador; si lo haces tendrás que volver a iniciar sesión.',
+      ],
+    },
+    {
+      id: 'ue-eeuu',
+      title: 'Si estás en la Unión Europea, el Reino Unido o California',
+      blocks: [
+        'Si estás en la UE, el EEE o el Reino Unido, tienes los derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad que reconoce la normativa de protección de datos (RGPD), y puedes presentar una reclamación ante tu autoridad de control. Para ejercerlos, usa los medios de la sección «Tus derechos». [[COMPLETAR: REPRESENTANTE EN LA UE, SI CORRESPONDE, Y DATOS DE CONTACTO PARA ESTOS DERECHOS.]]',
+        'Si estás en California u otro estado de EE. UU. con una ley de privacidad, puedes pedir saber qué datos tuyos tenemos, corregirlos o borrarlos. **No vendemos ni compartimos tus datos personales con fines publicitarios.** Para pedirlo, escríbenos desde Contacto.',
       ],
     },
     {
@@ -125,7 +147,7 @@ export const PRIVACIDAD = {
       id: 'menores',
       title: 'Menores de edad',
       blocks: [
-        'WOHO no está dirigida a menores de [[18]] años. Si descubrimos una cuenta de una persona menor, la eliminaremos.',
+        'WOHO es solo para personas de **18 años o más**: al registrarte te pedimos confirmarlo, y no recopilamos a sabiendas datos de menores. Si descubrimos una cuenta de una persona menor, la eliminaremos.',
       ],
     },
     {

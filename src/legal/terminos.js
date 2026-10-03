@@ -29,7 +29,7 @@ export const TERMINOS = {
       blocks: [
         {
           list: [
-            'Debes tener al menos [[18]] años.',
+            'Debes tener al menos **18 años**. Al crear tu cuenta confirmas que los tienes, y la cerraremos si descubrimos lo contrario.',
             'Los datos que das al registrarte deben ser verdaderos y actuales.',
             'Una persona, una cuenta. Eres responsable de tu contraseña y de lo que ocurra desde tu cuenta; si crees que alguien la usa sin permiso, cámbiala y avísanos.',
             'Puedes navegar los avisos sin cuenta; para publicar, guardar, seguir destinos, contactar o reportar necesitas una.',
@@ -53,6 +53,23 @@ export const TERMINOS = {
             'Spam, publicidad masiva o avisos repetidos.',
           ],
         },
+      ],
+    },
+    {
+      id: 'derechos-autor',
+      title: 'Fotos y derechos de autor',
+      blocks: [
+        'Solo debes subir fotos y textos propios o que tengas permiso de usar. Si crees que un aviso usa una foto o un texto tuyo sin tu permiso, avísanos y lo revisamos rápido: usa **Reportar** en el aviso y elige «Derechos de autor», o escribe a [[CORREO PARA AVISOS DE DERECHOS DE AUTOR]].',
+        'Para que podamos actuar, indícanos:',
+        {
+          list: [
+            'Qué obra es tuya (por ejemplo, la foto original) y dónde está publicada.',
+            'El enlace del aviso de WOHO donde aparece.',
+            'Tu nombre y un medio para contactarte.',
+            'Que actúas de buena fe y que lo que declaras es exacto; y que eres la persona titular de los derechos o la representas.',
+          ],
+        },
+        'Cuando recibimos un aviso válido retiramos el contenido y se lo informamos a quien lo publicó, que puede respondernos si cree que fue un error. Las cuentas que repitan infracciones serán suspendidas. [[SI QUIERES ACOGERTE A LAS PROTECCIONES DE LA LEY DE DERECHOS DE AUTOR DE EE. UU. (DMCA), REGISTRA UN AGENTE DESIGNADO EN LA OFICINA DE DERECHOS DE AUTOR DE EE. UU. E INDICA AQUÍ SUS DATOS. CONSÚLTALO CON UN ABOGADO.]]',
       ],
     },
     {

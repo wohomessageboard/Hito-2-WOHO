@@ -39,7 +39,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             
-            <Route path="/uikit" element={<UIKit />} />
+            {/* Página de pruebas del diseño: solo en desarrollo (carga imágenes de terceros) */}
+            {import.meta.env.DEV && <Route path="/uikit" element={<UIKit />} />}
 
             
             

@@ -28,7 +28,7 @@ export const InkFilter = () => (
 );
 
 const mono = { fontFamily: '"DM Mono", ui-monospace, monospace' };
-const sans = { fontFamily: '"Instrument Sans", system-ui, sans-serif' };
+const sans = { fontFamily: '"Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif' };
 
 const Round = ({ top, bottom, center, id }) => (
   <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false" fill="none" stroke="currentColor">

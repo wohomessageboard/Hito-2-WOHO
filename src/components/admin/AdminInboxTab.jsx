@@ -9,6 +9,7 @@ const REASONS = {
   estafa: 'Posible estafa',
   ofensivo: 'Contenido ofensivo',
   falso: 'Información falsa',
+  copyright: 'Derechos de autor',
   otro: 'Otro motivo',
 };
 const RESOLUTIONS = { handled: 'Atendido', dismissed: 'Descartado', replied: 'Respondido', post_deleted: 'Aviso eliminado' };

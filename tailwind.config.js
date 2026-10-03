@@ -40,9 +40,9 @@ export default {
       },
       fontFamily: {
         display: ['"Instrument Serif"', 'Georgia', 'serif'],
-        sans: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
-        cuerpo: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
-        titulo: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Instrument Sans Variable"', '"Instrument Sans"', 'system-ui', 'sans-serif'],
+        cuerpo: ['"Instrument Sans Variable"', '"Instrument Sans"', 'system-ui', 'sans-serif'],
+        titulo: ['"Instrument Sans Variable"', '"Instrument Sans"', 'system-ui', 'sans-serif'],
         mono: ['"DM Mono"', 'ui-monospace', 'monospace'],
       },
     },

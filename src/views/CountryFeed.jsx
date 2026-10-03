@@ -41,7 +41,7 @@ const CountryFeed = () => {
       setIsLoading(true);
       try {
         const [cRes, pRes, catRes] = await Promise.all([
-          api.get(`/countries/${countryName}`).catch(() => ({ data: { name: countryName, flag: "🏳️", image: "https://placholder.co/600", id: 999 } })),
+          api.get(`/countries/${countryName}`).catch(() => ({ data: { name: countryName, flag: "🏳️", image: null, id: 999 } })),
           api.get(`/posts?country=${countryName}`).catch(() => ({ data: [] })),
           api.get(`/categories`).catch(() => ({ data: [] }))
         ]);

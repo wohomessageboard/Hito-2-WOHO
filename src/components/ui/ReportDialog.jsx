@@ -6,6 +6,7 @@ const REASONS = [
   ['estafa', 'Posible estafa', 'Pide dinero por adelantado o datos sensibles.'],
   ['spam', 'Spam o publicidad', 'No es una oferta real ni ayuda a otros viajeros.'],
   ['falso', 'Información falsa', 'Datos, fotos o condiciones que no son ciertos.'],
+  ['copyright', 'Derechos de autor', 'Una foto o texto mío (o de otra persona) se usa sin permiso.'],
   ['ofensivo', 'Contenido ofensivo', 'Lenguaje o imágenes que no deberían estar aquí.'],
   ['otro', 'Otro motivo', 'Cuéntanos qué pasa.'],
 ];

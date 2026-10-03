@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
 import api from '../config/api';
+import { MIN_AGE } from '../legal/config';
 import SurfaceCard from '../components/ui/SurfaceCard';
 import AuthShell from '../components/ui/AuthShell';
 
@@ -22,17 +23,22 @@ const Register = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [confirmedAge, setConfirmedAge] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+    if (!confirmedAge) {
+      setErrorMsg(`Para crear tu cuenta debes confirmar que tienes al menos ${MIN_AGE} años.`);
+      return;
+    }
     if (!acceptedTerms) {
       setErrorMsg('Para crear tu cuenta debes aceptar los Términos y Condiciones y la Política de Privacidad.');
       return;
     }
     setIsLoading(true);
     try {
-      const res = await api.post('/auth/register', { name, email, password, accepted_terms: acceptedTerms });
+      const res = await api.post('/auth/register', { name, email, password, accepted_terms: acceptedTerms, confirmed_age: confirmedAge });
 
       const { token, user } = res.data;
       if (token && user) {
@@ -119,6 +125,15 @@ const Register = () => {
             />
 
             
+            <Checkbox
+              isSelected={confirmedAge}
+              onValueChange={setConfirmedAge}
+              radius="sm"
+              classNames={{ label: "font-cuerpo text-sm leading-relaxed text-ws-ink" }}
+            >
+              Confirmo que tengo al menos {MIN_AGE} años
+            </Checkbox>
+
             <Checkbox
               isSelected={acceptedTerms}
               onValueChange={setAcceptedTerms}
