@@ -9,6 +9,7 @@ import { Menu as MenuIcon, Close as CloseIcon } from './icons';
 const NAV_LINKS = [
   { to: '/feed', label: 'Explorar', match: (p) => p === '/feed' },
   { to: '/destinos', label: 'Destinos', match: (p) => p.startsWith('/destinos') },
+  { to: '/como-funciona', label: 'Cómo funciona', match: (p) => p === '/como-funciona' },
   { to: '/manifiesto', label: 'Manifiesto', match: (p) => p === '/manifiesto' },
 ];
 

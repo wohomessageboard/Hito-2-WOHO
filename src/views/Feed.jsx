@@ -34,6 +34,16 @@ const Feed = () => {
     { key: 'Otro', label: 'Otro' }
   ]);
 
+  // Primera vez con sesión: una guía breve que se descarta y no vuelve.
+  const TIP_KEY = 'woho_tip_como_funciona';
+  const [showTip, setShowTip] = useState(() => {
+    try { return !window.localStorage.getItem(TIP_KEY); } catch { return false; }
+  });
+  const dismissTip = () => {
+    try { window.localStorage.setItem(TIP_KEY, '1'); } catch { /* sin almacenamiento: se oculta solo esta vez */ }
+    setShowTip(false);
+  };
+
   const [selectedCategory, setSelectedCategory] = useState('Todos');
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -173,6 +183,22 @@ const Feed = () => {
           </EmptyState>
         ) : (
           <div className="flex flex-col gap-6">
+
+            {isAuthenticated && showTip && (
+              <div role="region" aria-label="Primeros pasos" className="flex flex-col sm:flex-row sm:items-center gap-3 bg-ws-paper-light rounded-[8px] p-4">
+                <p className="font-cuerpo text-sm font-bold text-ws-ink flex-1">
+                  ¿Primera vez por aquí? Sigue un destino para personalizar tu «Para ti», guarda anuncios con la estrella y pulsa «Contactar» para escribirle a quien publica.
+                </p>
+                <div className="flex gap-2 shrink-0">
+                  <Button as={Link} to="/como-funciona" radius="sm" className="ws-btn ws-btn-ink h-10 px-4" onPress={dismissTip}>
+                    Ver cómo funciona
+                  </Button>
+                  <Button radius="sm" className="ws-pill ws-pill-line h-10 px-4" onPress={dismissTip}>
+                    Entendido
+                  </Button>
+                </div>
+              </div>
+            )}
 
             {isAuthenticated && !isPersonalized && (
               <div className="flex items-center gap-3 bg-ws-paper-light rounded-[8px] p-4">

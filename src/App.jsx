@@ -18,6 +18,7 @@ import EditProfile from './views/EditProfile';
 import UnderConstruction from './views/UnderConstruction';
 import UIKit from './views/UIKit';
 import Manifiesto from './views/Manifiesto';
+import ComoFunciona from './views/ComoFunciona';
 import AdminDashboard from './views/AdminDashboard';
 
 import { UserProvider } from './context/UserContext';
@@ -47,6 +48,7 @@ function App() {
               <Route path="/destinos" element={<Countries />} />
               <Route path="/destinos/:countryName" element={<CountryFeed />} />
               <Route path="/manifiesto" element={<Manifiesto />} />
+              <Route path="/como-funciona" element={<ComoFunciona />} />
               
               <Route path="/post/:id" element={<PostDetail />} />
               

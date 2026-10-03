@@ -8,6 +8,7 @@ const CORAL  = { paper: '#FF8F6B', accent: '#66023C' };
 const PINK   = { paper: '#FFA9C6', accent: '#66023C' };
 const MINT   = { paper: '#86E0BC', accent: '#66023C' };
 const LIME   = { paper: '#D6E96B', accent: '#66023C' };
+const ORANGE = { paper: '#FFB454', accent: '#66023C' };
 const CREAM  = { paper: '#F3EBDA', accent: '#B8321A' };
 
 // Se evalúa en orden: la primera coincidencia gana.
@@ -16,6 +17,7 @@ const THEMES = [
   [(p) => p.startsWith('/feed') || p.startsWith('/post/'), SKY],
   [(p) => p.startsWith('/destinos'), CORAL],
   [(p) => p.startsWith('/manifiesto'), PINK],
+  [(p) => p.startsWith('/como-funciona'), ORANGE],
   [(p) => p.startsWith('/login') || p.startsWith('/register'), MINT],
   [(p) => p.startsWith('/profile') || p.startsWith('/edit-') || p.startsWith('/new-post'), LIME],
   [(p) => p.startsWith('/admin'), CREAM],

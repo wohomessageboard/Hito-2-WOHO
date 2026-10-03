@@ -136,15 +136,26 @@ const Home = () => {
             <h2 className="font-display text-5xl md:text-7xl">¿Listo para <em>sumarte?</em></h2>
             <p className="font-cuerpo text-lg md:text-xl max-w-xl">Crea tu cuenta y empieza a construir tu red global hoy mismo.</p>
           </div>
-          <Button
-            as={Link}
-            to="/register"
-            size="lg"
-            radius="sm"
-            className="ws-btn ws-btn-ink h-14 px-8 text-lg w-full md:w-auto"
-          >
-            Únete a la aventura
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <Button
+              as={Link}
+              to="/como-funciona"
+              size="lg"
+              radius="sm"
+              className="ws-btn ws-btn-quiet h-14 px-8 text-lg w-full md:w-auto"
+            >
+              Cómo funciona
+            </Button>
+            <Button
+              as={Link}
+              to="/register"
+              size="lg"
+              radius="sm"
+              className="ws-btn ws-btn-ink h-14 px-8 text-lg w-full md:w-auto"
+            >
+              Únete a la aventura
+            </Button>
+          </div>
           <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={14} className="hidden lg:block absolute -right-2 -bottom-24 w-36 text-ws-plum" />
         </div>
       </section>
