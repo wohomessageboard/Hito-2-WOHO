@@ -106,8 +106,8 @@ const AdminInboxTab = ({ onOpenCountChange }) => {
 
             {item.message && <p className="font-cuerpo whitespace-pre-wrap bg-ws-paper-deep rounded-[6px] p-3">{item.message}</p>}
 
-            <p className="ws-mono text-ws-ink/80">
-              {item.kind === 'report' ? 'Reportado por' : 'De'}: {item.name || 'Anónimo'}{item.email ? ` · ${item.email}` : ''}
+            <p className="font-cuerpo text-sm text-ws-ink/80">
+              {item.kind === 'report' ? 'Reportado por' : 'De'}: <strong>{item.name || 'Anónimo'}</strong>{item.email ? ` · ${item.email}` : ''}
             </p>
 
             {item.status === 'open' ? (

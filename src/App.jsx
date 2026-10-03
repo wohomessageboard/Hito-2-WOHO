@@ -20,6 +20,8 @@ import UIKit from './views/UIKit';
 import Manifiesto from './views/Manifiesto';
 import ComoFunciona from './views/ComoFunciona';
 import Contacto from './views/Contacto';
+import ForgotPassword from './views/ForgotPassword';
+import ResetPassword from './views/ResetPassword';
 import AdminDashboard from './views/AdminDashboard';
 
 import { UserProvider } from './context/UserContext';
@@ -51,6 +53,8 @@ function App() {
               <Route path="/manifiesto" element={<Manifiesto />} />
               <Route path="/como-funciona" element={<ComoFunciona />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/olvide-mi-contrasena" element={<ForgotPassword />} />
+              <Route path="/restablecer" element={<ResetPassword />} />
               
               <Route path="/post/:id" element={<PostDetail />} />
               

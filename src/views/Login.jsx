@@ -97,6 +97,10 @@ const Login = () => {
             />
 
             
+            <Link to="/olvide-mi-contrasena" className="text-sm font-bold underline underline-offset-4 self-start">
+              ¿Olvidaste tu contraseña?
+            </Link>
+
             {errorMsg && (
               <div role="alert" className="bg-ws-tomato/15 text-ws-ink rounded-[6px] p-3 text-sm font-bold mt-2">
                 <p>{errorMsg}</p>

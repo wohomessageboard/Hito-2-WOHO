@@ -55,6 +55,12 @@ const AppBreadcrumbs = () => {
             case 'destinos':
               title = "Destinos";
               break;
+            case 'olvide-mi-contrasena':
+              title = "Recuperar contraseña";
+              break;
+            case 'restablecer':
+              title = "Contraseña nueva";
+              break;
             case 'contacto':
               title = "Contacto";
               break;

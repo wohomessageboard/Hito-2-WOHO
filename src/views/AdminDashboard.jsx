@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { Chip, Tabs, Tab } from '@heroui/react';
-import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText, Mail } from '../components/ui/icons';
+import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText, Mail, Trash2 } from '../components/ui/icons';
 import api from '../config/api';
 
 import AdminMetricsTab from '../components/admin/AdminMetricsTab';
@@ -12,6 +12,7 @@ import AdminCitiesTab from '../components/admin/AdminCitiesTab';
 import AdminPostsTab from '../components/admin/AdminPostsTab';
 import AdminCategoriesTab from '../components/admin/AdminCategoriesTab';
 import AdminInboxTab from '../components/admin/AdminInboxTab';
+import AdminDeletionsTab from '../components/admin/AdminDeletionsTab';
 
 const AdminDashboard = () => {
   const { isAuthenticated, currentUser } = useUser();
@@ -28,19 +29,22 @@ const AdminDashboard = () => {
   const [cities, setCities] = useState([]);
   const [posts, setPosts] = useState([]);
   const [inboxOpen, setInboxOpen] = useState(0);
+  const [deletionsPending, setDeletionsPending] = useState(0);
 
   useEffect(() => {
     if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return;
 
     const fetchData = async () => {
       try {
-        const [usersRes, countriesRes, citiesRes, postsRes, inboxRes] = await Promise.all([
+        const [usersRes, countriesRes, citiesRes, postsRes, inboxRes, deletionsRes] = await Promise.all([
           api.get('/admin/users').catch(() => ({ data: [] })),
           api.get('/countries').catch(() => ({ data: [] })),
           api.get('/cities').catch(() => ({ data: [] })),
           api.get('/admin/posts').catch(() => ({ data: [] })),
-          api.get('/admin/inbox').catch(() => ({ data: { open_count: 0 } }))
+          api.get('/admin/inbox').catch(() => ({ data: { open_count: 0 } })),
+          api.get('/admin/deletion-requests').catch(() => ({ data: { pending_count: 0 } }))
         ]);
+        setDeletionsPending(deletionsRes.data.pending_count || 0);
         setInboxOpen(inboxRes.data.open_count || 0);
         setUsers(usersRes.data);
         setCountries(countriesRes.data);
@@ -155,6 +159,13 @@ const AdminDashboard = () => {
           title={<><Mail className="w-5 h-5"/> <span className="hidden sm:inline">Bandeja</span>{inboxOpen > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{inboxOpen}</span>}</>}
         >
           <AdminInboxTab onOpenCountChange={setInboxOpen} />
+        </Tab>
+
+        <Tab
+          key="deletions"
+          title={<><Trash2 className="w-5 h-5"/> <span className="hidden sm:inline">Eliminaciones</span>{deletionsPending > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{deletionsPending}</span>}</>}
+        >
+          <AdminDeletionsTab onPendingCountChange={setDeletionsPending} />
         </Tab>
 
         <Tab 

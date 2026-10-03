@@ -7,7 +7,8 @@ import { Camera, User as UserIcon, Whatsapp } from '../components/ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';  
 import api from '../config/api';
-import { compressImage } from '../utils/compressImage';                   
+import { compressImage } from '../utils/compressImage';
+import DeleteAccount from '../components/ui/DeleteAccount';                   
 
 const EditProfile = () => {
 
@@ -194,6 +195,8 @@ const EditProfile = () => {
             </div>
 
           </form>
+
+          <DeleteAccount />
         </CardBody>
       </SurfaceCard>
     </div>

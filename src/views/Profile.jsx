@@ -7,6 +7,7 @@ import { useUser } from '../context/UserContext';
 import { Avatar, Button, Tabs, Tab } from '@heroui/react';
 import EmptyState from '../components/ui/EmptyState';
 import Stamp from '../components/ui/Stamp';
+import { DeletionPendingBanner } from '../components/ui/DeleteAccount';
 
 import { Settings, LogOut, Pencil, Trash2, MapPin, Search, Grid, Heart, Map } from '../components/ui/icons';
 
@@ -76,6 +77,8 @@ const Profile = () => {
   return (
 
     <div className="flex flex-col gap-10">
+
+      <DeletionPendingBanner />
 
       {notice && (
         <div role="status" className="ws-enter flex items-center gap-4 rounded-[8px] bg-ws-paper-light px-5 py-3">

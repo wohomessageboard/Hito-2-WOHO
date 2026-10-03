@@ -102,7 +102,7 @@ const Register = () => {
             <Input
               type="password"
               label="Contraseña"
-              placeholder="Tu contraseña"
+              placeholder="Mínimo 8 caracteres"
               labelPlacement="outside"
               variant="bordered"
               radius="sm"
