@@ -21,12 +21,6 @@ const CountryFeed = () => {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated, followedCountryIds, toggleFollowedCountryId } = useUser();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
-
   const [countryInfo, setCountryInfo] = useState(null);
   const [countryPosts, setCountryPosts] = useState([]);
   const [categories, setCategories] = useState([
@@ -40,8 +34,6 @@ const CountryFeed = () => {
   useScrollRestore(`country_scroll_${countryName}`, !isLoading);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-    
     const fetchCountryData = async () => {
       setIsLoading(true);
       try {
@@ -60,7 +52,7 @@ const CountryFeed = () => {
       }
     };
     fetchCountryData();
-  }, [countryName, isAuthenticated]);
+  }, [countryName]);
 
   const availableCities = useMemo(() => {
     const cities = new Set(countryPosts.map(p => p.city));
@@ -87,8 +79,6 @@ const CountryFeed = () => {
 
     return results;
   }, [countryPosts, selectedCity, selectedCategory, searchQuery]);
-
-  if (!isAuthenticated) return null;
 
   if (!isLoading && !countryInfo) {
     return (
@@ -241,7 +231,7 @@ const CountryFeed = () => {
                 name: String(post.author_name || "Viajero Anónimo"), 
                 avatar: post.author_avatar ? String(post.author_avatar) : null 
               };
-              const isMyPost = currentUser?.id === post.user_id;
+              const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
 
               const mappedPost = {
                 ...post,

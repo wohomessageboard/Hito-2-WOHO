@@ -6,6 +6,12 @@
   body {
     @apply bg-woho-white text-woho-black font-sans antialiased;
   }
+
+  /* Foco visible y consistente para teclado (enlaces, botones, chips, campos). */
+  :where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+    outline: 3px solid #8E0083;
+    outline-offset: 2px;
+  }
 }
 
 /*

@@ -38,6 +38,15 @@ const FilterChip = ({
       variant="flat"
       radius={isCompact ? 'sm' : 'md'}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      aria-pressed={!!isSelected}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.(e);
+        }
+      }}
       className={[
         'cursor-pointer font-bold transition-colors',
         isCompact ? 'text-xs px-1' : 'font-titulo',

@@ -84,8 +84,7 @@ const EditProfile = () => {
 
       login(updatedUserData);
       
-      alert("¡Perfil actualizado con éxito!");
-      navigate('/profile');   
+      navigate('/profile', { state: { notice: '¡Perfil actualizado con éxito!' } });   
 
     } catch (error) {
       console.error('Error editando perfil:', error);

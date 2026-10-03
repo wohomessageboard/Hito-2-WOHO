@@ -54,7 +54,7 @@ const Login = () => {
             ¡Hola de nuevo!
           </h2>
           <p className="text-default-500 font-cuerpo mt-2 text-center px-4">
-            Inicia sesión para ver tus guardados y contactar anuncios.
+            Entra para guardar anuncios, contactar a quien publica y seguir destinos.
           </p>
         </CardHeader>
 
@@ -68,14 +68,14 @@ const Login = () => {
               type="email"
               label="Correo electrónico"
               placeholder="tu@correo.com"
-              labelPlacement="inside"
+              labelPlacement="outside"
               variant="bordered"
               radius="md"
               value={email}
 
               onChange={(e) => setEmail(e.target.value)}
 
-              startContent={<Mail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
+              startContent={<Mail className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" aria-hidden="true" />}
 
               classNames={{ inputWrapper: "border border-gray-200" }}
             />
@@ -84,20 +84,20 @@ const Login = () => {
             <Input
               type="password"
               label="Contraseña"
-              placeholder="••••••••"
-              labelPlacement="inside"
+              placeholder="Tu contraseña"
+              labelPlacement="outside"
               variant="bordered"
               radius="md"
               value={password}
 
               onChange={(e) => setPassword(e.target.value)}
-              startContent={<Lock className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
+              startContent={<Lock className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" aria-hidden="true" />}
               classNames={{ inputWrapper: "border border-gray-200" }}
             />
 
             
             {errorMsg && (
-              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm font-bold mt-2">
+              <div role="alert" className="bg-red-50 text-red-700 rounded-xl p-3 text-sm font-bold mt-2">
                 <p>{errorMsg}</p>
               </div>
             )}

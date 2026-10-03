@@ -49,7 +49,7 @@ const PostDetail = () => {
   }
 
   const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero Oculto", avatar: post.author_avatar || null };
-  const isMyPost = currentUser?.id === post.user_id;
+  const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
   const isPublicViewer = !isAuthenticated;
 
   const type = post.type || post.category_name;

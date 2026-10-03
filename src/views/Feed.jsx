@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Button, Input } from '@heroui/react';
 
@@ -23,13 +23,6 @@ const CATEGORY_ICONS = {
 
 const Feed = () => {
   const { currentUser, isAuthenticated } = useUser();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
 
   const [posts, setPosts] = useState([]);
   const [isPersonalized, setIsPersonalized] = useState(true);
@@ -47,7 +40,14 @@ const Feed = () => {
   useScrollRestore('feed_scroll', posts.length > 0);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    // Visitante: lectura pública con lo más reciente de la comunidad. El feed
+    // personalizado (/posts/feed) exige sesión.
+    if (!isAuthenticated) {
+      api.get('/posts')
+        .then(res => { setPosts(res.data); setIsPersonalized(false); })
+        .catch(err => { console.log('No se pudo cargar el feed público', err); setPosts([]); });
+      return;
+    }
 
     api.get('/posts/feed').then(async (res) => {
       if (res.data && res.data.length > 0) {
@@ -96,8 +96,6 @@ const Feed = () => {
     return results;
   }, [selectedCategory, searchQuery, posts]);
 
-  if (!isAuthenticated) return null;
-
   return (
     <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto px-4 pb-12">
       
@@ -106,10 +104,12 @@ const Feed = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
             <h1 className="text-4xl md:text-5xl font-titulo font-black text-black tracking-tighter uppercase">
-              Para Ti
+              {isAuthenticated ? 'Para Ti' : 'Anuncios recientes'}
             </h1>
             <p className="font-cuerpo text-default-600 text-lg max-w-xl">
-              Lo último en oportunidades en los destinos que sigues.
+              {isAuthenticated
+                ? 'Lo último en oportunidades en los destinos que sigues.'
+                : 'Lo último que publicó la comunidad. Explora sin cuenta; crea una para guardar y contactar.'}
             </p>
           </div>
           
@@ -197,7 +197,7 @@ const Feed = () => {
         ) : (
           <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
 
-            {!isPersonalized && (
+            {isAuthenticated && !isPersonalized && (
               <div className="flex items-center gap-3 bg-woho-orange/10 rounded-xl p-4">
                 <Compass className="w-6 h-6 shrink-0 text-woho-orange" />
                 <p className="font-cuerpo text-sm font-bold text-woho-black">
@@ -210,13 +210,24 @@ const Feed = () => {
               </div>
             )}
 
+            {!isAuthenticated && (
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                <p className="font-cuerpo text-sm font-bold text-black flex-1">
+                  Estás explorando como visitante. Con una cuenta puedes guardar anuncios, contactar a quien publica y seguir destinos.
+                </p>
+                <Button as={Link} to="/register" className="bg-black text-white font-bold h-10 px-5 shrink-0">
+                  Crear cuenta
+                </Button>
+              </div>
+            )}
+
             {filteredPosts.map((post) => {
               const owner = post.owner || { 
                 id: post.user_id, 
                 name: String(post.author_name || "Viajero Anónimo"), 
                 avatar: post.author_avatar ? String(post.author_avatar) : null 
               };
-              const isMyPost = currentUser?.id === post.user_id;
+              const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
 
               const mappedPost = {
                 ...post,

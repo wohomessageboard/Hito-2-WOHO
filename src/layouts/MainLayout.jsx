@@ -20,12 +20,12 @@ const MainLayout = () => {
           <p className="font-cuerpo font-bold text-sm text-black">
             © {new Date().getFullYear()} WOHO. Desarrollado con ❤️ para viajeros.
           </p>
-          <div className="flex gap-4 font-cuerpo text-sm font-bold">
+          <nav aria-label="Enlaces del pie" className="flex gap-4 font-cuerpo text-sm font-bold">
             <Link as={RouterLink} to="/manifiesto" className="hover:text-woho-purple underline underline-offset-2 text-black">Manifiesto</Link>
             <a href="#" className="hover:text-woho-purple underline underline-offset-2">Términos</a>
             <a href="#" className="hover:text-woho-purple underline underline-offset-2">Privacidad</a>
             <a href="#" className="hover:text-woho-purple underline underline-offset-2">Contacto</a>
-          </div>
+          </nav>
         </div>
       </footer>
     </div>

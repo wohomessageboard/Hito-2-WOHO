@@ -100,7 +100,7 @@ const NewPost = () => {
       });
 
       setIsSubmitting(false);
-      navigate('/profile');
+      navigate('/profile', { state: { notice: '¡Aviso publicado!' } });
     } catch (error) {
       console.error('Error publicando el aviso:', error);
       setErrorMsg(error.response?.data?.error || 'No pudimos publicar tu aviso. Revisa los datos e intenta de nuevo.');

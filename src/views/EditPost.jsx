@@ -125,8 +125,7 @@ const EditPost = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      alert("¡Aviso actualizado correctamente!");
-      navigate('/profile');
+      navigate('/profile', { state: { notice: '¡Aviso actualizado correctamente!' } });
     } catch (error) {
       console.error('Error al actualizar el aviso:', error);
       alert("Hubo un error al guardar los cambios.");

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 import { useUser } from '../context/UserContext';
 
@@ -23,6 +23,20 @@ const Profile = () => {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
+
+  // Confirmación (publicar/editar): llega por router state, se muestra unos
+  // segundos y se limpia del historial para que un refresh no la repita.
+  const location = useLocation();
+  const [notice, setNotice] = useState(() => location.state?.notice || '');
+  useEffect(() => {
+    if (!location.state?.notice) return;
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location, navigate]);
+  useEffect(() => {
+    if (!notice) return;
+    const t = setTimeout(() => setNotice(''), 4500);
+    return () => clearTimeout(t);
+  }, [notice]);
 
   const [myPosts, setMyPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
@@ -61,6 +75,13 @@ const Profile = () => {
   return (
 
     <div className="flex flex-col gap-10">
+
+      {notice && (
+        <div role="status" className="flex items-center gap-4 rounded-xl border border-green-200 bg-green-50 px-5 py-3">
+          <p className="font-cuerpo font-bold text-green-800 flex-1">{notice}</p>
+          <button type="button" onClick={() => setNotice('')} aria-label="Cerrar aviso" className="font-bold text-sm min-h-11 min-w-11 px-3 rounded-lg hover:bg-green-100">Cerrar</button>
+        </div>
+      )}
 
       
       <section className="bg-woho-purple text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center gap-8 shadow-sm">
@@ -139,7 +160,7 @@ const Profile = () => {
                 <p className="font-cuerpo text-gray-500 italic">No tienes anuncios publicados aún.</p>
               ) : (
                 myPosts.map((post) => {
-                  const isMyPost = currentUser?.id === post.user_id;
+                  const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
                   const owner = { 
                     id: post.user_id, 
                     name: String(post.author_name || currentUser?.name || "Yo"), 
