@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
 import SurfaceCard from '../components/ui/SurfaceCard';
-import { MapPin, Target, Send, Image as ImageIcon } from '../components/ui/icons';
+import { MapPin, Target, Send, Image as ImageIcon, Whatsapp } from '../components/ui/icons';
 
 import api from '../config/api';
 import { compressImages } from '../utils/compressImage';
 
 const NewPost = () => {
-  const { isAuthenticated, currentUser } = useUser();
+  const { isAuthenticated, currentUser, login } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +53,9 @@ const NewPost = () => {
   const [previews, setPreviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  // WhatsApp = único dato de contacto. Si aún no lo dejó, se pide aquí y se guarda en su perfil.
+  const hasPhone = !!currentUser?.phone_whatsapp;
+  const [phone, setPhone] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,6 +87,16 @@ const NewPost = () => {
     setErrorMsg('');
 
     try {
+      if (!hasPhone) {
+        if (!phone.trim()) {
+          setErrorMsg('Agrega tu WhatsApp: es el medio por el que te contactarán.');
+          setIsSubmitting(false);
+          return;
+        }
+        const me = await api.put('/users/me', { name: currentUser.name, phone_whatsapp: phone });
+        login({ ...currentUser, ...me.data });
+      }
+
       const formToSend = new FormData();
       formToSend.append('title', formData.title);
       formToSend.append('description', formData.description);
@@ -334,6 +347,34 @@ const NewPost = () => {
               </div>
             </div>
 
+
+            <div className="space-y-4">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
+                <Whatsapp className="w-5 h-5" /> 4. ¿Cómo te contactan?
+              </h3>
+              {hasPhone ? (
+                <p className="font-cuerpo text-ws-ink/90 leading-relaxed">
+                  Te escribirán por WhatsApp al <strong>{currentUser.phone_whatsapp}</strong>.{' '}
+                  <Link to="/edit-profile" className="font-bold underline underline-offset-4">Cambiar número</Link>
+                </p>
+              ) : (
+                <Input
+                  name="phone_whatsapp"
+                  type="tel"
+                  label="Tu WhatsApp"
+                  placeholder="+56 9 1234 5678"
+                  labelPlacement="inside"
+                  variant="bordered"
+                  radius="sm"
+                  size="lg"
+                  isRequired
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  description="Con código de país. Es el único dato de contacto que compartimos: quien se interese abrirá un chat contigo. Tu correo nunca se muestra."
+                  classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm", description: "text-ws-ink/75" }}
+                />
+              )}
+            </div>
 
             {errorMsg && (
               <div role="alert" className="bg-ws-tomato/15 text-ws-ink rounded-[6px] p-3 text-sm font-bold">

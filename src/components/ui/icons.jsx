@@ -62,3 +62,4 @@ export const Trash2 = px(P.Trash);
 export const User = px(P.User);
 export const Users = px(P.Users);
 export const Close = px(P.Close);
+export const Whatsapp = px(P.Whatsapp);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button, Avatar, useDisclosure } from '@heroui/react';
-import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle, Mail, Phone } from '../components/ui/icons';
+import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle, Whatsapp } from '../components/ui/icons';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import EmptyState from '../components/ui/EmptyState';
@@ -17,7 +17,8 @@ const PostDetail = () => {
 
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showContact, setShowContact] = useState(false);
+  const [isOpeningChat, setIsOpeningChat] = useState(false);
+  const [contactError, setContactError] = useState('');
   const [shared, setShared] = useState(false);
   const report = useDisclosure();
   const [reportNotice, setReportNotice] = useState('');
@@ -40,6 +41,29 @@ const PostDetail = () => {
     };
     fetchPost();
   }, [id]);
+
+  // Contactar: pide el enlace de WhatsApp al servidor (que registra el contacto y arma el
+  // mensaje con el aviso) y abre el chat. La pestaña se abre ANTES de la petición para que
+  // el navegador no la bloquee como ventana emergente.
+  const handleWhatsapp = async () => {
+    setContactError('');
+    setIsOpeningChat(true);
+    const tab = window.open('', '_blank');
+    try {
+      const res = await api.post(`/posts/${post.id}/contact`);
+      if (tab) {
+        tab.opener = null;
+        tab.location.href = res.data.url;
+      } else {
+        window.location.href = res.data.url;
+      }
+    } catch (err) {
+      tab?.close();
+      setContactError(err.response?.data?.error || 'No pudimos abrir WhatsApp. Intenta de nuevo.');
+    } finally {
+      setIsOpeningChat(false);
+    }
+  };
 
   // Compartir: hoja nativa si existe; si no, copia el enlace y lo avisa.
   const handleShare = async () => {
@@ -185,21 +209,13 @@ const PostDetail = () => {
                   Editar mi publicación
                 </Button>
               ) : isAuthenticated ? (
-                !showContact ? (
-                  <Button onPress={() => setShowContact(true)} radius="sm" className="ws-btn ws-btn-tomato w-full h-14 text-lg">
-                    Contactar
+                <>
+                  <Button onPress={handleWhatsapp} isLoading={isOpeningChat} radius="sm" className="ws-btn ws-btn-tomato w-full h-14 text-lg" startContent={!isOpeningChat && <Whatsapp className="w-6 h-6" aria-hidden="true" />}>
+                    Escribir por WhatsApp
                   </Button>
-                ) : (
-                  <div className="w-full bg-ws-paper-light text-ws-ink p-4 rounded-[6px] flex flex-col items-stretch gap-3 text-left">
-                    <p className="ws-mono">Detalles de contacto</p>
-                    <a href={owner?.email ? `mailto:${owner.email}` : undefined} className="flex items-center gap-2 font-cuerpo font-bold break-all hover:underline underline-offset-4">
-                      <Mail className="w-5 h-5 shrink-0" aria-hidden="true" /> {owner?.email || 'No especifica correo'}
-                    </a>
-                    <a href={owner?.phone ? `tel:${owner.phone}` : undefined} className="flex items-center gap-2 font-cuerpo font-bold break-all hover:underline underline-offset-4">
-                      <Phone className="w-5 h-5 shrink-0" aria-hidden="true" /> {owner?.phone || 'No especifica teléfono'}
-                    </a>
-                  </div>
-                )
+                  {contactError && <p role="alert" className="bg-ws-paper-light text-ws-ink rounded-[6px] p-3 text-sm font-bold text-left">{contactError}</p>}
+                  <p className="text-xs font-cuerpo text-ws-paper-light/80">Se abre un chat con el aviso adjunto. Solo compartimos su WhatsApp.</p>
+                </>
               ) : (
                 <Button as={Link} to="/login" radius="sm" className="ws-btn ws-btn-mustard w-full h-14 text-base">
                   Inicia sesión para escribirle

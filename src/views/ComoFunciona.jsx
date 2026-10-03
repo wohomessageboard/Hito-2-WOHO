@@ -33,7 +33,7 @@ const STEPS = [
     Icon: Send,
     title: 'Contacta o publica',
     block: 'bg-ws-plum text-ws-paper-light',
-    body: 'En un anuncio, pulsa «Contactar» para ver el correo y el teléfono que dejó quien publica. ¿Tienes algo que ofrecer? Crea tu publicación con título, categoría, destino, descripción, hasta 5 fotos y los días que durará el aviso.',
+    body: 'En un anuncio, pulsa «Escribir por WhatsApp»: se abre un chat con quien publica, con el aviso ya adjunto en el mensaje. ¿Tienes algo que ofrecer? Crea tu publicación con título, categoría, destino, descripción, hasta 5 fotos, los días que durará el aviso y tu WhatsApp.',
     cta: { to: '/new-post', label: 'Crear publicación', authOnly: true },
   },
 ];
@@ -53,7 +53,7 @@ const TIPS = [
 
 const FAQ = [
   ['¿Tiene costo?', 'Crear la cuenta y usar WOHO es gratis.'],
-  ['¿Quién ve mi correo y mi teléfono?', 'Tu correo (y tu teléfono, si lo agregaste) se muestran a las personas con sesión iniciada cuando pulsan «Contactar» en uno de tus anuncios. Sin sesión no se ve nada de quien publica. Puedes editar tus datos desde tu perfil.'],
+  ['¿Qué datos míos se comparten?', 'Solo tu WhatsApp, y únicamente a quien tiene sesión iniciada y pulsa «Escribir por WhatsApp» en uno de tus anuncios. Tu correo nunca se muestra. Sin sesión no se ve ni quién publica. Puedes cambiar tu número desde tu perfil.'],
   ['¿Cuánto dura un anuncio?', 'Lo eliges tú al publicar, en días. Cuando vence, deja de aparecer en Explorar.'],
   ['¿Puedo editar o borrar mi anuncio?', 'Sí. En tu perfil, dentro de «Mis avisos», puedes editar o eliminar tus publicaciones.'],
   ['¿Cómo aviso de un anuncio sospechoso?', 'Abre el anuncio y pulsa «Reportar». Llega al equipo de WOHO, que puede eliminarlo. Para otras dudas, usa la página de Contacto.'],

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { CardHeader, CardBody, Input, Button, Avatar, Textarea } from '@heroui/react';
 import SurfaceCard from '../components/ui/SurfaceCard';
-import { Camera, Instagram, User as UserIcon, Phone, Facebook } from '../components/ui/icons';
+import { Camera, User as UserIcon, Whatsapp } from '../components/ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';  
 import api from '../config/api';
@@ -18,9 +18,7 @@ const EditProfile = () => {
   const [formData, setFormData] = useState({
     name: '',                
     bio: '',                 
-    instagram_handle: '',    
     phone_whatsapp: '',      
-    facebook_url: ''         
   });
 
   const [avatarPreview, setAvatarPreview] = useState(null);   
@@ -34,9 +32,7 @@ const EditProfile = () => {
       setFormData({
         name: currentUser.name || '',
         bio: currentUser.bio || '',
-        instagram_handle: currentUser.instagram_handle || '',
-        phone_whatsapp: currentUser.phone_whatsapp || '',
-        facebook_url: currentUser.facebook_url || ''
+        phone_whatsapp: currentUser.phone_whatsapp || ''
       });
 
       setAvatarPreview(currentUser.avatar || null);
@@ -65,9 +61,7 @@ const EditProfile = () => {
       const payload = {
         name: formData.name,
         bio: formData.bio,
-        instagram_handle: formData.instagram_handle,
-        phone_whatsapp: formData.phone_whatsapp,
-        facebook_url: formData.facebook_url
+        phone_whatsapp: formData.phone_whatsapp
       };
       
       const res = await api.put('/users/me', payload);
@@ -161,43 +155,17 @@ const EditProfile = () => {
 
             
             <Input
-              name="instagram_handle"
-              label="Usuario de Instagram (opcional)"
-              placeholder="@tu_usuario"
-              labelPlacement="inside"
-              variant="bordered"
-              radius="sm"
-              value={formData.instagram_handle}
-              onChange={handleChange}
-              startContent={<Instagram className="text-xl text-ws-ink/60 font-bold mr-2" />}
-              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
-            />
-
-            
-            <Input
               name="phone_whatsapp"
-              label="WhatsApp / Teléfono (opcional)"
+              label="WhatsApp de contacto"
               placeholder="+56 9 1234 5678"
+              type="tel"
+              description="Con código de país. Es el único dato de contacto que compartimos: se usa cuando alguien pulsa «Escribir por WhatsApp» en tus avisos. Tu correo nunca se muestra. Para publicar necesitas dejarlo."
               labelPlacement="inside"
               variant="bordered"
               radius="sm"
               value={formData.phone_whatsapp}
               onChange={handleChange}
-              startContent={<Phone className="text-xl text-ws-ink/60 font-bold mr-2" />}
-              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
-            />
-
-            
-            <Input
-              name="facebook_url"
-              label="Enlace de Facebook (opcional)"
-              placeholder="https://facebook.com/tu_perfil"
-              labelPlacement="inside"
-              variant="bordered"
-              radius="sm"
-              value={formData.facebook_url}
-              onChange={handleChange}
-              startContent={<Facebook className="text-xl text-ws-ink/60 font-bold mr-2" />}
+              startContent={<Whatsapp className="text-xl text-ws-ink/60 font-bold mr-2" />}
               classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
             />
 
