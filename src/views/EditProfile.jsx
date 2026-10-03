@@ -1,7 +1,8 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, Input, Button, Avatar, Textarea } from '@heroui/react';
+import { CardHeader, CardBody, Input, Button, Avatar, Textarea } from '@heroui/react';
+import SurfaceCard from '../components/ui/SurfaceCard';
 import { Camera, Instagram, User as UserIcon, Phone, Facebook } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';  
@@ -110,7 +111,7 @@ const EditProfile = () => {
 
   return (
     <div className="flex justify-center w-full px-4 py-8 md:py-12">
-      <Card className="w-full max-w-lg border-[2px] border-black rounded-xl bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <SurfaceCard elevated className="w-full max-w-lg">
         <CardHeader className="flex flex-col items-center pt-8 pb-4">
           <h1 className="text-3xl font-titulo font-black text-black uppercase tracking-tighter leading-none mb-2">
             Ajustes de Perfil
@@ -130,7 +131,7 @@ const EditProfile = () => {
                 <Avatar 
                   src={avatarPreview} 
                   name={currentUser.name} 
-                  className="w-24 h-24 border-2 border-black bg-gray-100 text-3xl font-bold" 
+                  className="w-24 h-24 border-2 border-gray-200 bg-gray-100 text-3xl font-bold" 
                 />
                 
                 <label className="absolute inset-0 bg-black/50 text-white rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
@@ -153,7 +154,7 @@ const EditProfile = () => {
               value={formData.name}
               onChange={handleChange}
               startContent={<UserIcon className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
               isRequired
             />
 
@@ -168,7 +169,7 @@ const EditProfile = () => {
               value={formData.instagram_handle}
               onChange={handleChange}
               startContent={<Instagram className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
             />
 
             
@@ -182,7 +183,7 @@ const EditProfile = () => {
               value={formData.phone_whatsapp}
               onChange={handleChange}
               startContent={<Phone className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
             />
 
             
@@ -196,7 +197,7 @@ const EditProfile = () => {
               value={formData.facebook_url}
               onChange={handleChange}
               startContent={<Facebook className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
             />
 
             
@@ -210,12 +211,12 @@ const EditProfile = () => {
               minRows={4}
               value={formData.bio}
               onChange={handleChange}
-              classNames={{ inputWrapper: "border-[2px] border-black", label: "font-bold text-black text-sm" }}
+              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
             />
 
             
             <div className="pt-4 flex gap-4">
-              <Button as="button" type="button" onClick={() => navigate('/profile')} variant="flat" radius="md" className="w-1/3 border-2 border-black font-bold">
+              <Button as="button" type="button" onClick={() => navigate('/profile')} variant="flat" radius="md" className="w-1/3 bg-gray-100 font-bold">
                 Cancelar
               </Button>
               <Button type="submit" isLoading={isLoading} variant="solid" radius="md" className="w-2/3 bg-woho-purple text-white font-bold tracking-wider">
@@ -225,7 +226,7 @@ const EditProfile = () => {
 
           </form>
         </CardBody>
-      </Card>
+      </SurfaceCard>
     </div>
   );
 };

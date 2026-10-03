@@ -14,17 +14,11 @@ export default {
         'woho-purple': '#8E0083',
         'woho-orange': '#F86205',
       },
-      borderWidth: {
-        'neo': '2px',
-      },
       fontFamily: {
         sans: ['"Albert Sans"', 'sans-serif'],
         cuerpo: ['"Albert Sans"', 'sans-serif'],
         titulo: ['"Kanit"', 'sans-serif'],
       },
-      borderRadius: {
-        'neo': '0.75rem', 
-      }
     },
   },
   darkMode: "class",

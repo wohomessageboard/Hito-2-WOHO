@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Card, CardBody, CardHeader, Button, Input } from '@heroui/react';
+import { CardBody, CardHeader, Button, Input } from '@heroui/react';
 
 import { Mail, Lock, User } from 'lucide-react';
 
@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
 import api from '../config/api';
+import SurfaceCard from '../components/ui/SurfaceCard';
 
 const Register = () => {
   const { login } = useUser();
@@ -48,7 +49,7 @@ const Register = () => {
     <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 w-full">
       
       
-      <Card className="w-full max-w-md border-[2px] border-black rounded-xl bg-white shadow-sm overflow-visible">
+      <SurfaceCard elevated className="w-full max-w-md overflow-visible">
         
         
         <CardHeader className="flex flex-col items-center pt-8 pb-0">
@@ -78,7 +79,7 @@ const Register = () => {
               onChange={(e) => setName(e.target.value)}
 
               startContent={<User className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
-              classNames={{ inputWrapper: "border-[2px] border-black" }}
+              classNames={{ inputWrapper: "border border-gray-200" }}
             />
 
             
@@ -93,7 +94,7 @@ const Register = () => {
 
               onChange={(e) => setEmail(e.target.value)}
               startContent={<Mail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
-              classNames={{ inputWrapper: "border-[2px] border-black" }}
+              classNames={{ inputWrapper: "border border-gray-200" }}
             />
 
             
@@ -108,7 +109,7 @@ const Register = () => {
 
               onChange={(e) => setPassword(e.target.value)}
               startContent={<Lock className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
-              classNames={{ inputWrapper: "border-[2px] border-black" }}
+              classNames={{ inputWrapper: "border border-gray-200" }}
             />
 
             
@@ -124,7 +125,7 @@ const Register = () => {
               variant="solid"
               radius="md"
               isLoading={isLoading}
-              className="font-titulo font-bold bg-woho-purple text-white shadow-sm mt-4 h-12 text-lg"
+              className="font-titulo font-bold bg-woho-purple text-white mt-4 h-12 text-lg"
             >
               Crear mi cuenta
             </Button>
@@ -145,7 +146,7 @@ const Register = () => {
           </div>
         </CardBody>
 
-      </Card>
+      </SurfaceCard>
     </div>
   );
 };

@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
     if (token) {
       api.get('/users/me')
         .then(res => setCurrentUser(res.data))
-        .catch(err => {
+        .catch(() => {
           console.error('La sesión expiró o el token es inválido.');
           localStorage.removeItem('token');
         })

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { Card, CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
+import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
+import SurfaceCard from '../components/ui/SurfaceCard';
 import { MapPin, Target, Send, Image as ImageIcon } from 'lucide-react';
 
 import api from '../config/api';
@@ -51,6 +52,7 @@ const NewPost = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,6 +79,7 @@ const NewPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg('');
 
     try {
       const formToSend = new FormData();
@@ -100,8 +103,8 @@ const NewPost = () => {
       navigate('/profile');
     } catch (error) {
       console.error('Error publicando el aviso:', error);
+      setErrorMsg(error.response?.data?.error || 'No pudimos publicar tu aviso. Revisa los datos e intenta de nuevo.');
       setIsSubmitting(false);
-
     }
   };
 
@@ -112,13 +115,10 @@ const NewPost = () => {
     <div className="flex justify-center w-full px-4 py-8 md:py-12">
       
       
-      <Card className="w-full max-w-2xl border-[2px] border-black rounded-xl bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col overflow-visible">
+      <SurfaceCard elevated className="w-full max-w-2xl flex flex-col overflow-visible">
         
         
         <CardHeader className="flex flex-col items-start px-6 pt-8 pb-4">
-          <span className="text-woho-orange font-black uppercase tracking-widest text-sm mb-1">
-            Nuevo Aviso
-          </span>
           <h1 className="text-4xl font-titulo font-black text-black uppercase tracking-tighter leading-none">
             Crear Publicación
           </h1>
@@ -151,7 +151,7 @@ const NewPost = () => {
                 value={formData.title}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50 focus-within:bg-white",
+                  inputWrapper: "border border-gray-200 bg-gray-50 focus-within:bg-white",
                   label: "font-bold text-black text-sm"
                 }}
               />
@@ -169,7 +169,7 @@ const NewPost = () => {
                 selectedKeys={formData.category_id ? [formData.category_id] : []}
                 onChange={handleSelectChange}
                 classNames={{ 
-                  trigger: "border-[2px] border-black bg-gray-50",
+                  trigger: "border border-gray-200 bg-gray-50",
                   label: "font-bold text-black text-sm"
                 }}
               >
@@ -202,7 +202,7 @@ const NewPost = () => {
                   selectedKeys={formData.country_id ? [formData.country_id] : []}
                   onChange={handleSelectChange}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
+                    trigger: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 >
@@ -225,7 +225,7 @@ const NewPost = () => {
                   onChange={handleSelectChange}
                   isDisabled={!formData.country_id}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
+                    trigger: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 >
@@ -258,7 +258,7 @@ const NewPost = () => {
                 value={formData.description}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50",
+                  inputWrapper: "border border-gray-200 bg-gray-50",
                   label: "font-bold text-black text-sm"
                 }}
               />
@@ -283,7 +283,7 @@ const NewPost = () => {
                   value={formData.price}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
+                    inputWrapper: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 />
@@ -302,7 +302,7 @@ const NewPost = () => {
                   value={formData.duration_days}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
+                    inputWrapper: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 />
@@ -320,7 +320,7 @@ const NewPost = () => {
                 />
                 <label 
                   htmlFor="images-upload"
-                  className="border-[2px] border-black border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="border-2 border-gray-300 border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
                   <span className="font-bold font-cuerpo text-black">Añadir Fotos (Máx 5)</span>
@@ -331,7 +331,7 @@ const NewPost = () => {
                 {previews.length > 0 && (
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {previews.map((src, i) => (
-                      <div key={i} className="aspect-square border-[2px] border-black rounded-lg overflow-hidden relative">
+                      <div key={i} className="aspect-square border border-gray-200 rounded-lg overflow-hidden relative">
                         <img src={src} alt={`Preview ${i}`} className="w-full h-full object-cover" />
                         <button 
                           type="button"
@@ -341,7 +341,7 @@ const NewPost = () => {
                             setSelectedFiles(newFiles);
                             setPreviews(newPrevs);
                           }}
-                          className="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold border-l-2 border-b-2 border-black"
+                          className="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold border-l-2 border-b-2 border-white"
                         >
                           X
                         </button>
@@ -352,10 +352,16 @@ const NewPost = () => {
               </div>
             </div>
 
-            
+
+            {errorMsg && (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm font-bold">
+                <p>{errorMsg}</p>
+              </div>
+            )}
+
             <div className="mt-8">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 form="new-post-form"
                 isLoading={isSubmitting} 
                 className="w-full h-16 bg-woho-black text-white font-titulo font-black text-xl uppercase tracking-widest rounded-xl hover:bg-black transition-colors"
@@ -367,7 +373,7 @@ const NewPost = () => {
 
           </form>
         </CardBody>
-      </Card>
+      </SurfaceCard>
     </div>
   );
 };

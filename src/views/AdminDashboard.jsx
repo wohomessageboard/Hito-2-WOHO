@@ -22,8 +22,6 @@ const AdminDashboard = () => {
     }
   }, [isAuthenticated, currentUser, navigate]);
 
-  if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return null;
-
   const [users, setUsers] = useState([]);
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
@@ -52,21 +50,48 @@ const AdminDashboard = () => {
     fetchData();
   }, [currentUser]);
 
-  const handleToggleBan = async (userId) => {
+  if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return null;
 
-    setUsers(prevUsers => prevUsers.map(user => 
+  const handleToggleBan = async (userId) => {
+    const targetUser = users.find(u => u.id === userId);
+    if (!targetUser) return;
+
+    const action = targetUser.is_active ? 'banear' : 'restaurar';
+    if (!window.confirm(`¿Seguro que quieres ${action} a ${targetUser.name}?`)) return;
+
+    setUsers(prevUsers => prevUsers.map(user =>
       user.id === userId ? { ...user, is_active: !user.is_active } : user
     ));
-    await api.put(`/admin/users/${userId}/ban`).catch(err => console.log(err));
+    try {
+      await api.put(`/admin/users/${userId}/ban`);
+    } catch (err) {
+      console.error(err);
+      setUsers(prevUsers => prevUsers.map(user =>
+        user.id === userId ? { ...user, is_active: targetUser.is_active } : user
+      ));
+      alert(`No se pudo ${action === 'banear' ? 'banear' : 'restaurar'} a ${targetUser.name}. Intenta de nuevo.`);
+    }
   };
 
   const handleToggleRole = async (userId) => {
     const targetUser = users.find(u => u.id === userId);
-    const newRole = targetUser?.role === 'admin' ? 'user' : 'admin';
-    setUsers(prevUsers => prevUsers.map(user => 
+    if (!targetUser || targetUser.role === 'superadmin') return;
+
+    const newRole = targetUser.role === 'admin' ? 'user' : 'admin';
+    if (!window.confirm(`¿Cambiar el rol de ${targetUser.name} de "${targetUser.role}" a "${newRole}"?`)) return;
+
+    setUsers(prevUsers => prevUsers.map(user =>
       user.id === userId ? { ...user, role: newRole } : user
     ));
-    await api.put(`/admin/users/${userId}/role`, { role: newRole }).catch(err => console.log(err));
+    try {
+      await api.put(`/admin/users/${userId}/role`, { role: newRole });
+    } catch (err) {
+      console.error(err);
+      setUsers(prevUsers => prevUsers.map(user =>
+        user.id === userId ? { ...user, role: targetUser.role } : user
+      ));
+      alert(`No se pudo cambiar el rol de ${targetUser.name}. Intenta de nuevo.`);
+    }
   };
 
   const handleDeleteUser = async (userId) => {
@@ -91,10 +116,10 @@ const AdminDashboard = () => {
     <div className="flex flex-col w-full max-w-7xl mx-auto px-4 py-8 md:py-12 gap-8">
       
       
-      <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-[3px] border-black pb-6">
+      <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-gray-200 pb-6">
         <div className="space-y-2">
-          <Chip color="danger" variant="flat" startContent={<ShieldCheck className="w-4 h-4 ml-1" />} className="font-bold border-[2px] border-danger">
-            Modo SuperAdmin
+          <Chip color="danger" variant="flat" startContent={<ShieldCheck className="w-4 h-4 ml-1" />} className="font-bold">
+            {currentUser?.role === 'superadmin' ? 'Modo SuperAdmin' : 'Modo Admin'}
           </Chip>
           <h1 className="text-4xl md:text-5xl font-titulo font-black text-black tracking-tighter uppercase">
             Panel de Control Central
@@ -112,8 +137,8 @@ const AdminDashboard = () => {
         variant="solid" 
         radius="full"
         classNames={{
-          tabList: "bg-gray-100 p-2 border-[2px] border-black w-full overflow-x-auto flex-nowrap",
-          cursor: "bg-black shadow-none",
+          tabList: "bg-gray-100 p-2 w-full overflow-x-auto flex-nowrap",
+          cursor: "bg-woho-purple shadow-none",
           tab: "h-12 px-4 md:px-6 flex-1",
           tabContent: "font-titulo font-bold text-lg group-data-[selected=true]:text-white flex items-center gap-2"
         }}

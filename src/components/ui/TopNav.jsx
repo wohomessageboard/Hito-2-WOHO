@@ -7,17 +7,25 @@ import { useUser } from '../../context/UserContext';
 const TopNav = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
 
   const { isAuthenticated, currentUser, logout } = useUser();
 
+  React.useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 8);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <Navbar 
+    <Navbar
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="xl"
-      height="5rem"
+      height="4.25rem"
       position="sticky"
-      className="top-4 z-50 mx-auto w-[95%] max-w-7xl rounded-full border-[2px] border-black bg-white/70 backdrop-blur-lg shadow-sm"
+      className={`top-0 z-50 bg-white/90 backdrop-blur-sm transition-shadow ${isScrolled ? 'shadow-sm' : ''}`}
       classNames={{
         wrapper: "px-4 sm:px-6",
         item: [
@@ -25,24 +33,18 @@ const TopNav = () => {
           "relative",
           "h-full",
           "items-center",
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[4px]",
-          "data-[active=true]:after:bg-woho-orange"
         ]
       }}
     >
       <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle 
+        <NavbarMenuToggle
           aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          className="min-w-11 min-h-11 flex items-center justify-center"
           icon={(isOpen) => (
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <span className={`h-[2px] w-full bg-black transition-transform duration-300 ${isOpen ? 'translate-y-[9px] rotate-45' : ''}`} />
-              <span className={`h-[2px] w-full bg-black transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-              <span className={`h-[2px] w-full bg-black transition-transform duration-300 ${isOpen ? '-translate-y-[9px] -rotate-45' : ''}`} />
+            <div className="w-5 h-4 flex flex-col justify-between">
+              <span className={`h-[2px] w-full bg-woho-black transition-transform duration-300 ${isOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+              <span className={`h-[2px] w-full bg-woho-black transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
+              <span className={`h-[2px] w-full bg-woho-black transition-transform duration-300 ${isOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
             </div>
           )}
         />
@@ -50,57 +52,73 @@ const TopNav = () => {
 
       <NavbarBrand className="mr-4">
         <RouterLink to="/" className="flex items-center gap-2">
-          
-          <img 
-            src="https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png" 
-            alt="WOHO Logo" 
-            className="w-[110px] h-[110px] object-contain"
+
+          <img
+            src="https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png"
+            alt="WOHO Logo"
+            className="h-9 w-auto object-contain"
           />
         </RouterLink>
       </NavbarBrand>
 
-      <NavbarContent className="hidden sm:flex gap-8" justify="center">
+      <NavbarContent className="hidden sm:flex gap-7" justify="center">
         {!isAuthenticated && (
-          <NavbarItem isActive={location.pathname === '/'}>
-            <Link as={RouterLink} to="/" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
+          <NavbarItem>
+            <Link
+              as={RouterLink}
+              to="/"
+              className={`font-titulo font-bold text-sm transition-colors ${location.pathname === '/' ? 'text-woho-purple' : 'text-woho-black hover:text-woho-purple'}`}
+            >
               Inicio
             </Link>
           </NavbarItem>
         )}
         {isAuthenticated && (
-          <NavbarItem isActive={location.pathname === '/feed'}>
-            <Link as={RouterLink} to="/feed" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
+          <NavbarItem>
+            <Link
+              as={RouterLink}
+              to="/feed"
+              className={`font-titulo font-bold text-sm transition-colors ${location.pathname === '/feed' ? 'text-woho-purple' : 'text-woho-black hover:text-woho-purple'}`}
+            >
               Explorar
             </Link>
           </NavbarItem>
         )}
-        <NavbarItem isActive={location.pathname.startsWith('/destinos')}>
-          <Link as={RouterLink} to="/destinos" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
+        <NavbarItem>
+          <Link
+            as={RouterLink}
+            to="/destinos"
+            className={`font-titulo font-bold text-sm transition-colors ${location.pathname.startsWith('/destinos') ? 'text-woho-purple' : 'text-woho-black hover:text-woho-purple'}`}
+          >
             Destinos
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={location.pathname === '/manifiesto'}>
-          <Link as={RouterLink} to="/manifiesto" color="foreground" className="font-titulo font-bold hover:text-woho-purple transition-colors">
+        <NavbarItem>
+          <Link
+            as={RouterLink}
+            to="/manifiesto"
+            className={`font-titulo font-bold text-sm transition-colors ${location.pathname === '/manifiesto' ? 'text-woho-purple' : 'text-woho-black hover:text-woho-purple'}`}
+          >
             Manifiesto
           </Link>
         </NavbarItem>
 
       </NavbarContent>
 
-      
-      <NavbarContent justify="end">
+
+      <NavbarContent justify="end" className="gap-2">
         {isAuthenticated ? (
 
           <>
-            
+
             {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <NavbarItem className="hidden lg:flex">
-                <Button 
-                  as={RouterLink} 
-                  to="/admin-dashboard" 
-                  variant="solid" 
-                  radius="md" 
-                  className="font-bold bg-black text-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.8)] border border-white h-10 px-6"
+                <Button
+                  as={RouterLink}
+                  to="/admin-dashboard"
+                  variant="light"
+                  radius="md"
+                  className="font-bold text-woho-black h-10 px-4"
                 >
                   Admin Panel
                 </Button>
@@ -108,20 +126,20 @@ const TopNav = () => {
             )}
 
             <NavbarItem className="hidden lg:flex">
-              <Button 
-                as={RouterLink} 
-                to="/new-post" 
-                variant="flat" 
-                radius="md" 
-                className="font-bold bg-gray-100 text-black shadow-sm h-10 px-6"
+              <Button
+                as={RouterLink}
+                to="/new-post"
+                variant="solid"
+                radius="md"
+                className="font-bold bg-woho-purple text-white h-10 px-5"
               >
                 Crear Publicación
               </Button>
             </NavbarItem>
             <NavbarItem>
-              
+
               <RouterLink to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Ir a Mi Perfil">
-                <Avatar isBordered radius="full" size="lg" src={currentUser?.avatar} className="cursor-pointer" />
+                <Avatar radius="full" size="sm" src={currentUser?.avatar} className="cursor-pointer" />
               </RouterLink>
             </NavbarItem>
           </>
@@ -129,23 +147,23 @@ const TopNav = () => {
 
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button 
-                as={RouterLink} 
-                to="/register" 
-                variant="flat" 
-                radius="md" 
-                className="font-bold bg-gray-100 text-black shadow-sm h-10 px-6"
+              <Button
+                as={RouterLink}
+                to="/register"
+                variant="light"
+                radius="md"
+                className="font-bold text-woho-black h-10 px-4"
               >
                 Regístrate
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button 
-                as={RouterLink} 
-                to="/login" 
-                variant="solid" 
-                radius="md" 
-                className="font-bold bg-woho-purple text-white shadow-sm h-10 px-6"
+              <Button
+                as={RouterLink}
+                to="/login"
+                variant="solid"
+                radius="md"
+                className="font-bold bg-woho-purple text-white h-10 px-5"
               >
                 Iniciar Sesión
               </Button>
@@ -154,97 +172,87 @@ const TopNav = () => {
         )}
       </NavbarContent>
 
-      
-      <NavbarMenu className="bg-white/70 backdrop-blur-lg pt-8 mt-5  rounded-xl  border-[2px] border-black pb-8 flex flex-col items-center gap-6 !w-[95%] mx-auto left-0 right-0 h-max max-h-[80vh] shadow-sm">
+
+      <NavbarMenu className="bg-white pt-6 pb-8 flex flex-col items-center gap-5">
         {!isAuthenticated && (
-          <>
-            <NavbarMenuItem isActive={location.pathname === '/'} className="w-full flex justify-center">
-              <Link as={RouterLink} to="/" className="w-full font-titulo font-extrabold text-2xl text-black justify-center" onPress={() => setIsMenuOpen(false)}>
-                Inicio
-              </Link>
-            </NavbarMenuItem>
-            
-            <div className="w-1/2 h-[2px] bg-black opacity-20 rounded-full" />
-          </>
+          <NavbarMenuItem className="w-full flex justify-center">
+            <Link as={RouterLink} to="/" className={`w-full font-titulo font-extrabold text-2xl justify-center ${location.pathname === '/' ? 'text-woho-purple' : 'text-woho-black'}`} onPress={() => setIsMenuOpen(false)}>
+              Inicio
+            </Link>
+          </NavbarMenuItem>
         )}
 
         {isAuthenticated && (
-          <>
-            <NavbarMenuItem isActive={location.pathname === '/feed'} className="w-full flex justify-center">
-              <Link as={RouterLink} to="/feed" className="w-full font-titulo font-extrabold text-2xl text-black justify-center" onPress={() => setIsMenuOpen(false)}>
-                Explorar
-              </Link>
-            </NavbarMenuItem>
-
-            <div className="w-1/2 h-[2px] bg-black opacity-20 rounded-full" />
-          </>
+          <NavbarMenuItem className="w-full flex justify-center">
+            <Link as={RouterLink} to="/feed" className={`w-full font-titulo font-extrabold text-2xl justify-center ${location.pathname === '/feed' ? 'text-woho-purple' : 'text-woho-black'}`} onPress={() => setIsMenuOpen(false)}>
+              Explorar
+            </Link>
+          </NavbarMenuItem>
         )}
 
-        <NavbarMenuItem isActive={location.pathname.startsWith('/destinos')} className="w-full flex justify-center">
-          <Link as={RouterLink} to="/destinos" className="w-full font-titulo font-extrabold text-2xl text-black justify-center" onPress={() => setIsMenuOpen(false)}>
+        <NavbarMenuItem className="w-full flex justify-center">
+          <Link as={RouterLink} to="/destinos" className={`w-full font-titulo font-extrabold text-2xl justify-center ${location.pathname.startsWith('/destinos') ? 'text-woho-purple' : 'text-woho-black'}`} onPress={() => setIsMenuOpen(false)}>
             Destinos
           </Link>
         </NavbarMenuItem>
 
-        <div className="w-1/2 h-[2px] bg-black opacity-20 rounded-full" />
-
-        <NavbarMenuItem isActive={location.pathname === '/manifiesto'} className="w-full flex justify-center">
-          <Link as={RouterLink} to="/manifiesto" className="w-full font-titulo font-extrabold text-2xl text-black justify-center" onPress={() => setIsMenuOpen(false)}>
+        <NavbarMenuItem className="w-full flex justify-center">
+          <Link as={RouterLink} to="/manifiesto" className={`w-full font-titulo font-extrabold text-2xl justify-center ${location.pathname === '/manifiesto' ? 'text-woho-purple' : 'text-woho-black'}`} onPress={() => setIsMenuOpen(false)}>
             Manifiesto
           </Link>
         </NavbarMenuItem>
 
-        
-        
-        <NavbarMenuItem className="w-full flex flex-col justify-center mt-4 px-6 gap-3">
+
+
+        <NavbarMenuItem className="w-full flex flex-col justify-center mt-4 px-6 gap-3 border-t border-gray-100 pt-6">
           {isAuthenticated ? (
 
             <>
-              
+
               {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
-                <Button 
-                  as={RouterLink} 
-                  to="/admin-dashboard" 
-                  variant="solid" 
-                  radius="md" 
+                <Button
+                  as={RouterLink}
+                  to="/admin-dashboard"
+                  variant="flat"
+                  radius="md"
                   fullWidth
-                  className="font-bold bg-black text-white shadow-sm h-12 text-lg border border-white"
+                  className="font-bold bg-gray-100 text-woho-black h-12 text-lg"
                   onPress={() => setIsMenuOpen(false)}
                 >
                   Admin Panel
                 </Button>
               )}
 
-              <Button 
-                as={RouterLink} 
-                to="/new-post" 
-                variant="flat" 
-                radius="md" 
+              <Button
+                as={RouterLink}
+                to="/new-post"
+                variant="solid"
+                radius="md"
                 fullWidth
-                className="font-bold bg-woho-orange text-white shadow-sm h-12 text-lg"
+                className="font-bold bg-woho-purple text-white h-12 text-lg"
                 onPress={() => setIsMenuOpen(false)}
               >
                 Crear Publicación
               </Button>
-              <Button 
-                as={RouterLink} 
-                to="/profile" 
-                variant="flat" 
-                radius="md" 
+              <Button
+                as={RouterLink}
+                to="/profile"
+                variant="flat"
+                radius="md"
                 fullWidth
-                className="font-bold bg-white text-black border-[2px] border-black shadow-sm h-12 text-lg"
+                className="font-bold bg-gray-100 text-woho-black h-12 text-lg"
                 onPress={() => setIsMenuOpen(false)}
               >
                 Mi Perfil
               </Button>
-              <Button 
-                variant="flat" 
-                radius="md" 
+              <Button
+                variant="light"
+                radius="md"
                 fullWidth
-                className="font-bold bg-gray-100 text-red-600 shadow-sm h-12 text-lg"
+                className="font-bold text-red-600 h-12 text-lg"
                 onPress={() => {
                   logout();
-                  setIsMenuOpen(false); 
+                  setIsMenuOpen(false);
                 }}
               >
                 Cerrar Sesión
@@ -253,24 +261,24 @@ const TopNav = () => {
           ) : (
 
             <>
-              <Button 
-                as={RouterLink} 
-                to="/register" 
-                variant="flat" 
-                radius="md" 
+              <Button
+                as={RouterLink}
+                to="/register"
+                variant="flat"
+                radius="md"
                 fullWidth
-                className="font-bold bg-woho-orange text-white shadow-sm h-12 text-lg"
+                className="font-bold bg-gray-100 text-woho-black h-12 text-lg"
                 onPress={() => setIsMenuOpen(false)}
               >
                 Regístrate
               </Button>
-              <Button 
-                as={RouterLink} 
-                to="/login" 
-                variant="solid" 
-                radius="md" 
+              <Button
+                as={RouterLink}
+                to="/login"
+                variant="solid"
+                radius="md"
                 fullWidth
-                className="font-bold bg-woho-purple text-white shadow-sm h-12 text-lg"
+                className="font-bold bg-woho-purple text-white h-12 text-lg"
                 onPress={() => setIsMenuOpen(false)}
               >
                 Iniciar Sesión

@@ -8,3 +8,37 @@
   }
 }
 
+/*
+ * WOHO design tokens — "minimal con color".
+ * One place to change a surface/chip/divider decision instead of
+ * editing the same Tailwind utility soup across every view.
+ */
+@layer components {
+  /* Resting white surface: in-flow cards, panels, list items. */
+  .ws-surface {
+    @apply border border-gray-100 rounded-xl bg-white shadow-sm;
+  }
+  /* Prominent floating surface: auth cards, forms, modals. */
+  .ws-surface-elevated {
+    @apply border border-gray-100 rounded-xl bg-white shadow-md;
+  }
+  /* Add to .ws-surface when the surface should lift on hover/press. */
+  .ws-surface-hover {
+    @apply hover:shadow-md transition-shadow;
+  }
+  /* Neutral hairline border for inputs, dividers inside a surface. */
+  .ws-input-border {
+    @apply border border-gray-200;
+  }
+  .ws-divider {
+    @apply bg-gray-200;
+  }
+  /* Filter/category chip states — color carries selection, not a border. */
+  .ws-chip-selected {
+    @apply bg-woho-purple text-white;
+  }
+  .ws-chip-idle {
+    @apply bg-gray-100 text-default-600 hover:bg-gray-200;
+  }
+}
+

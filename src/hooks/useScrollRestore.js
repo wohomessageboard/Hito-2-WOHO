@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useLocation, NavigationType } from 'react-router-dom';
 
 export const useScrollRestore = (storageKey, dataLoaded) => {
   useEffect(() => {

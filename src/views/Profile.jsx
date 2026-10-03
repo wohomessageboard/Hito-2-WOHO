@@ -4,7 +4,8 @@ import { useNavigate, Link } from 'react-router-dom';
 
 import { useUser } from '../context/UserContext';
 
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider, Tabs, Tab } from '@heroui/react';
+import { CardBody, Avatar, Button, Tabs, Tab } from '@heroui/react';
+import SurfaceCard from '../components/ui/SurfaceCard';
 
 import { Settings, LogOut, Pencil, Trash2, MapPin, Search, Grid, Heart, Map } from 'lucide-react';
 
@@ -22,8 +23,6 @@ const Profile = () => {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
-
-  if (!currentUser) return null;
 
   const [myPosts, setMyPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
@@ -52,6 +51,8 @@ const Profile = () => {
     fetchProfileData();
   }, [isAuthenticated, currentUser]);
 
+  if (!currentUser) return null;
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -62,44 +63,44 @@ const Profile = () => {
     <div className="flex flex-col gap-10">
 
       
-      <section className="bg-woho-purple text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center gap-8 border-[2px] border-black shadow-sm">
-        
-        
+      <section className="bg-woho-purple text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center gap-8 shadow-sm">
+
+
         <div className="w-32 h-32 md:w-40 md:h-40 relative flex-shrink-0">
-          <Avatar 
-            src={currentUser.avatar} 
-            className="w-full h-full border-[3px] border-black text-large bg-white" 
-            radius="full" 
+          <Avatar
+            src={currentUser.avatar}
+            className="w-full h-full border-[2px] border-white text-large bg-white"
+            radius="full"
           />
         </div>
 
-        
+
         <div className="flex-1 text-center md:text-left space-y-3">
           <h1 className="text-4xl md:text-5xl font-titulo font-black uppercase tracking-tighter leading-none">
             {currentUser.name}
           </h1>
           <p className="font-cuerpo text-lg opacity-90">
-            {currentUser.country ? `${currentUser.flag} País de Origen: ${currentUser.country} • ` : ''} 
+            {currentUser.country ? `${currentUser.flag} País de Origen: ${currentUser.country} • ` : ''}
             Viajero apasionado
           </p>
-          
-          
+
+
           <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
-            <Button 
+            <Button
               as={Link}
               to="/edit-profile"
-              variant="flat" 
-              radius="md" 
-              className="font-bold bg-white text-black hover:bg-gray-200 transition-colors border-[2px] border-black"
+              variant="flat"
+              radius="md"
+              className="font-bold bg-white text-black hover:bg-gray-200 transition-colors"
               startContent={<Settings className="w-4 h-4" />}
             >
               Editar Perfil
             </Button>
-            <Button 
+            <Button
               onPress={handleLogout}
-              variant="flat" 
-              radius="md" 
-              className="font-bold bg-red-100 text-red-700 hover:bg-red-200 transition-colors border-[2px] border-black"
+              variant="flat"
+              radius="md"
+              className="font-bold bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
               startContent={<LogOut className="w-4 h-4" />}
             >
               Cerrar Sesión
@@ -116,8 +117,8 @@ const Profile = () => {
           radius="md" 
           size="lg"
           classNames={{
-            tabList: "border-[2px] border-black bg-white shadow-sm p-1",
-            cursor: "bg-woho-black shadow-none",
+            tabList: "border border-gray-200 bg-white shadow-sm p-1",
+            cursor: "bg-woho-purple shadow-none",
             tabContent: "group-data-[selected=true]:text-white font-titulo font-bold text-black"
           }}
         >
@@ -205,9 +206,9 @@ const Profile = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
               {followedPlaces.length > 0 ? (
                 followedPlaces.map((loc) => (
-                  <Card key={`${loc.country_id}-${loc.city_id || '0'}`} className="border-[2px] border-black rounded-xl bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] transition-transform cursor-pointer" isPressable onPress={() => navigate(`/destinos/${loc.name}`)}>
+                  <SurfaceCard key={`${loc.country_id}-${loc.city_id || '0'}`} hoverable className="cursor-pointer" isPressable onPress={() => navigate(`/destinos/${loc.name}`)}>
                     <CardBody className="p-4 flex flex-row items-center gap-4">
-                      <div className="text-4xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center border-[2px] border-black pb-1 shrink-0">
+                      <div className="text-4xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center pb-1 shrink-0">
                         {loc.flag || '🗺️'}
                       </div>
                       <div className="flex-1 overflow-hidden">
@@ -217,7 +218,7 @@ const Profile = () => {
                         </span>
                       </div>
                     </CardBody>
-                  </Card>
+                  </SurfaceCard>
                 ))
               ) : (
                 <p className="font-cuerpo text-gray-500 italic col-span-full text-center py-10">No sigues ninguna ubicación todavía. Ve a explorar la vista de <strong>Destinos</strong> para añadir lugares a tu radar.</p>

@@ -15,7 +15,7 @@ const MainLayout = () => {
       </main>
 
       
-      <footer className="border-t-[2px] border-black bg-woho-white py-6 mt-auto">
+      <footer className="border-t border-gray-200 bg-woho-white py-6 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-cuerpo font-bold text-sm text-black">
             © {new Date().getFullYear()} WOHO. Desarrollado con ❤️ para viajeros.

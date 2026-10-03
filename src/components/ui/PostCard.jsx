@@ -72,7 +72,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           {isPublicFeed ? (
             <Avatar size="sm" className="border-[1.5px] border-dashed border-gray-400 bg-gray-100" />
           ) : (
-            <Avatar src={owner?.avatar} size="sm" className="border-[1.5px] border-black bg-white" />
+            <Avatar src={owner?.avatar} size="sm" className="border border-gray-200 bg-white" />
           )}
           <div className="flex flex-col gap-1 items-start justify-center">
             
@@ -155,7 +155,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
     if (variant !== "feed" || !post.images) return null;
 
-    let displayImages = [];
+    let displayImages;
     try {
       displayImages = typeof post.images === "string" ? JSON.parse(post.images) : post.images;
     } catch (e) {
@@ -167,7 +167,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
     return (
       <div className="px-4 pb-4">
-        <div className="w-full h-24 rounded-lg border-2 border-black overflow-hidden relative">
+        <div className="w-full h-24 rounded-lg border border-gray-200 overflow-hidden relative">
           <img 
             src={displayImages[0]} 
             alt="Thumbnail" 
@@ -209,7 +209,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           <Button as={Link} to={`/post/${postIdToSave}`} variant="solid" radius="md" size="sm" className="font-bold bg-black text-white w-3/4">
             Ver más
           </Button>
-          <Button onClick={handleToggleFavorite} variant="flat" radius="md" size="sm" className="w-1/4 px-0 flex justify-center items-center bg-red-100 hover:bg-red-200 text-red-600 transition-colors" title="Quitar de Favoritos">
+          <Button onClick={handleToggleFavorite} variant="flat" radius="md" size="sm" className="w-1/4 min-h-11 px-0 flex justify-center items-center bg-red-100 hover:bg-red-200 text-red-600 transition-colors" title="Quitar de Favoritos">
             <Trash2 className="w-4 h-4" />
           </Button>
         </CardFooter>
@@ -220,7 +220,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
       <CardFooter className="flex justify-between gap-2 bg-gray-50/50 rounded-b-xl">
         {isMyPost ? (
           <div className="flex gap-2 w-full">
-            <Button as={Link} to="/profile" variant="flat" radius="sm" size="sm" className="flex-1 font-bold bg-gray-200 text-black border border-black border-dashed">
+            <Button as={Link} to="/profile" variant="flat" radius="sm" size="sm" className="flex-1 font-bold bg-gray-200 text-black">
               Gestionar
             </Button>
             <Button 
@@ -228,8 +228,8 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               variant="flat" 
               radius="sm" 
               size="sm" 
-              isIconOnly 
-              className="bg-red-50 border border-red-200 text-red-600 hover:bg-red-100"
+              isIconOnly
+              className="min-h-11 min-w-11 bg-red-50 border border-red-200 text-red-600 hover:bg-red-100"
               title="Eliminar mi aviso"
             >
               <Trash2 className="w-4 h-4" />
@@ -250,11 +250,11 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             
             
             {isAuthenticated ? (
-              <Button onClick={handleToggleFavorite} variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 bg-white border border-black hover:bg-yellow-50 text-black transition-colors" title={isFav ? "Quitar Favorito" : "Guardar Favorito"}>
+              <Button onClick={handleToggleFavorite} variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 min-h-11 bg-white border border-gray-200 hover:bg-yellow-50 text-black transition-colors" title={isFav ? "Quitar Favorito" : "Guardar Favorito"}>
                 <Star className={`w-4 h-4 ${isFav ? "text-warning" : ""}`} fill={isFav ? "currentColor" : "none"} />
               </Button>
             ) : (
-              <Button as={Link} to="/login" variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 bg-gray-100 border border-gray-300 text-gray-400" title="Guardar Favorito">
+              <Button as={Link} to="/login" variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 min-h-11 bg-gray-100 border border-gray-300 text-gray-400" title="Guardar Favorito">
                 <Star className="w-4 h-4" />
               </Button>
             )}
@@ -267,16 +267,16 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   const cardBgClass = variant === "favorite" ? "bg-gray-50" : "bg-white";
 
   return (
-    <Card 
-      className={`w-full border-[2px] border-black rounded-xl ${cardBgClass} shadow-none flex flex-col transition-all`}
+    <Card
+      className={`w-full border border-gray-200 rounded-xl ${cardBgClass} shadow-sm hover:shadow-md flex flex-col transition-shadow`}
     >
       {renderHeader()}
-      <Divider className="bg-black opacity-15" />
+      <Divider className="bg-gray-200" />
       
       {renderBody()}
       {renderImages()}
       
-      {variant !== "creator" && <Divider className="bg-black opacity-15" />}
+      {variant !== "creator" && <Divider className="bg-gray-200" />}
       
       {renderFooter()}
     </Card>

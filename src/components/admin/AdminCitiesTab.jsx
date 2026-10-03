@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, Button, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from '@heroui/react';
+import SurfaceCard from '../ui/SurfaceCard';
 import { Plus, Trash2 } from 'lucide-react';
 import api from '../../config/api';
 
@@ -34,7 +35,7 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
       <div className="lg:col-span-1">
-        <Card className="border-[2px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-woho-purple">
+        <Card className="rounded-xl shadow-sm bg-woho-purple">
           <CardHeader className="pt-6 px-6">
             <h3 className="font-titulo font-black text-white text-2xl">Vincular Ciudad</h3>
           </CardHeader>
@@ -44,7 +45,7 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
                 <label className="text-white font-bold text-sm">País Padre</label>
                 <select
                   required
-                  className="bg-white rounded-lg h-12 px-4 border-[2px] border-black font-bold outline-none cursor-pointer"
+                  className="bg-white rounded-lg h-12 px-4 border border-gray-200 font-bold cursor-pointer focus:outline-none focus:ring-2 focus:ring-woho-purple focus:ring-offset-2"
                   value={newCity.country_id}
                   onChange={(e) => setNewCity({...newCity, country_id: e.target.value})}
                 >
@@ -66,7 +67,7 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
                 />
               </div>
               
-              <Button type="submit" variant="solid" className="bg-white text-black font-black h-12 border-[2px] border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-100 transition-colors mt-2">
+              <Button type="submit" variant="solid" className="bg-white text-black font-black h-12 shadow-sm hover:bg-gray-100 transition-colors mt-2">
                 <Plus className="w-5 h-5" /> Registrar Ciudad
               </Button>
             </form>
@@ -75,10 +76,10 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
       </div>
 
       <div className="lg:col-span-2">
-        <Card className="border-[2px] border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+        <SurfaceCard>
           <CardBody className="p-0 overflow-hidden">
             <Table aria-label="Lista de Ciudades" removeWrapper radius="none" className="min-w-full">
-              <TableHeader className="bg-gray-100 border-b-[2px] border-black">
+              <TableHeader className="bg-gray-100 border-b border-gray-200">
                 <TableColumn className="font-titulo font-black text-black uppercase w-16">ID</TableColumn>
                 <TableColumn className="font-titulo font-black text-black uppercase">Ciudad</TableColumn>
                 <TableColumn className="font-titulo font-black text-black uppercase">País Base</TableColumn>
@@ -101,7 +102,14 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
                         )}
                       </TableCell>
                       <TableCell className="text-right flex justify-end gap-2">
-                        <Button size="sm" isIconOnly variant="light" color="danger" onPress={() => handleDeleteCity(city.id)}>
+                        <Button
+                          size="sm"
+                          isIconOnly
+                          variant="light"
+                          color="danger"
+                          aria-label={`Borrar ciudad ${city.name}`}
+                          onPress={() => handleDeleteCity(city.id)}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </TableCell>
@@ -111,7 +119,7 @@ const AdminCitiesTab = ({ cities, setCities, countries }) => {
               </TableBody>
             </Table>
           </CardBody>
-        </Card>
+        </SurfaceCard>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { Card, CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
+import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
+import SurfaceCard from '../components/ui/SurfaceCard';
 import { MapPin, Target, Save, Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import api from '../config/api';
 
@@ -88,11 +89,6 @@ const EditPost = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 5) {
@@ -143,15 +139,12 @@ const EditPost = () => {
 
   return (
     <div className="flex justify-center w-full px-4 py-8 md:py-12">
-      <Card className="w-full max-w-2xl border-[2px] border-black rounded-xl bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <SurfaceCard elevated className="w-full max-w-2xl">
         <CardHeader className="flex flex-col items-start px-6 pt-8 pb-4">
           <div className="flex justify-between w-full items-center mb-4">
-            <Button variant="flat" size="sm" onPress={() => navigate(-1)} className="border-2 border-black font-bold">
+            <Button variant="flat" size="sm" onPress={() => navigate(-1)} className="bg-gray-100 font-bold">
                <ArrowLeft className="w-4 h-4 mr-1" /> Volver
             </Button>
-            <span className="text-woho-purple font-black uppercase tracking-widest text-sm">
-                Edición de Aviso
-            </span>
           </div>
           <h1 className="text-4xl font-titulo font-black text-black uppercase tracking-tighter leading-none">
             Modificar Publicación
@@ -179,7 +172,7 @@ const EditPost = () => {
                 value={formData.title}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50 focus-within:bg-white",
+                  inputWrapper: "border border-gray-200 bg-gray-50 focus-within:bg-white",
                   label: "font-bold text-black text-sm"
                 }}
               />
@@ -197,7 +190,7 @@ const EditPost = () => {
                   setFormData(prev => ({ ...prev, category_id: String(selectedValue) }));
                 }}
                 classNames={{ 
-                  trigger: "border-[2px] border-black bg-gray-50",
+                  trigger: "border border-gray-200 bg-gray-50",
                   label: "font-bold text-black text-sm"
                 }}
               >
@@ -227,7 +220,7 @@ const EditPost = () => {
                     setFormData(prev => ({ ...prev, country_id: String(selectedValue), city_id: '' }));
                   }}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
+                    trigger: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 >
@@ -251,7 +244,7 @@ const EditPost = () => {
                   }}
                   isDisabled={!formData.country_id}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
+                    trigger: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 >
@@ -278,7 +271,7 @@ const EditPost = () => {
                 value={formData.description}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50",
+                  inputWrapper: "border border-gray-200 bg-gray-50",
                   label: "font-bold text-black text-sm"
                 }}
               />
@@ -295,7 +288,7 @@ const EditPost = () => {
                   value={formData.price}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
+                    inputWrapper: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 />
@@ -311,7 +304,7 @@ const EditPost = () => {
                   value={formData.duration_days}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
+                    inputWrapper: "border border-gray-200 bg-gray-50",
                     label: "font-bold text-black text-sm"
                   }}
                 />
@@ -321,7 +314,7 @@ const EditPost = () => {
                 <input type="file" id="images-upload" multiple accept="image/*" className="hidden" onChange={handleFileChange} />
                 <label 
                   htmlFor="images-upload"
-                  className="border-[2px] border-black border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="border-2 border-gray-300 border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
                   <span className="font-bold font-cuerpo text-black">Cambiar Fotos (Máx 5)</span>
@@ -331,7 +324,7 @@ const EditPost = () => {
                 {previews.length > 0 && (
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {previews.map((src, i) => (
-                      <div key={i} className="aspect-square border-[2px] border-black rounded-lg overflow-hidden relative">
+                      <div key={i} className="aspect-square border border-gray-200 rounded-lg overflow-hidden relative">
                         <img src={src} alt="Preview" className="w-full h-full object-cover" />
                       </div>
                     ))}
@@ -352,7 +345,7 @@ const EditPost = () => {
 
           </form>
         </CardBody>
-      </Card>
+      </SurfaceCard>
     </div>
   );
 };

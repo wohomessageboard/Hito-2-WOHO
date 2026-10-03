@@ -33,9 +33,9 @@ const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en
       )}
 
       
-      <Button 
-        onPress={() => navigate(-1)} 
-        className="h-14 mt-4 md:mt-8 px-8 font-titulo font-black text-lg bg-white border-[3px] border-black text-black hover:bg-black hover:text-white transition-all hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+      <Button
+        onPress={() => navigate(-1)}
+        className="h-14 mt-4 md:mt-8 px-8 font-titulo font-black text-lg bg-woho-purple text-white hover:opacity-90 transition-all shadow-sm"
         startContent={<ArrowLeft className="w-5 h-5 mr-1" />}
       >
         Volver atrás, obreros trabajando!

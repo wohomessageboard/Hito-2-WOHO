@@ -9,10 +9,6 @@ const AdminCategoriesTab = () => {
   const [newCatName, setNewCatName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   const fetchCategories = async () => {
     try {
       const res = await api.get('/categories');
@@ -23,6 +19,10 @@ const AdminCategoriesTab = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleCreateCategory = async (e) => {
     e.preventDefault();
@@ -57,7 +57,7 @@ const AdminCategoriesTab = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-gray-50 p-4 border-[2px] border-black rounded-xl">
+      <div className="flex justify-between items-center bg-gray-50 p-4 border border-gray-200 rounded-xl">
         <h2 className="text-xl font-titulo font-black text-black flex items-center gap-2">
           <GripVertical className="w-5 h-5 text-woho-black" />
           Módulos y Categorías
@@ -68,7 +68,7 @@ const AdminCategoriesTab = () => {
             placeholder="Nueva Categoría (ej: Voluntariados)" 
             size="sm" 
             variant="faded" 
-            classNames={{ inputWrapper: "border-[1.5px] border-black" }}
+            classNames={{ inputWrapper: "border border-gray-200" }}
             value={newCatName}
             onChange={(e) => setNewCatName(e.target.value)}
           />
@@ -83,7 +83,7 @@ const AdminCategoriesTab = () => {
         </form>
       </div>
 
-      <div className="border-[2px] border-black rounded-xl overflow-hidden shadow-sm">
+      <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         <Table aria-label="Tabla de Categorías WOHO" removeWrapper>
           <TableHeader>
             <TableColumn className="bg-black text-white font-titulo font-bold uppercase py-4">ID de BD</TableColumn>

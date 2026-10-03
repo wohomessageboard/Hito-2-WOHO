@@ -17,7 +17,7 @@ const AppBreadcrumbs = () => {
         radius="sm" 
         variant="solid"
         classNames={{
-          list: "bg-white underline-[2px] border-black shadow-sm",
+          list: "bg-white border border-gray-100 shadow-sm",
         }}
         itemClasses={{
           item: "font-titulo font-bold text-black",
@@ -34,7 +34,7 @@ const AppBreadcrumbs = () => {
           const last = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
-          let title = "";
+          let title;
 
           switch (value) {
             case 'feed':
