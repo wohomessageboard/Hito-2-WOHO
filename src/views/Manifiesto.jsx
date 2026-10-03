@@ -34,7 +34,7 @@ const Manifiesto = () => {
 
       <header className="relative grid md:grid-cols-12 gap-8 items-end pt-2">
         <h1 className="md:col-span-7 font-display text-6xl sm:text-7xl xl:text-8xl">
-          Nuestro <em className="text-ws-tomato-deep">manifiesto</em>
+          Nuestro <em className="text-ws-accent">manifiesto</em>
         </h1>
         <p className="md:col-span-5 font-display italic text-3xl md:text-4xl leading-tight text-ws-ink/90">
           Viajar no es escapar, es encontrarse. Creemos en el poder transformador de migrar y en la fuerza invencible de la comunidad.
@@ -44,7 +44,7 @@ const Manifiesto = () => {
 
       <div className="relative">
         <PhotoSlot file="manifiesto-portada" ratio="21 / 9" hint="Paisaje panorámico: tu mejor foto de ruta" className="[&>div]:min-h-[12rem]" />
-        <Stamp variant="rect" top="LLEGADA" center="BIENVENIDO" bottom="2026" rotate={-6} className="hidden sm:block absolute -bottom-8 right-6 w-36 text-ws-tomato-deep" />
+        <Stamp variant="rect" top="LLEGADA" center="BIENVENIDO" bottom="2026" rotate={-6} className="hidden sm:block absolute -bottom-8 right-6 w-36 text-ws-plum" />
       </div>
 
       {PRINCIPLES.map(({ id, title, band, body, photo }, index) => {

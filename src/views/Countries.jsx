@@ -32,7 +32,7 @@ const Countries = () => {
 
       <section className="relative grid md:grid-cols-12 gap-6 items-end">
         <h1 className="md:col-span-7 font-display text-6xl md:text-8xl">
-          Elige tu <em className="text-ws-tomato-deep">destino</em>
+          Elige tu <em className="text-ws-accent">destino</em>
         </h1>
         <p className="md:col-span-5 font-cuerpo text-lg text-ws-ink/85 leading-relaxed">
           Selecciona un país para ver las oportunidades de trabajo, alojamiento y compañeros de ruta activos allí.

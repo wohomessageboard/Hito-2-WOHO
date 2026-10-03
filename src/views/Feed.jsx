@@ -104,7 +104,7 @@ const Feed = () => {
         <div className="grid md:grid-cols-12 gap-6 items-end">
           <div className="md:col-span-7 space-y-3">
             <h1 className="font-display text-6xl md:text-8xl">
-              {isAuthenticated ? <>Para <em className="text-ws-tomato-deep">ti</em></> : <>Anuncios <em className="text-ws-tomato-deep">recientes</em></>}
+              {isAuthenticated ? <>Para <em className="text-ws-accent">ti</em></> : <>Anuncios <em className="text-ws-accent">recientes</em></>}
             </h1>
             <p className="font-cuerpo text-ws-ink/85 text-lg max-w-xl leading-relaxed">
               {isAuthenticated

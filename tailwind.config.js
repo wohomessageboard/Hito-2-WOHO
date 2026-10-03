@@ -17,6 +17,7 @@ const ws = {
   plum: '#66023C',       // vino (texto encima: papel)
   olive: '#6B7420',      // verde oliva (texto sobre papel)
   citron: '#CAD183',     // verde cidra, fondos suaves
+  accent: 'var(--ws-accent)', // énfasis de titulares; lo fija cada sección (src/theme/pageThemes.js)
   line: 'rgb(24 19 15 / 0.16)',        // filete fino: separa sin pesar
   'line-strong': 'rgb(24 19 15 / 0.34)', // borde de campos y controles
 };
@@ -50,7 +51,7 @@ export default {
   plugins: [
     plugin(({ addBase }) => {
       addBase({
-        ':root': Object.fromEntries(Object.entries(ws).map(([k, v]) => [`--ws-${k}`, v])),
+        ':root': Object.fromEntries(Object.entries({ ...ws, accent: '#B8321A' }).map(([k, v]) => [`--ws-${k}`, v])),
       });
     }),
     heroui({

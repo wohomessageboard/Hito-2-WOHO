@@ -1,10 +1,20 @@
-import { Outlet, Link as RouterLink } from 'react-router-dom';
+import { useLayoutEffect } from 'react';
+import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom';
+import { themeForPath } from '../theme/pageThemes';
 import { Link } from '@heroui/react';
 import TopNav from '../components/ui/TopNav';
 import AppBreadcrumbs from '../components/ui/AppBreadcrumbs';
 import Stamp, { InkFilter } from '../components/ui/Stamp';
 
 const MainLayout = () => {
+  const { pathname } = useLocation();
+  useLayoutEffect(() => {
+    const { paper, accent } = themeForPath(pathname);
+    const root = document.documentElement;
+    root.style.setProperty('--ws-paper', paper);
+    root.style.setProperty('--ws-accent', accent);
+  }, [pathname]);
+
   const year = new Date().getFullYear();
   return (
     <div className="flex flex-col min-h-screen w-full">

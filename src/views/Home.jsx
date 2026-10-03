@@ -39,7 +39,7 @@ const Home = () => {
       <section className="grid lg:grid-cols-12 gap-14 lg:gap-8 items-center pt-4 lg:pt-10">
         <div className="lg:col-span-7 space-y-8">
           <h1 className="font-display text-6xl sm:text-7xl xl:text-8xl text-ws-ink">
-            El coraje de migrar, <em className="text-ws-tomato-deep">la fuerza de unirse.</em>
+            El coraje de migrar, <em className="text-ws-accent">la fuerza de unirse.</em>
           </h1>
           <p className="text-lg md:text-xl font-cuerpo text-ws-ink/85 max-w-xl leading-relaxed">
             La comunidad oficial Working Holiday: un ecosistema de apoyo mutuo diseñado para viajeros. Encuentra trabajo, hogar y la mano amiga que necesitas para triunfar en tu destino.

@@ -216,6 +216,7 @@
 /* ---------- Movimiento (solo sin reduced-motion) ---------- */
 .ws-marquee-track { display: flex; width: max-content; }
 @media (prefers-reduced-motion: no-preference) {
+  body { transition: background-color 0.35s ease; }
   .ws-enter { animation: ws-enter 0.3s cubic-bezier(0.23, 1, 0.32, 1) both; }
   .ws-stamp-in { animation: ws-stamp-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) both; }
   .ws-marquee-track { animation: ws-marquee 42s linear infinite; }
