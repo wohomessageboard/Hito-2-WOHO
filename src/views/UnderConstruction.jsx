@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card, CardBody, Button } from '@heroui/react';
-import { HardHat, ArrowLeft } from 'lucide-react';
+import { Button } from '@heroui/react';
+import { ArrowLeft } from '../components/ui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
+import Stamp from '../components/ui/Stamp';
 
 const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en ello." }) => {
   const navigate = useNavigate();
@@ -9,36 +10,30 @@ const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en
   const { id } = useParams();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
-      
-      <div className="relative mb-8 group">
-        <div className="absolute inset-0 bg-woho-orange rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
-        <HardHat className="w-32 h-32 md:w-48 md:h-48 text-woho-orange relative z-10 animate-pulse" strokeWidth={1.5} />
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center gap-5">
+      <Stamp variant="oval" center="EN OBRAS" bottom="WOHO" rotate={-6} className="w-48 text-ws-tomato-deep" />
 
-      <h1 className="text-4xl md:text-5xl lg:text-7xl font-titulo font-black uppercase tracking-tighter text-black mb-4">
-        {title} <br className="md:hidden" />
-        <span className="text-woho-purple">en reparación</span>
+      <h1 className="font-display text-5xl md:text-7xl text-ws-ink">
+        {title} <em className="text-ws-tomato-deep">en reparación</em>
       </h1>
-      
-      <p className="font-cuerpo text-default-600 max-w-lg mb-4 text-lg">
+
+      <p className="font-cuerpo text-ws-ink/80 max-w-lg text-lg">
         {message}
       </p>
 
-      
       {id && (
-         <div className="bg-black text-white px-4 py-1.5 rounded-full font-cuerpo font-black uppercase text-xs tracking-widest mb-8 border border-white">
-           Recurso ID: {id} en espera
-         </div>
+        <p className="ws-mono bg-ws-ink text-ws-paper-light px-3 py-1.5 rounded-[2px]">
+          Recurso ID: {id} en espera
+        </p>
       )}
 
-      
       <Button
         onPress={() => navigate(-1)}
-        className="h-14 mt-4 md:mt-8 px-8 font-titulo font-black text-lg bg-woho-purple text-white hover:opacity-90 transition-all shadow-sm"
-        startContent={<ArrowLeft className="w-5 h-5 mr-1" />}
+        radius="sm"
+        className="ws-btn ws-btn-tomato h-14 mt-4 px-8 text-lg"
+        startContent={<ArrowLeft className="w-5 h-5 mr-1" aria-hidden="true" />}
       >
-        Volver atrás, obreros trabajando!
+        Volver atrás, obreros trabajando
       </Button>
     </div>
   );

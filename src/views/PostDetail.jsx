@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Button, Avatar, Divider, Chip } from '@heroui/react';
-import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle } from 'lucide-react';
+import { Button, Avatar } from '@heroui/react';
+import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle, Mail, Phone } from '../components/ui/icons';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
-import SurfaceCard from '../components/ui/SurfaceCard';
+import EmptyState from '../components/ui/EmptyState';
+import Stamp from '../components/ui/Stamp';
+
+const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -14,6 +17,7 @@ const PostDetail = () => {
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showContact, setShowContact] = useState(false);
+  const [shared, setShared] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,21 +38,39 @@ const PostDetail = () => {
     fetchPost();
   }, [id]);
 
+  // Compartir: hoja nativa si existe; si no, copia el enlace y lo avisa.
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: post?.title, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setShared(true);
+      setTimeout(() => setShared(false), 2500);
+    } catch {
+      /* el usuario cerró la hoja de compartir: no es un error */
+    }
+  };
+
   if (isLoading) {
-    return <div className="p-20 text-center font-bold text-xl">Abriendo anuncio...</div>;
+    return <p role="status" className="ws-mono p-20 text-center">Abriendo anuncio…</p>;
   }
-  
+
   if (!post) {
     return (
-      <div className="flex flex-col items-center justify-center p-20 text-center">
-        <h1 className="text-4xl font-black uppercase mb-4">Aviso extraviado</h1>
-        <p className="font-cuerpo text-lg mb-8">El anuncio que buscas ya no existe o fue eliminado.</p>
-        <Button onPress={() => navigate(-1)} className="bg-black text-white px-6">Volver atrás</Button>
-      </div>
+      <EmptyState
+        stamp="EXTRAVIADO"
+        title="Aviso extraviado"
+        action={<Button onPress={() => navigate(-1)} radius="sm" className="ws-btn ws-btn-ink mt-2 h-11 px-6">Volver atrás</Button>}
+      >
+        El anuncio que buscas ya no existe o fue eliminado.
+      </EmptyState>
     );
   }
 
-  const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero Oculto", avatar: post.author_avatar || null };
+  const owner = post.owner || { id: post.user_id, name: post.author_name || "Viajero oculto", avatar: post.author_avatar || null };
   const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
   const isPublicViewer = !isAuthenticated;
 
@@ -56,74 +78,51 @@ const PostDetail = () => {
   const country = post.country || post.country_name;
   const city = post.city || post.city_name;
   const expiresInDays = post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null;
-
-  let typeColor = "text-woho-purple bg-purple-50";
-  if (type === "Trabajo") typeColor = "text-woho-orange bg-orange-50";
-  if (type === "Social") typeColor = "text-green-700 bg-green-50";
+  const expiryTone = expiresInDays <= 2 ? 'bg-ws-tomato' : expiresInDays <= 5 ? 'bg-ws-mustard' : 'bg-ws-citron';
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
-      
-      
+    <div className="w-full max-w-6xl mx-auto flex flex-col gap-8">
+
       <div className="flex">
         <Button
-          variant="light"
           onPress={() => navigate(-1)}
-          className="font-titulo font-bold text-black hover:bg-gray-100"
-          startContent={<ArrowLeft className="w-5 h-5" />}
+          radius="sm"
+          className="ws-pill ws-pill-line h-11 px-4"
+          startContent={<ArrowLeft className="w-5 h-5" aria-hidden="true" />}
         >
           Volver
         </Button>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 items-start">
-        
-        
-        <div className="w-full lg:w-2/3 flex flex-col gap-6">
-          
-          
-          <SurfaceCard className="p-6 md:p-8 flex flex-col gap-6">
 
-            <div className="flex flex-col gap-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-titulo font-black text-black leading-none tracking-tighter">
-                {post.title}
-              </h1>
+        <div className="w-full lg:w-2/3 flex flex-col gap-8">
 
-              <div className="flex items-center gap-2 flex-wrap">
-                <Chip variant="flat" className={`font-bold ${typeColor} text-xs uppercase tracking-widest`}>
-                  {type}
-                </Chip>
-                {post.expiresInDays <= 5 && post.expiresInDays > 0 && (
-                  <Chip color="danger" variant="flat" size="sm" className="font-bold text-xs">
-                    Expira pronto ({post.expiresInDays} días)
-                  </Chip>
-                )}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 text-default-600 font-cuerpo font-bold">
-                <span className="flex items-center gap-1 text-black bg-gray-100 px-3 py-1 rounded-full text-sm">
-                  <MapPin className="w-4 h-4" /> {country}, {city} {post.flag}
+          <article className="ws-surface p-6 md:p-10 flex flex-col gap-6">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className={`ws-tag ${TAG_BY_TYPE[type] || 'ws-tag-ink'}`}>{type}</span>
+              <span className="ws-mono flex items-center gap-1.5 border-[1.5px] border-ws-ink px-2 py-1 rounded-[2px] bg-ws-paper-light">
+                <MapPin className="w-4 h-4" aria-hidden="true" /> {country}, {city} <span aria-hidden="true">{post.flag}</span>
+              </span>
+              {expiresInDays !== null && (
+                <span className={`ws-mono flex items-center gap-1.5 border-[1.5px] border-ws-ink px-2 py-1 rounded-[2px] text-ws-ink ${expiryTone}`}>
+                  <Calendar className="w-4 h-4" aria-hidden="true" />
+                  {expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${expiresInDays} días`}
                 </span>
-                {expiresInDays !== null && (
-                  <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold ${
-                    expiresInDays <= 2 ? 'bg-red-50 text-red-600' : expiresInDays <= 5 ? 'bg-orange-50 text-orange-600' : 'bg-green-50 text-green-700'
-                  }`}>
-                    <Calendar className="w-4 h-4" />
-                    {expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${expiresInDays} días`}
-                  </span>
-                )}
-              </div>
+              )}
             </div>
 
-            <Divider className="bg-gray-200" />
+            <h1 className="font-display text-5xl md:text-7xl leading-[0.98]">
+              {post.title}
+            </h1>
 
-            <div className="font-cuerpo text-lg text-default-800 leading-relaxed whitespace-pre-wrap">
+            <hr className="border-0 border-t-2 border-dashed border-ws-ink" />
+
+            <div className="font-cuerpo text-lg md:text-xl leading-relaxed whitespace-pre-wrap max-w-2xl">
               {post.description}
             </div>
+          </article>
 
-          </SurfaceCard>
-
-          
           {(() => {
             let displayImages;
             try {
@@ -131,108 +130,95 @@ const PostDetail = () => {
             } catch {
               displayImages = [];
             }
-            
+
             if (!Array.isArray(displayImages) || displayImages.length === 0) return null;
 
             return (
-              <div className="flex flex-col gap-4 mt-2">
-                <h3 className="text-xl font-titulo font-black uppercase text-black">Material Audiovisual</h3>
-                
-                <div className="w-full aspect-video rounded-xl border border-gray-200 overflow-hidden bg-gray-100">
-                  <img src={displayImages[0]} alt="Principal" className="w-full h-full object-cover" />
+              <section aria-labelledby="fotos" className="flex flex-col gap-4">
+                <h2 id="fotos" className="font-display text-4xl">Fotos del anuncio</h2>
+
+                <div className="ws-photo w-full aspect-video">
+                  <img src={displayImages[0]} alt="Foto principal del anuncio" className="w-full h-full object-cover" />
                 </div>
 
                 {displayImages.length > 1 && (
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {displayImages.slice(1).map((imgUrl, idx) => (
-                      <div key={idx} className="aspect-square rounded-lg border border-gray-200 overflow-hidden bg-gray-50 hover:scale-[1.02] transition-transform cursor-pointer">
-                        <img src={imgUrl} alt={`Detalle ${idx+1}`} className="w-full h-full object-cover" />
+                      <div key={idx} className="ws-photo aspect-square">
+                        <img src={imgUrl} alt={`Foto ${idx + 2} del anuncio`} className="w-full h-full object-cover" />
                       </div>
                     ))}
                   </div>
                 )}
-              </div>
+              </section>
             );
           })()}
 
         </div>
 
-        
-        <div className="w-full lg:w-1/3 flex flex-col gap-6 sticky top-24">
-          
-          
-          <div className="bg-woho-black text-white rounded-xl p-6 flex flex-col items-center text-center relative overflow-hidden">
+        <aside className="w-full lg:w-1/3 flex flex-col gap-6 lg:sticky lg:top-28">
 
-            <div className="relative z-10 flex flex-col items-center">
-              {isPublicViewer ? (
-                <Avatar className="w-24 h-24 text-large border-[2px] border-dashed border-gray-500 bg-gray-800 mb-4" />
-              ) : (
-                <Avatar src={owner?.avatar} className="w-24 h-24 text-large border-[2px] border-white bg-white mb-4" />
-              )}
-              
-              <h3 className="text-2xl font-titulo font-black tracking-tight mb-1">
-                {isMyPost ? "Es tu propio aviso" : (isPublicViewer ? "Viajero Protegido" : (owner?.name || "Anónimo"))}
-              </h3>
-              
-              <p className="text-sm font-cuerpo opacity-80 mb-6">
-                {isPublicViewer ? "Identidad oculta por seguridad." : "Miembro de la comunidad WOHO."}
-              </p>
+          <div className="ws-band ws-band-ink rounded-[4px] border-[1.5px] border-ws-ink p-6 flex flex-col items-center text-center">
+            <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="ANUNCIANTE" rotate={12} className="absolute -top-3 -right-3 w-20 text-ws-mustard" />
 
-              <div className="w-full flex flex-col gap-3">
-                {isMyPost ? (
+            {isPublicViewer ? (
+              <Avatar radius="sm" className="w-24 h-24 text-large border-2 border-dashed border-ws-paper-light/70 bg-ws-ink mb-4" />
+            ) : (
+              <Avatar radius="sm" src={owner?.avatar} className="w-24 h-24 text-large border-2 border-ws-paper-light bg-ws-paper-light mb-4" />
+            )}
 
-                  <Button as={Link} to={`/edit-post/${post.id}`} className="w-full h-12 font-bold bg-white text-black hover:bg-gray-200">
-                    Editar mi publicación
+            <h2 className="font-display text-4xl mb-1 flex items-center gap-2">
+              {isPublicViewer && <Lock className="w-6 h-6" aria-hidden="true" />}
+              {isMyPost ? "Es tu propio aviso" : (isPublicViewer ? "Viajero protegido" : (owner?.name || "Anónimo"))}
+            </h2>
+
+            <p className="text-sm font-cuerpo text-ws-paper-light/80 mb-6">
+              {isPublicViewer ? "Identidad oculta por seguridad." : "Miembro de la comunidad WOHO."}
+            </p>
+
+            <div className="w-full flex flex-col gap-3">
+              {isMyPost ? (
+                <Button as={Link} to={`/edit-post/${post.id}`} radius="sm" className="ws-btn ws-btn-mustard w-full h-12">
+                  Editar mi publicación
+                </Button>
+              ) : isAuthenticated ? (
+                !showContact ? (
+                  <Button onPress={() => setShowContact(true)} radius="sm" className="ws-btn ws-btn-tomato w-full h-14 text-lg">
+                    Contactar
                   </Button>
                 ) : (
-
-                  <>
-
-                    {isAuthenticated ? (
-                      !showContact ? (
-                        <Button
-                          onPress={() => setShowContact(true)}
-                          className="w-full h-14 font-titulo font-black uppercase tracking-widest text-lg bg-woho-orange text-black shadow-sm"
-                        >
-                           Contactar
-                        </Button>
-                      ) : (
-                        <div className="w-full bg-white p-4 rounded-xl flex flex-col items-center gap-2">
-                          <p className="text-black font-titulo font-black text-sm uppercase">Detalles de Contacto</p>
-                          <Divider className="bg-gray-200 my-1" />
-                          <a href={owner?.email ? `mailto:${owner.email}` : undefined} className="text-black font-cuerpo font-bold w-full text-center truncate hover:underline">
-                            📧 {owner?.email || 'No especifica Correo'}
-                          </a>
-                          <a href={owner?.phone ? `tel:${owner.phone}` : undefined} className="text-black font-cuerpo font-bold w-full text-center truncate hover:underline">
-                            📞 {owner?.phone || 'No especifica Teléfono'}
-                          </a>
-                        </div>
-                      )
-                    ) : (
-                      <Button as={Link} to="/login" variant="flat" className="w-full h-14 font-titulo font-bold text-md bg-gray-800 text-gray-400">
-                         Inicia sesión para escribirle
-                      </Button>
-                    )}
-                  </>
-                )}
-              </div>
+                  <div className="w-full bg-ws-paper-light text-ws-ink p-4 rounded-[2px] flex flex-col items-stretch gap-3 text-left">
+                    <p className="ws-mono">Detalles de contacto</p>
+                    <a href={owner?.email ? `mailto:${owner.email}` : undefined} className="flex items-center gap-2 font-cuerpo font-bold break-all hover:underline underline-offset-4">
+                      <Mail className="w-5 h-5 shrink-0" aria-hidden="true" /> {owner?.email || 'No especifica correo'}
+                    </a>
+                    <a href={owner?.phone ? `tel:${owner.phone}` : undefined} className="flex items-center gap-2 font-cuerpo font-bold break-all hover:underline underline-offset-4">
+                      <Phone className="w-5 h-5 shrink-0" aria-hidden="true" /> {owner?.phone || 'No especifica teléfono'}
+                    </a>
+                  </div>
+                )
+              ) : (
+                <Button as={Link} to="/login" radius="sm" className="ws-btn ws-btn-mustard w-full h-14 text-base">
+                  Inicia sesión para escribirle
+                </Button>
+              )}
             </div>
           </div>
 
-
-          <SurfaceCard className="p-4 flex flex-col gap-2">
-            <h4 className="font-titulo font-black text-black">Acciones Adicionales</h4>
+          <div className="ws-surface p-4 flex flex-col gap-3">
+            <h3 className="ws-mono">Acciones adicionales</h3>
             <div className="flex gap-2">
-              <Button variant="flat" className="flex-1 font-bold bg-gray-50 hover:bg-gray-100" startContent={<Share2 className="w-4 h-4" />}>
-                Compartir
+              <Button onPress={handleShare} radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<Share2 className="w-5 h-5" aria-hidden="true" />}>
+                {shared ? '¡Enlace copiado!' : 'Compartir'}
               </Button>
-              <Button variant="flat" className="flex-1 font-bold bg-red-50 text-red-600 hover:bg-red-100" startContent={<AlertCircle className="w-4 h-4" />}>
+              <Button radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<AlertCircle className="w-5 h-5" aria-hidden="true" />}>
                 Reportar
               </Button>
             </div>
-          </SurfaceCard>
+            <p role="status" className="sr-only">{shared ? 'Enlace copiado al portapapeles' : ''}</p>
+          </div>
 
-        </div>
+        </aside>
 
       </div>
     </div>

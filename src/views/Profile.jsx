@@ -4,10 +4,11 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 import { useUser } from '../context/UserContext';
 
-import { CardBody, Avatar, Button, Tabs, Tab } from '@heroui/react';
-import SurfaceCard from '../components/ui/SurfaceCard';
+import { Avatar, Button, Tabs, Tab } from '@heroui/react';
+import EmptyState from '../components/ui/EmptyState';
+import Stamp from '../components/ui/Stamp';
 
-import { Settings, LogOut, Pencil, Trash2, MapPin, Search, Grid, Heart, Map } from 'lucide-react';
+import { Settings, LogOut, Pencil, Trash2, MapPin, Search, Grid, Heart, Map } from '../components/ui/icons';
 
 import api from '../config/api';
 
@@ -77,57 +78,52 @@ const Profile = () => {
     <div className="flex flex-col gap-10">
 
       {notice && (
-        <div role="status" className="flex items-center gap-4 rounded-xl border border-green-200 bg-green-50 px-5 py-3">
-          <p className="font-cuerpo font-bold text-green-800 flex-1">{notice}</p>
-          <button type="button" onClick={() => setNotice('')} aria-label="Cerrar aviso" className="font-bold text-sm min-h-11 min-w-11 px-3 rounded-lg hover:bg-green-100">Cerrar</button>
+        <div role="status" className="ws-enter flex items-center gap-4 border-[1.5px] border-ws-ink rounded-[2px] bg-ws-mustard px-5 py-3">
+          <Stamp variant="oval" center="LISTO" rotate={-5} animate className="w-24 shrink-0 text-ws-tomato-deep" />
+          <p className="font-cuerpo font-bold text-lg text-ws-ink flex-1">{notice}</p>
+          <button type="button" onClick={() => setNotice('')} aria-label="Cerrar aviso" className="ws-pill ws-pill-soft min-h-11 min-w-11 px-3">Cerrar</button>
         </div>
       )}
 
       
-      <section className="bg-woho-purple text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center gap-8 shadow-sm">
-
-
-        <div className="w-32 h-32 md:w-40 md:h-40 relative flex-shrink-0">
-          <Avatar
-            src={currentUser.avatar}
-            className="w-full h-full border-[2px] border-white text-large bg-white"
-            radius="full"
-          />
-        </div>
-
+      <section className="ws-band ws-band-plum rounded-[4px] border-[1.5px] border-ws-ink p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
+        <Avatar
+          src={currentUser.avatar}
+          radius="sm"
+          className="w-32 h-32 md:w-44 md:h-44 shrink-0 border-2 border-ws-paper-light text-large bg-ws-paper-light"
+        />
 
         <div className="flex-1 text-center md:text-left space-y-3">
-          <h1 className="text-4xl md:text-5xl font-titulo font-black uppercase tracking-tighter leading-none">
+          <h1 className="font-display text-5xl md:text-7xl break-words">
             {currentUser.name}
           </h1>
-          <p className="font-cuerpo text-lg opacity-90">
-            {currentUser.country ? `${currentUser.flag} País de Origen: ${currentUser.country} • ` : ''}
+          <p className="ws-mono text-ws-paper-light/90">
+            {currentUser.country ? `${currentUser.flag} País de origen: ${currentUser.country} · ` : ''}
             Viajero apasionado
           </p>
 
-
-          <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-3">
             <Button
               as={Link}
               to="/edit-profile"
-              variant="flat"
-              radius="md"
-              className="font-bold bg-white text-black hover:bg-gray-200 transition-colors"
-              startContent={<Settings className="w-4 h-4" />}
+              radius="sm"
+              className="ws-btn ws-btn-mustard h-11 px-5"
+              startContent={<Settings className="w-5 h-5" aria-hidden="true" />}
             >
-              Editar Perfil
+              Editar perfil
             </Button>
             <Button
               onPress={handleLogout}
-              variant="flat"
-              radius="md"
-              className="font-bold bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
-              startContent={<LogOut className="w-4 h-4" />}
+              radius="sm"
+              className="ws-btn ws-btn-quiet h-11 px-5"
+              startContent={<LogOut className="w-5 h-5" aria-hidden="true" />}
             >
-              Cerrar Sesión
+              Cerrar sesión
             </Button>
           </div>
         </div>
+
+        <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="PASAPORTE" rotate={12} className="hidden lg:block w-32 shrink-0 text-ws-mustard" />
       </section>
 
       
@@ -135,12 +131,14 @@ const Profile = () => {
         
         <Tabs 
           aria-label="Contenido del perfil" 
-          radius="md" 
+          radius="sm"
           size="lg"
           classNames={{
-            tabList: "border border-gray-200 bg-white shadow-sm p-1",
-            cursor: "bg-woho-purple shadow-none",
-            tabContent: "group-data-[selected=true]:text-white font-titulo font-bold text-black"
+            base: "w-full",
+            tabList: "gap-2 p-0 pb-3 w-full rounded-none border-b-[1.5px] border-ws-ink bg-transparent",
+            tab: "h-11 px-4",
+            cursor: "bg-ws-mustard border-[1.5px] border-ws-ink rounded-[2px] shadow-none",
+            tabContent: "font-bold text-ws-ink group-data-[selected=true]:text-ws-ink"
           }}
         >
           
@@ -148,16 +146,16 @@ const Profile = () => {
             key="mis-anuncios" 
             title={
               <div className="flex items-center gap-2">
-                <Grid className="w-5 h-5" />
-                <span>Mis Avisos</span>
+                <Grid className="w-5 h-5" aria-hidden="true" />
+                <span>Mis avisos</span>
               </div>
             }
           >
-            <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full mt-4">
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start w-full mt-4">
               {isLoading ? (
-                <p className="font-cuerpo font-bold">Cargando...</p>
+                <p role="status" className="ws-mono col-span-full">Cargando…</p>
               ) : myPosts.length === 0 ? (
-                <p className="font-cuerpo text-gray-500 italic">No tienes anuncios publicados aún.</p>
+                <div className="col-span-full"><EmptyState title="Sin anuncios todavía" action={<Button as={Link} to="/new-post" radius="sm" className="ws-btn ws-btn-tomato mt-2 h-11 px-6">Crear publicación</Button>}>No tienes anuncios publicados aún.</EmptyState></div>
               ) : (
                 myPosts.map((post) => {
                   const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
@@ -186,16 +184,16 @@ const Profile = () => {
             key="guardados" 
             title={
               <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 fill-current" />
+                <Heart className="w-5 h-5" aria-hidden="true" />
                 <span>Favoritos</span>
               </div>
             }
           >
-            <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full mt-4">
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start w-full mt-4">
               {isLoading ? (
-                <p className="font-cuerpo font-bold">Cargando...</p>
+                <p role="status" className="ws-mono col-span-full">Cargando…</p>
               ) : savedPosts.length === 0 ? (
-                <p className="font-cuerpo text-gray-500 italic">No tienes ningún aviso guardado.</p>
+                <div className="col-span-full"><EmptyState stamp="SIN GUARDADOS" title="Nada guardado">No tienes ningún aviso guardado.</EmptyState></div>
               ) : (
                 savedPosts.map((post) => {
                   const owner = { id: post.user_id, name: post.author_name || "Anónimo", avatar: null };
@@ -219,7 +217,7 @@ const Profile = () => {
             key="seguidos" 
             title={
               <div className="flex items-center gap-2">
-                <Map className="w-5 h-5" />
+                <Map className="w-5 h-5" aria-hidden="true" />
                 <span>Seguidos</span>
               </div>
             }
@@ -227,22 +225,22 @@ const Profile = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
               {followedPlaces.length > 0 ? (
                 followedPlaces.map((loc) => (
-                  <SurfaceCard key={`${loc.country_id}-${loc.city_id || '0'}`} hoverable className="cursor-pointer" isPressable onPress={() => navigate(`/destinos/${loc.name}`)}>
-                    <CardBody className="p-4 flex flex-row items-center gap-4">
-                      <div className="text-4xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center pb-1 shrink-0">
-                        {loc.flag || '🗺️'}
-                      </div>
-                      <div className="flex-1 overflow-hidden">
-                        <h4 className="font-titulo font-extrabold text-black text-lg leading-tight truncate">{loc.name}</h4>
-                        <span className="text-xs font-cuerpo text-default-500 uppercase font-bold tracking-wider">
-                          {loc.city_id ? 'Ciudad' : 'País'}
-                        </span>
-                      </div>
-                    </CardBody>
-                  </SurfaceCard>
+                  <Link
+                    key={`${loc.country_id}-${loc.city_id || '0'}`}
+                    to={`/destinos/${loc.name}`}
+                    className="ws-surface ws-surface-hover p-4 flex items-center gap-4"
+                  >
+                    <span className="text-4xl w-12 h-12 grid place-items-center border-[1.5px] border-ws-ink rounded-[2px] bg-ws-paper pb-1 shrink-0" aria-hidden="true">
+                      {loc.flag || '🗺️'}
+                    </span>
+                    <span className="flex-1 overflow-hidden">
+                      <span className="block font-display text-3xl leading-tight truncate">{loc.name}</span>
+                      <span className="ws-mono text-ws-ink/70">{loc.city_id ? 'Ciudad' : 'País'}</span>
+                    </span>
+                  </Link>
                 ))
               ) : (
-                <p className="font-cuerpo text-gray-500 italic col-span-full text-center py-10">No sigues ninguna ubicación todavía. Ve a explorar la vista de <strong>Destinos</strong> para añadir lugares a tu radar.</p>
+                <div className="col-span-full"><EmptyState stamp="SIN RUTA" title="Aún no sigues destinos" action={<Button as={Link} to="/destinos" radius="sm" className="ws-btn ws-btn-ink mt-2 h-11 px-6">Ver destinos</Button>}>Ve a explorar la vista de destinos para añadir lugares a tu radar.</EmptyState></div>
               )}
             </div>
           </Tab>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Button, Input } from '@heroui/react';
-import { Trash2, Plus, GripVertical } from 'lucide-react';
+import { Trash2, Plus, GripVertical } from '../ui/icons';
 import api from '../../config/api';
 
 const AdminCategoriesTab = () => {

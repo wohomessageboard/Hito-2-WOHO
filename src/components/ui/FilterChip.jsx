@@ -4,8 +4,8 @@ import { Chip } from '@heroui/react';
 // Selected-state fill + matching text/icon color. Add a key here if a
 // filter group ever needs a third accent color.
 const SELECTED_STYLES = {
-  purple: { fill: 'bg-woho-purple', text: 'text-white', icon: 'text-white' },
-  orange: { fill: 'bg-woho-orange', text: 'text-black', icon: 'text-black' },
+  purple: { fill: 'ws-chip-selected', text: '', icon: 'text-ws-ink' },
+  orange: { fill: 'ws-chip-selected', text: '', icon: 'text-ws-ink' },
 };
 
 /**
@@ -36,7 +36,7 @@ const FilterChip = ({
   return (
     <Chip
       variant="flat"
-      radius={isCompact ? 'sm' : 'md'}
+      radius="sm"
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -49,12 +49,12 @@ const FilterChip = ({
       }}
       className={[
         'cursor-pointer font-bold transition-colors',
-        isCompact ? 'text-xs px-1' : 'font-titulo',
+        isCompact ? 'text-xs px-1 h-8' : 'font-cuerpo h-9',
         isSelected ? `${selected.fill} ${selected.text}` : 'ws-chip-idle',
         className,
       ].filter(Boolean).join(' ')}
       startContent={Icon ? (
-        <Icon className={`${isCompact ? 'w-3 h-3' : 'w-4 h-4'} ml-1 ${isSelected ? selected.icon : 'text-default-500'}`} />
+        <Icon className={`${isCompact ? 'w-4 h-4' : 'w-5 h-5'} ml-1 ${isSelected ? selected.icon : 'text-ws-ink'}`} />
       ) : undefined}
     >
       <span className={isCompact ? '' : 'px-1 text-sm'}>{label}</span>

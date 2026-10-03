@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import { Button, Input } from '@heroui/react';
-import { Search, Grid, Briefcase, Home, Users, Globe, MapPin, ArrowLeft, Heart } from 'lucide-react';
+import { Search, Grid, Briefcase, Home, Users, Globe, MapPin, ArrowLeft, Heart } from '../components/ui/icons';
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
+import EmptyState from '../components/ui/EmptyState';
+import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
 
 const CATEGORY_ICONS = {
@@ -30,6 +32,7 @@ const CountryFeed = () => {
     { key: 'Otro', label: 'Otro' }
   ]);
   const [isLoading, setIsLoading] = useState(true);
+  const [bannerFailed, setBannerFailed] = useState(false);
 
   useScrollRestore(`country_scroll_${countryName}`, !isLoading);
 
@@ -82,40 +85,51 @@ const CountryFeed = () => {
 
   if (!isLoading && !countryInfo) {
     return (
-      <div className="flex flex-col items-center justify-center p-20 text-center">
-        <h1 className="text-4xl font-black uppercase">País no encontrado</h1>
-        <Button onPress={() => navigate('/destinos')} className="mt-4 bg-black text-white px-6">Volver al Mapa</Button>
-      </div>
+      <EmptyState
+        stamp="SIN SELLO"
+        title="País no encontrado"
+        action={<Button onPress={() => navigate('/destinos')} radius="sm" className="ws-btn ws-btn-ink mt-2 h-11 px-6">Volver a destinos</Button>}
+      >
+        No tenemos ese destino todavía.
+      </EmptyState>
     );
   }
 
   if (isLoading) {
-    return <div className="p-20 text-center font-bold text-xl">Cargando destino...</div>;
+    return <p role="status" className="ws-mono p-20 text-center">Cargando destino…</p>;
   }
 
-  return (
-    <div className="flex flex-col w-full max-w-7xl mx-auto pb-12">
-      
-      
-      <div className="relative w-full h-64 md:h-80 bg-black flex items-center justify-center overflow-hidden">
-        <img src={countryInfo.image_url} alt={countryInfo.name} className="absolute inset-0 w-full h-full object-cover opacity-60" />
+  const isFollowed = followedCountryIds?.includes(countryInfo?.id);
 
+  return (
+    <div className="flex flex-col gap-10 w-full">
+
+      <header className="relative border-[1.5px] border-ws-ink rounded-[2px] overflow-hidden min-h-[16rem] md:min-h-[22rem] flex items-end bg-ws-ocean text-ws-paper-light">
+        {countryInfo.image_url && !bannerFailed && (
+          <div className="ws-photo absolute inset-0 border-0 rounded-none">
+            <img
+              src={countryInfo.image_url}
+              alt=""
+              onError={() => setBannerFailed(true)}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ws-ink/85 via-ws-ink/30 to-transparent" />
 
         <Button
           onPress={() => navigate('/destinos')}
           isIconOnly
-          variant="flat"
-          className="absolute top-4 left-4 z-20 bg-white shadow-sm"
+          radius="sm"
+          aria-label="Volver a destinos"
+          className="ws-btn ws-btn-quiet absolute top-4 left-4 z-20 min-w-11 min-h-11"
         >
-          <ArrowLeft className="w-5 h-5 text-black" />
+          <ArrowLeft className="w-6 h-6" />
         </Button>
-
 
         {isAuthenticated && countryInfo && (
           <Button
             onPress={async () => {
-              const isFollowed = followedCountryIds?.includes(countryInfo.id);
-
               toggleFollowedCountryId(countryInfo.id);
               try {
                 if (isFollowed) {
@@ -124,49 +138,45 @@ const CountryFeed = () => {
                   await api.post(`/users/me/follows/countries/${countryInfo.id}`);
                 }
               } catch {
-
                 toggleFollowedCountryId(countryInfo.id);
                 console.error("Error toggling follow");
               }
             }}
-            variant="solid"
-            className={`absolute top-4 right-4 z-20 font-titulo font-bold shadow-sm ${followedCountryIds?.includes(countryInfo?.id) ? 'bg-woho-orange text-black hover:bg-yellow-400' : 'bg-white text-black hover:bg-gray-100'}`}
-            startContent={<Heart className={`w-5 h-5 ${followedCountryIds?.includes(countryInfo?.id) ? 'fill-current' : ''}`} />}
+            radius="sm"
+            aria-pressed={!!isFollowed}
+            className={`ws-btn absolute top-4 right-4 z-20 min-h-11 ${isFollowed ? 'ws-btn-mustard' : 'ws-btn-quiet'}`}
+            startContent={<Heart className="w-5 h-5" aria-hidden="true" />}
           >
-            {followedCountryIds?.includes(countryInfo?.id) ? "Siguiendo" : "Seguir Destino"}
+            {isFollowed ? "Siguiendo" : "Seguir destino"}
           </Button>
         )}
 
-        <div className="relative z-10 flex flex-col items-center px-4 text-center w-full">
-          <span className="text-6xl md:text-8xl drop-shadow-md mb-2">{countryInfo.flag}</span>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-titulo font-black text-white uppercase tracking-widest break-words">
-            {countryInfo.name}
-          </h1>
+        <div className="relative z-10 w-full px-5 md:px-10 pb-6 md:pb-8 flex items-end justify-between gap-4">
+          <div>
+            <span className="text-5xl md:text-6xl block mb-2" aria-hidden="true">{countryInfo.flag}</span>
+            <h1 className="font-display text-6xl md:text-8xl break-words">{countryInfo.name}</h1>
+          </div>
+          <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="DESTINO" rotate={-10} className="hidden md:block w-28 shrink-0 text-ws-mustard" />
         </div>
-      </div>
+      </header>
 
-
-      <div className="px-4 md:px-8 max-w-5xl w-full mx-auto md:-translate-y-10 relative z-20">
-        <div className="p-4 bg-white border border-gray-200 rounded-xl shadow-md flex flex-col gap-4 md:gap-6 w-full">
-
-
+      <section aria-label="Filtros" className="ws-surface p-4 md:p-6 flex flex-col gap-5">
         <Input
-          classNames={{ inputWrapper: "ws-input-border h-14 bg-gray-50 focus-within:bg-white", input: "font-cuerpo text-lg" }}
-          placeholder={`Buscar en ${countryInfo.name}...`}
-          radius="md"
+          aria-label={`Buscar en ${countryInfo.name}`}
+          classNames={{ inputWrapper: "ws-input-border h-14", input: "font-cuerpo text-lg" }}
+          placeholder={`Buscar en ${countryInfo.name}…`}
+          radius="sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          startContent={<Search className="text-default-400 w-5 h-5" />}
+          startContent={<Search className="text-ws-ink w-5 h-5" aria-hidden="true" />}
           isClearable
           onClear={() => setSearchQuery('')}
         />
 
-        <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-4 md:items-start">
-          
-          
+        <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8 md:items-start">
           <div className="flex-1 space-y-2">
-            <span className="text-sm font-titulo font-black uppercase text-woho-black flex items-center gap-1"><MapPin className="w-4 h-4"/> Ciudad / Región</span>
-            <div className="flex flex-wrap gap-2">
+            <span className="ws-mono flex items-center gap-1.5"><MapPin className="w-4 h-4" aria-hidden="true" /> Ciudad / región</span>
+            <div role="group" aria-label="Filtrar por ciudad" className="flex flex-wrap gap-2">
               {availableCities.map(city => (
                 <FilterChip
                   key={city}
@@ -179,15 +189,12 @@ const CountryFeed = () => {
             </div>
           </div>
 
-          
           <div className="flex-1 space-y-2">
-            <span className="text-sm font-titulo font-black uppercase text-woho-black flex items-center gap-1"><Grid className="w-4 h-4"/> ¿Qué buscas?</span>
-            <div className="flex flex-wrap gap-2">
-              
+            <span className="ws-mono flex items-center gap-1.5"><Grid className="w-4 h-4" aria-hidden="true" /> ¿Qué buscas?</span>
+            <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap gap-2">
               <FilterChip
                 label="Todos"
                 size="sm"
-                selectedColor="orange"
                 isSelected={selectedCategory === "Todos"}
                 onClick={() => setSelectedCategory("Todos")}
               />
@@ -203,33 +210,32 @@ const CountryFeed = () => {
               ))}
             </div>
           </div>
-
         </div>
-        </div>
-      </div>
+      </section>
 
-      
-      <div className="px-4 mt-4">
+      <section>
         {filteredPosts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-gray-300 rounded-xl bg-gray-50/50 max-w-3xl mx-auto">
-            <span className="text-4xl mb-4">🌪️</span>
-            <h3 className="font-titulo font-black text-2xl mb-2">Pueblo Fantasma en {selectedCity !== 'Todas' ? selectedCity : countryInfo.name}</h3>
-            <p className="font-cuerpo text-default-500 max-w-md">Nadie ha publicado anuncios que coincidan con estos filtros aquí. ¡Sé el primero en Crear Publicación!</p>
-            <Button 
-              onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); setSelectedCity('Todas'); }}
-              variant="flat" 
-              className="mt-6 font-bold bg-black text-white rounded-md h-10 px-6"
-            >
-              Restablecer Filtros
-            </Button>
-          </div>
+          <EmptyState
+            title={`Pueblo fantasma en ${selectedCity !== 'Todas' ? selectedCity : countryInfo.name}`}
+            action={
+              <Button
+                onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); setSelectedCity('Todas'); }}
+                radius="sm"
+                className="ws-btn ws-btn-ink mt-2 h-11 px-6"
+              >
+                Restablecer filtros
+              </Button>
+            }
+          >
+            Nadie ha publicado anuncios que coincidan con estos filtros aquí. ¡Sé el primero en crear una publicación!
+          </EmptyState>
         ) : (
-          <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
             {filteredPosts.map(post => {
-              const owner = post.owner || { 
-                id: post.user_id, 
-                name: String(post.author_name || "Viajero Anónimo"), 
-                avatar: post.author_avatar ? String(post.author_avatar) : null 
+              const owner = post.owner || {
+                id: post.user_id,
+                name: String(post.author_name || "Viajero anónimo"),
+                avatar: post.author_avatar ? String(post.author_avatar) : null
               };
               const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
 
@@ -240,11 +246,11 @@ const CountryFeed = () => {
                 type: post.type || post.category_name,
                 expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
               };
-              
+
               return (
-                <PostCard 
-                  key={post.id} 
-                  post={mappedPost} 
+                <PostCard
+                  key={post.id}
+                  post={mappedPost}
                   owner={owner}
                   variant="feed"
                   isMyPost={isMyPost}
@@ -253,7 +259,7 @@ const CountryFeed = () => {
             })}
           </div>
         )}
-      </div>
+      </section>
 
     </div>
   );

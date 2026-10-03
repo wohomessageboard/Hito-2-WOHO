@@ -3,48 +3,227 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-woho-white text-woho-black font-sans antialiased;
+  html {
+    /* Las bandas a sangre (.ws-bleed) usan 100vw: sin esto aparece scroll horizontal. */
+    overflow-x: clip;
   }
 
-  /* Foco visible y consistente para teclado (enlaces, botones, chips, campos). */
+  body {
+    @apply font-sans antialiased;
+    /* Fondo de color plano. Para cambiarlo, edita 'paper' en tailwind.config.js. */
+    background-color: var(--ws-paper);
+    color: var(--ws-ink);
+  }
+
+  /* Titulares: serif de contraste, una sola cursiva para el énfasis. */
+  .font-display {
+    font-weight: 400;
+    font-synthesis: none;
+    text-wrap: balance;
+    line-height: 1;
+    letter-spacing: -0.015em;
+  }
+  .font-display em { font-style: italic; }
+
+  /* Superficies del navegador que también llevan la marca. */
+  ::selection { background: var(--ws-mustard); color: var(--ws-ink); }
+  input, textarea { caret-color: var(--ws-tomato); }
+  html { scrollbar-color: var(--ws-ink) var(--ws-paper-deep); }
+
   :where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
-    outline: 3px solid #8E0083;
+    outline: 3px solid var(--ws-ocean);
     outline-offset: 2px;
   }
 }
 
 /*
- * WOHO design tokens — "minimal con color".
- * One place to change a surface/chip/divider decision instead of
- * editing the same Tailwind utility soup across every view.
+ * WOHO design tokens — editorial de viaje vintage.
+ * Paleta y fuentes en tailwind.config.js (--ws-*). Estas reglas van DESPUÉS de
+ * las utilidades a propósito: HeroUI mete sus propias utilidades (rounded-large,
+ * shadow-medium, bg-default...) y los tokens deben ganarles. Cambiar el look de
+ * una familia = editar su bloque aquí.
  */
-@layer components {
-  /* Resting white surface: in-flow cards, panels, list items. */
-  .ws-surface {
-    @apply border border-gray-100 rounded-xl bg-white shadow-sm;
-  }
-  /* Prominent floating surface: auth cards, forms, modals. */
-  .ws-surface-elevated {
-    @apply border border-gray-100 rounded-xl bg-white shadow-md;
-  }
-  /* Add to .ws-surface when the surface should lift on hover/press. */
-  .ws-surface-hover {
-    @apply hover:shadow-md transition-shadow;
-  }
-  /* Neutral hairline border for inputs, dividers inside a surface. */
-  .ws-input-border {
-    @apply border border-gray-200;
-  }
-  .ws-divider {
-    @apply bg-gray-200;
-  }
-  /* Filter/category chip states — color carries selection, not a border. */
-  .ws-chip-selected {
-    @apply bg-woho-purple text-white;
-  }
-  .ws-chip-idle {
-    @apply bg-gray-100 text-default-600 hover:bg-gray-200;
-  }
+
+/* ---------- Bandas de color a sangre ---------- */
+.ws-bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+}
+.ws-band { position: relative; overflow: hidden; isolation: isolate; }
+.ws-band-tomato { background: var(--ws-tomato); color: var(--ws-ink); }
+.ws-band-mustard { background: var(--ws-mustard); color: var(--ws-ink); }
+.ws-band-teal { background: var(--ws-teal); color: var(--ws-ink); }
+.ws-band-citron { background: var(--ws-citron); color: var(--ws-ink); }
+.ws-band-ocean { background: var(--ws-ocean); color: var(--ws-paper-light); }
+.ws-band-plum { background: var(--ws-plum); color: var(--ws-paper-light); }
+.ws-band-ink { background: var(--ws-ink); color: var(--ws-paper-light); }
+/* Foco legible sobre bandas oscuras. */
+.ws-band-ocean :where(a, button, [role="button"], input):focus-visible,
+.ws-band-plum :where(a, button, [role="button"], input):focus-visible,
+.ws-band-ink :where(a, button, [role="button"], input):focus-visible,
+.ws-band-ocean [data-focus-visible="true"],
+.ws-band-plum [data-focus-visible="true"],
+.ws-band-ink [data-focus-visible="true"] {
+  outline: 3px solid var(--ws-mustard) !important;
+  outline-offset: 3px;
 }
 
+/* ---------- Superficies ---------- */
+.ws-surface {
+  background: var(--ws-paper-light);
+  border: 1.5px solid var(--ws-ink);
+  border-radius: 4px;
+  box-shadow: none;
+}
+/* Tarjetas de formulario y acceso: doble filete, como marco de impresión. */
+.ws-surface-elevated {
+  background: var(--ws-paper-light);
+  border: 2px solid var(--ws-ink);
+  border-radius: 4px;
+  box-shadow: none;
+  outline: 1.5px solid var(--ws-ink);
+  outline-offset: 4px;
+}
+.ws-surface-hover { transition: background-color 0.15s ease; }
+.ws-surface-hover:hover {
+  background: color-mix(in srgb, var(--ws-mustard) 24%, var(--ws-paper-light));
+}
+
+/* Ticket: cuerpo + talón separados por perforación, con muescas laterales. */
+.ws-ticket {
+  position: relative;
+  background: var(--ws-paper-light);
+  border: 1.5px solid var(--ws-ink);
+  border-radius: 4px;
+  --notch-y: calc(100% - var(--ws-stub, 4.25rem));
+  -webkit-mask:
+    radial-gradient(circle 9px at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle 9px at 0 var(--notch-y), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% var(--notch-y), #0000 98%, #000) right / 51% 100% no-repeat;
+}
+.ws-ticket-stub { border-top: 2px dashed var(--ws-ink); }
+
+/* ---------- Botones ---------- */
+/* Acción prioritaria: rectángulo de tinta plana con filete. */
+.ws-btn {
+  border-radius: 2px;
+  border: 2px solid var(--ws-ink);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 0.12s ease, background-color 0.12s ease, color 0.12s ease;
+}
+.ws-btn:hover { transform: translateY(-2px); }
+.ws-btn:active { transform: translateY(1px); }
+.ws-btn[disabled], .ws-btn[data-disabled="true"] { opacity: 0.5; transform: none; }
+.ws-btn-tomato, .ws-btn-coral { background: var(--ws-tomato); color: var(--ws-ink); }
+.ws-btn-plum, .ws-btn-purple { background: var(--ws-plum); color: var(--ws-paper-light); }
+.ws-btn-ocean, .ws-btn-blue { background: var(--ws-ocean); color: var(--ws-paper-light); }
+.ws-btn-mustard, .ws-btn-sun { background: var(--ws-mustard); color: var(--ws-ink); }
+.ws-btn-ink { background: var(--ws-ink); color: var(--ws-paper-light); border-color: var(--ws-ink); }
+.ws-btn-quiet { background: var(--ws-paper-light); color: var(--ws-ink); }
+
+/* Acción secundaria / dentro de listas: rectángulo plano. */
+.ws-pill {
+  border-radius: 2px;
+  font-weight: 700;
+}
+.ws-pill-ink { background: var(--ws-ink); color: var(--ws-paper-light); }
+.ws-pill-ink:hover { background: #3a3128; }
+.ws-pill-soft { background: var(--ws-paper-deep); color: var(--ws-ink); }
+.ws-pill-soft:hover { background: color-mix(in srgb, var(--ws-mustard) 55%, var(--ws-paper-deep)); }
+.ws-pill-line { background: var(--ws-paper-light); color: var(--ws-ink); border: 1.5px solid var(--ws-ink); }
+.ws-pill-line:hover { background: color-mix(in srgb, var(--ws-mustard) 35%, var(--ws-paper-light)); }
+
+/* ---------- Entradas, divisores y chips ---------- */
+.ws-input-border {
+  background: var(--ws-paper-light);
+  border: 1.5px solid var(--ws-ink);
+  border-radius: 2px;
+  box-shadow: none;
+}
+.ws-divider { background: var(--ws-ink); height: 1.5px; }
+
+.ws-chip-idle {
+  background: var(--ws-paper-light);
+  color: var(--ws-ink);
+  border: 1.5px solid var(--ws-ink);
+  border-radius: 2px;
+}
+.ws-chip-idle:hover { background: color-mix(in srgb, var(--ws-mustard) 35%, var(--ws-paper-light)); }
+.ws-chip-selected {
+  background: var(--ws-mustard);
+  color: var(--ws-ink);
+  border: 1.5px solid var(--ws-ink);
+  border-radius: 2px;
+}
+
+/* Etiqueta de equipaje: extremo biselado y ojal. Va solo con relleno plano. */
+.ws-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem 0.2rem 1.5rem;
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  clip-path: polygon(0.7rem 0, 100% 0, 100% 100%, 0.7rem 100%, 0 50%);
+}
+.ws-tag::before {
+  content: "";
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: -0.2rem;
+  border-radius: 50%;
+  background: var(--ws-paper-light);
+}
+.ws-tag-blue { background: var(--ws-ocean); color: var(--ws-paper-light); }
+.ws-tag-coral, .ws-tag-tomato { background: var(--ws-tomato); color: var(--ws-ink); }
+.ws-tag-olive { background: var(--ws-olive); color: var(--ws-paper-light); }
+.ws-tag-ink { background: var(--ws-ink); color: var(--ws-paper-light); }
+
+/* Datos de ticket: mono en versalitas, para fechas, rutas y referencias. */
+.ws-mono {
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Fotos: filete de tinta y un leve virado cálido para que convivan con la paleta. */
+.ws-photo { position: relative; overflow: hidden; border: 1.5px solid var(--ws-ink); border-radius: 2px; background: var(--ws-paper-deep); }
+.ws-photo img { filter: sepia(0.14) saturate(1.08) contrast(1.03); }
+
+/* ---------- Sellos ---------- */
+.ws-stamp-ink {
+  mix-blend-mode: multiply;
+  filter: url(#ws-ink);
+  opacity: 0.88;
+}
+.ws-stamp-solid { mix-blend-mode: normal; opacity: 0.95; }
+
+/* ---------- Movimiento (solo sin reduced-motion) ---------- */
+.ws-marquee-track { display: flex; width: max-content; }
+@media (prefers-reduced-motion: no-preference) {
+  .ws-enter { animation: ws-enter 0.3s cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .ws-stamp-in { animation: ws-stamp-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .ws-marquee-track { animation: ws-marquee 42s linear infinite; }
+  .ws-marquee:hover .ws-marquee-track { animation-play-state: paused; }
+  @keyframes ws-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes ws-stamp-in {
+    from { opacity: 0; transform: scale(1.35) rotate(var(--r, -8deg)); }
+    to { opacity: 0.88; transform: scale(1) rotate(var(--r, -8deg)); }
+  }
+  @keyframes ws-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-btn, .ws-surface-hover { transition: none; }
+  .ws-btn:hover, .ws-btn:active { transform: none; }
+}

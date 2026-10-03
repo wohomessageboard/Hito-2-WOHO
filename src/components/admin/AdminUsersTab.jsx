@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { CardBody, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, User, Tooltip, Pagination } from '@heroui/react';
 import SurfaceCard from '../ui/SurfaceCard';
-import { Search, Eye, Edit, Trash2, Ban, CheckCircle2 } from 'lucide-react';
+import { Search, Eye, Edit, Trash2, Ban, CheckCircle2 } from '../ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
 
 const userColumns = [

@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Chip, Avatar, Spinner, Button, Input } from '@heroui/react';
-import { Star, Pencil, Trash2 } from 'lucide-react';
+import { Star, Pencil, Trash2 } from '../components/ui/icons';
 
 const UIKit = () => {
   return (

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 import { CardBody, CardHeader, Button, Input } from '@heroui/react';
 
-import { Mail, Lock } from 'lucide-react';
+import { Mail, Lock } from '../components/ui/icons';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import api from '../config/api';
 import SurfaceCard from '../components/ui/SurfaceCard';
+import AuthShell from '../components/ui/AuthShell';
 
 const Login = () => {
   const { login } = useUser();
@@ -43,17 +44,17 @@ const Login = () => {
 
   return (
 
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 w-full">
+    <AuthShell scene="login">
       
       
-      <SurfaceCard elevated className="w-full max-w-md overflow-visible">
+      <SurfaceCard elevated className="w-full overflow-visible">
         
         
         <CardHeader className="flex flex-col items-center pt-8 pb-0">
-          <h2 className="text-3xl font-titulo font-black text-black">
+          <h2 className="font-display text-4xl md:text-5xl text-ws-ink">
             ¡Hola de nuevo!
           </h2>
-          <p className="text-default-500 font-cuerpo mt-2 text-center px-4">
+          <p className="text-ws-ink/75 font-cuerpo mt-2 text-center px-4">
             Entra para guardar anuncios, contactar a quien publica y seguir destinos.
           </p>
         </CardHeader>
@@ -70,14 +71,14 @@ const Login = () => {
               placeholder="tu@correo.com"
               labelPlacement="outside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               value={email}
 
               onChange={(e) => setEmail(e.target.value)}
 
-              startContent={<Mail className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" aria-hidden="true" />}
+              startContent={<Mail className="w-5 h-5 text-ws-ink/75 pointer-events-none flex-shrink-0" aria-hidden="true" />}
 
-              classNames={{ inputWrapper: "border border-gray-200" }}
+              classNames={{ inputWrapper: "ws-input-border h-12", label: "font-bold text-ws-ink" }}
             />
 
             
@@ -87,17 +88,17 @@ const Login = () => {
               placeholder="Tu contraseña"
               labelPlacement="outside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               value={password}
 
               onChange={(e) => setPassword(e.target.value)}
-              startContent={<Lock className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" aria-hidden="true" />}
-              classNames={{ inputWrapper: "border border-gray-200" }}
+              startContent={<Lock className="w-5 h-5 text-ws-ink/75 pointer-events-none flex-shrink-0" aria-hidden="true" />}
+              classNames={{ inputWrapper: "ws-input-border h-12", label: "font-bold text-ws-ink" }}
             />
 
             
             {errorMsg && (
-              <div role="alert" className="bg-red-50 text-red-700 rounded-xl p-3 text-sm font-bold mt-2">
+              <div role="alert" className="bg-ws-tomato/15 border-[1.5px] border-ws-ink text-ws-ink rounded-[2px] p-3 text-sm font-bold mt-2">
                 <p>{errorMsg}</p>
               </div>
             )}
@@ -106,9 +107,9 @@ const Login = () => {
             <Button
               type="submit"
               variant="solid"
-              radius="md"
+              radius="sm"
               isLoading={isLoading}
-              className="font-titulo font-bold bg-woho-purple text-white mt-4 h-12 text-lg"
+              className="ws-btn ws-btn-tomato mt-4 h-12 text-lg"
             >
               Ingresar
             </Button>
@@ -117,12 +118,12 @@ const Login = () => {
 
           
           <div className="mt-6 flex flex-col items-center gap-2 font-cuerpo text-sm">
-            <span className="text-default-500">
+            <span className="text-ws-ink/75">
               ¿Aún no tienes cuenta?
             </span>
             <Link 
               to="/register"
-              className="font-bold text-woho-purple underline underline-offset-4 hover:text-black transition-colors"
+              className="font-bold text-ws-ink underline underline-offset-4 hover:text-ws-ink transition-colors"
             >
               Regístrate aquí
             </Link>
@@ -130,7 +131,7 @@ const Login = () => {
         </CardBody>
 
       </SurfaceCard>
-    </div>
+    </AuthShell>
   );
 };
 

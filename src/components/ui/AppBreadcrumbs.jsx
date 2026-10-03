@@ -11,21 +11,18 @@ const AppBreadcrumbs = () => {
   }
 
   return (
-    <div className="mb-6 px-2">
-      <Breadcrumbs 
-        size="md" 
-        radius="sm" 
-        variant="solid"
-        classNames={{
-          list: "bg-white border border-gray-100 shadow-sm",
-        }}
+    <div className="mb-6 pb-3 border-b-[1.5px] border-ws-ink">
+      <Breadcrumbs
+        size="sm"
+        variant="light"
+        classNames={{ list: "gap-0 p-0 bg-transparent shadow-none" }}
         itemClasses={{
-          item: "font-titulo font-bold text-black",
-          separator: "text-black"
+          item: "ws-mono font-medium text-ws-ink",
+          separator: "text-ws-ink px-2"
         }}
       >
         <BreadcrumbItem>
-          <RouterLink to="/" className="hover:text-woho-purple transition-colors">
+          <RouterLink to="/" className="hover:underline underline-offset-4">
             Inicio
           </RouterLink>
         </BreadcrumbItem>
@@ -44,16 +41,16 @@ const AppBreadcrumbs = () => {
               title = "UI Kit";
               break;
             case 'login':
-              title = "Iniciar Sesión";
+              title = "Iniciar sesión";
               break;
             case 'register':
               title = "Registrarse";
               break;
             case 'new-post':
-              title = "Crear Publicación";
+              title = "Crear publicación";
               break;
             case 'profile':
-              title = "Mi Perfil";
+              title = "Mi perfil";
               break;
             case 'destinos':
               title = "Destinos";
@@ -62,7 +59,7 @@ const AppBreadcrumbs = () => {
               title = "Manifiesto";
               break;
             case 'edit-profile':
-              title = "Editar Perfil";
+              title = "Editar perfil";
               break;
             case 'edit-post':
               title = "Editar";
@@ -85,9 +82,9 @@ const AppBreadcrumbs = () => {
           return (
             <BreadcrumbItem key={to} isCurrent={last}>
               {last ? (
-                <span className="text-woho-purple">{title}</span>
+                <span className="bg-ws-mustard px-1.5">{title}</span>
               ) : (
-                <RouterLink to={to} className="hover:text-woho-purple transition-colors">
+                <RouterLink to={to} className="hover:underline underline-offset-4">
                   {title}
                 </RouterLink>
               )}

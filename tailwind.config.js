@@ -1,4 +1,23 @@
+import plugin from "tailwindcss/plugin";
 import { heroui } from "@heroui/react";
+
+// Paleta "editorial de viaje vintage": papel crema + tintas planas de imprenta.
+// Una sola fuente de verdad: se expone como clases Tailwind (bg-ws-tomato) y
+// como variables CSS (--ws-tomato) para los tokens de src/styles/index.css.
+const ws = {
+  paper: '#F3EBDA',      // fondo (con textura de grano encima)
+  'paper-light': '#FBF6EA', // superficies: tickets, tarjetas, campos
+  'paper-deep': '#E6DAC1',  // separadores y fondos hundidos
+  ink: '#18130F',        // tinta de texto y filetes
+  tomato: '#EE4B2B',     // rojo imprenta (texto encima: tinta)
+  'tomato-deep': '#B8321A', // rojo para texto pequeño sobre papel
+  mustard: '#F2B51D',    // amarillo mostaza
+  ocean: '#0E4FA3',      // azul tinta (texto encima: papel)
+  teal: '#2F8FA6',       // azul turquesa
+  plum: '#66023C',       // vino (texto encima: papel)
+  olive: '#6B7420',      // verde oliva (texto sobre papel)
+  citron: '#CAD183',     // verde cidra, fondos suaves
+};
 
 export default {
   content: [
@@ -9,18 +28,47 @@ export default {
   theme: {
     extend: {
       colors: {
-        'woho-white': '#FFFFFD',
-        'woho-black': '#262525',
-        'woho-purple': '#8E0083',
-        'woho-orange': '#F86205',
+        ws,
+        // Alias heredados: las vistas antiguas siguen funcionando y heredan la paleta nueva.
+        'woho-white': ws.paper,
+        'woho-black': ws.ink,
+        'woho-purple': ws.plum,
+        'woho-orange': ws.tomato,
       },
       fontFamily: {
-        sans: ['"Albert Sans"', 'sans-serif'],
-        cuerpo: ['"Albert Sans"', 'sans-serif'],
-        titulo: ['"Kanit"', 'sans-serif'],
+        display: ['"Instrument Serif"', 'Georgia', 'serif'],
+        sans: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+        cuerpo: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+        titulo: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"DM Mono"', 'ui-monospace', 'monospace'],
       },
     },
   },
   darkMode: "class",
-  plugins: [heroui()],
+  plugins: [
+    plugin(({ addBase }) => {
+      addBase({
+        ':root': Object.fromEntries(Object.entries(ws).map(([k, v]) => [`--ws-${k}`, v])),
+      });
+    }),
+    heroui({
+      layout: {
+        radiusMedium: '4px',
+        radiusLarge: '6px',
+        radiusSmall: '2px',
+        borderWidth: { small: '1.5px', medium: '2px', large: '3px' },
+      },
+      themes: {
+        light: {
+          colors: {
+            background: ws.paper,
+            foreground: ws.ink,
+            focus: ws.ocean,
+            primary: { DEFAULT: ws.plum, foreground: ws['paper-light'] },
+            secondary: { DEFAULT: ws.ocean, foreground: ws['paper-light'] },
+          },
+        },
+      },
+    }),
+  ],
 };

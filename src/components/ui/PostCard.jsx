@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Divider } from '@heroui/react';
-import { Pencil, Trash2, Star, Lock, Pin } from 'lucide-react';
+import { Avatar, Button } from '@heroui/react';
+import { Pencil, Trash2, Star, Lock, Pin } from './icons';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import api from '../../config/api';
@@ -12,9 +12,9 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
   const isFav = savedPostIds ? savedPostIds.includes(postIdToSave) : false;
 
-  let typeColor = "text-woho-purple";
-  if (post.type === "Trabajo") typeColor = "text-woho-orange";
-  if (post.type === "Social") typeColor = "text-green-600";
+  // Etiqueta de equipaje por categoría (relleno plano, texto con contraste AA).
+  const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
+  const typeTag = TAG_BY_TYPE[post.type] || 'ws-tag-ink';
 
   const handleToggleFavorite = async (e) => {
     e.preventDefault(); 
@@ -50,55 +50,54 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   const renderHeader = () => {
 
     if (variant === "creator") {
+      const days = post.expiresInDays;
+      const tone = days <= 2 ? 'bg-ws-tomato text-ws-ink' : days <= 5 ? 'bg-ws-mustard text-ws-ink' : 'bg-ws-citron text-ws-ink';
       return (
-        <CardHeader className="justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{post.flag}</span>
-            <h5 className="text-sm font-titulo font-bold text-black">{post.country}, {post.city}</h5>
+        <header className="flex items-center justify-between gap-2 px-4 pt-4">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-2xl" aria-hidden="true">{post.flag}</span>
+            <h5 className="ws-mono truncate">{post.country}, {post.city}</h5>
           </div>
-          <Chip size="sm" variant="flat" color={post.expiresInDays <= 2 ? "danger" : post.expiresInDays <= 5 ? "warning" : "success"} className="font-bold text-xs">
-            {post.expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${post.expiresInDays} días`}
-          </Chip>
-        </CardHeader>
+          <span className={`ws-mono px-2 py-1 border-[1.5px] border-ws-ink rounded-[2px] ${tone}`}>
+            {days === 0 ? '¡Expira hoy!' : `Expira en ${days} días`}
+          </span>
+        </header>
       );
     }
 
     const isPublicFeed = variant === "feed" && !isAuthenticated;
 
     return (
-      <CardHeader className="justify-between">
-        <div className="flex gap-3">
-          
+      <header className="flex items-start justify-between gap-3 px-4 pt-4">
+        <div className="flex gap-3 min-w-0">
           {isPublicFeed ? (
-            <Avatar size="sm" className="border-[1.5px] border-dashed border-gray-400 bg-gray-100" />
+            <Avatar size="sm" radius="sm" className="border-[1.5px] border-dashed border-ws-ink bg-ws-paper-deep" />
           ) : (
-            <Avatar src={owner?.avatar} size="sm" className="border border-gray-200 bg-white" />
+            <Avatar src={owner?.avatar} size="sm" radius="sm" className="border-[1.5px] border-ws-ink bg-ws-paper-light" />
           )}
-          <div className="flex flex-col gap-1 items-start justify-center">
-            
-            <h4 className="text-sm font-titulo font-extrabold leading-none text-black flex items-center gap-1">
-              {variant === "feed" && isMyPost 
-                ? "Yo (Tu aviso)" 
-                : (isPublicFeed ? <span className="text-gray-500 flex items-center gap-1"><Lock className="w-3 h-3"/> Viajero Protegido</span> : (owner?.name || "Anónimo"))
+          <div className="flex flex-col gap-1 items-start justify-center min-w-0">
+            <h4 className="text-sm font-bold leading-none text-ws-ink flex items-center gap-1 truncate">
+              {variant === "feed" && isMyPost
+                ? "Yo (Tu aviso)"
+                : (isPublicFeed ? <span className="text-ws-ink/70 flex items-center gap-1"><Lock className="w-4 h-4" aria-hidden="true"/> Viajero protegido</span> : (owner?.name || "Anónimo"))
               }
             </h4>
-            <div className={`flex items-center gap-1 text-xs font-cuerpo text-default-500 ${variant === "feed" ? "font-bold" : ""}`}>
-              <span>{post.flag}</span>
+            <div className="ws-mono text-ws-ink/75 flex items-center gap-1.5">
+              <span aria-hidden="true">{post.flag}</span>
               {variant === "favorite" ? <span>{post.country}, {post.city}</span> : <span>{post.city}</span>}
             </div>
           </div>
         </div>
-        
-        
-        <div className="flex gap-2">
+
+        <div className="flex gap-2 shrink-0">
           {currentUser?.role === 'superadmin' && (
-            <Button 
-              isIconOnly 
-              size="sm" 
-              color={post.is_pinned ? "warning" : "default"}
-              variant={post.is_pinned ? "solid" : "flat"} 
-              className={`border-[1.5px] ${post.is_pinned ? 'border-black' : 'border-warning'}`}
+            <Button
+              isIconOnly
+              size="sm"
+              radius="sm"
+              className={`min-w-11 min-h-11 border-[1.5px] border-ws-ink ${post.is_pinned ? 'bg-ws-mustard' : 'bg-ws-paper-light'}`}
               title={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
+              aria-label={post.is_pinned ? "Quitar destacado" : "Destacar en portada"}
               onClick={async (e) => {
                 e.preventDefault();
                 try {
@@ -111,44 +110,42 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
                 }
               }}
             >
-              <Pin className={`w-4 h-4 ${post.is_pinned ? 'text-black' : 'text-warning-700'} font-black`} />
+              <Pin className="w-5 h-5 text-ws-ink" />
             </Button>
           )}
 
           {(currentUser?.role === 'superadmin' || currentUser?.role === 'admin') && (
-            <Button 
-              isIconOnly 
-              size="sm" 
-              color="danger"
-              variant="flat" 
-              className="border-[1.5px] border-red-600"
-              title="Eliminar como Administrador"
+            <Button
+              isIconOnly
+              size="sm"
+              radius="sm"
+              className="min-w-11 min-h-11 border-[1.5px] border-ws-ink bg-ws-tomato"
+              title="Eliminar como administrador"
+              aria-label="Eliminar como administrador"
               onClick={handleDelete}
             >
-              <Trash2 className="w-4 h-4 text-red-600" />
+              <Trash2 className="w-5 h-5 text-ws-ink" />
             </Button>
           )}
         </div>
-      </CardHeader>
+      </header>
     );
   };
 
   const renderBody = () => (
-    <CardBody className="px-4 py-4 flex-1">
-      <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest mb-2 block ${variant === "feed" ? typeColor : (post.type === "Trabajo" ? "text-woho-orange" : "text-woho-purple")}`}>
-        • {post.type}
-      </span>
-      <Link to={`/post/${post.id}`} className="hover:underline decoration-woho-orange decoration-4 underline-offset-4">
-        <h3 className="font-titulo font-extrabold text-lg leading-tight text-woho-black mb-3 cursor-pointer">
+    <div className="px-4 pt-4 pb-5 flex-1">
+      <span className={`ws-tag ${typeTag} mb-3`}>{post.type}</span>
+      <Link to={`/post/${post.id}`} className="hover:underline decoration-ws-tomato decoration-2 underline-offset-4">
+        <h3 className="font-display text-3xl leading-[1.05] text-ws-ink mb-3">
           {post.title}
         </h3>
       </Link>
       {variant !== "favorite" && (
-        <p className="text-sm font-cuerpo text-default-600 line-clamp-4">
+        <p className="text-sm font-cuerpo text-ws-ink/80 line-clamp-4 leading-relaxed">
           {post.description}
         </p>
       )}
-    </CardBody>
+    </div>
   );
 
   const renderImages = () => {
@@ -166,120 +163,107 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
     if (!Array.isArray(displayImages) || displayImages.length === 0) return null;
 
     return (
-      <div className="px-4 pb-4">
-        <div className="w-full h-24 rounded-lg border border-gray-200 overflow-hidden relative">
-          <img 
-            src={displayImages[0]} 
-            alt="Thumbnail" 
+      <div className="px-4 pb-5">
+        <div className="ws-photo w-full h-28">
+          <img
+            src={displayImages[0]}
+            alt="Foto del anuncio"
             className="w-full h-full object-cover"
           />
           {displayImages.length > 1 && (
-             <div className="absolute bottom-1 right-1 bg-black text-white text-[10px] font-bold px-2 py-1 rounded-sm border border-white">
-               +{displayImages.length - 1} fotos
-             </div>
+            <div className="ws-mono absolute bottom-1.5 right-1.5 z-10 bg-ws-ink text-ws-paper-light px-2 py-1 rounded-[2px]">
+              +{displayImages.length - 1} fotos
+            </div>
           )}
         </div>
       </div>
     );
   };
 
+  // El talón del ticket mide lo mismo siempre (--ws-stub): las muescas de la
+  // perforación caen justo sobre la línea punteada.
   const renderFooter = () => {
+    const stub = "ws-ticket-stub h-[4.25rem] flex items-center gap-2 px-4";
+
     if (variant === "creator") {
       return (
-        <CardFooter className="flex justify-between gap-2">
-          <Button as={Link} to={`/edit-post/${post.id}`} variant="flat" radius="md" size="sm" className="w-1/2 font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">
-            <Pencil className="w-4 h-4 mr-1" /> Editar
+        <footer className={stub}>
+          <Button as={Link} to={`/edit-post/${post.id}`} radius="sm" size="sm" className="ws-pill ws-pill-line w-1/2 min-h-11">
+            <Pencil className="w-5 h-5 mr-1" /> Editar
           </Button>
-          <Button 
-            variant="flat" 
-            radius="md" 
-            size="sm" 
-            className="w-1/2 font-bold bg-red-100 text-red-600 hover:bg-red-200"
-            onClick={handleDelete}
-          >
-            <Trash2 className="w-4 h-4 mr-1" /> Eliminar
+          <Button radius="sm" size="sm" className="ws-pill w-1/2 min-h-11 bg-ws-tomato text-ws-ink border-[1.5px] border-ws-ink" onClick={handleDelete}>
+            <Trash2 className="w-5 h-5 mr-1" /> Eliminar
           </Button>
-        </CardFooter>
+        </footer>
       );
     }
 
     if (variant === "favorite") {
       return (
-        <CardFooter className="flex justify-between gap-2">
-          <Button as={Link} to={`/post/${postIdToSave}`} variant="solid" radius="md" size="sm" className="font-bold bg-black text-white w-3/4">
+        <footer className={stub}>
+          <Button as={Link} to={`/post/${postIdToSave}`} radius="sm" size="sm" className="ws-pill ws-pill-ink min-h-11 w-3/4">
             Ver más
           </Button>
-          <Button onClick={handleToggleFavorite} variant="flat" radius="md" size="sm" className="w-1/4 min-h-11 px-0 flex justify-center items-center bg-red-100 hover:bg-red-200 text-red-600 transition-colors" title="Quitar de Favoritos">
-            <Trash2 className="w-4 h-4" />
+          <Button onClick={handleToggleFavorite} radius="sm" size="sm" isIconOnly className="ws-pill ws-pill-line w-1/4 min-h-11" title="Quitar de favoritos" aria-label="Quitar de favoritos">
+            <Trash2 className="w-5 h-5" />
           </Button>
-        </CardFooter>
+        </footer>
       );
     }
 
     return (
-      <CardFooter className="flex justify-between gap-2 bg-gray-50/50 rounded-b-xl">
+      <footer className={stub}>
         {isMyPost ? (
-          <div className="flex gap-2 w-full">
-            <Button as={Link} to="/profile" variant="flat" radius="sm" size="sm" className="flex-1 font-bold bg-gray-200 text-black">
+          <>
+            <Button as={Link} to="/profile" radius="sm" size="sm" className="ws-pill ws-pill-soft flex-1 min-h-11">
               Gestionar
             </Button>
-            <Button 
-              onClick={handleDelete} 
-              variant="flat" 
-              radius="sm" 
-              size="sm" 
+            <Button
+              onClick={handleDelete}
+              radius="sm"
+              size="sm"
               isIconOnly
-              className="min-h-11 min-w-11 bg-red-50 border border-red-200 text-red-600 hover:bg-red-100"
+              className="ws-pill min-h-11 min-w-11 bg-ws-tomato text-ws-ink border-[1.5px] border-ws-ink"
               title="Eliminar mi aviso"
+              aria-label="Eliminar mi aviso"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-5 h-5" />
             </Button>
-          </div>
+          </>
         ) : (
           <>
-            
             {isAuthenticated ? (
-              <Button as={Link} to={`/post/${postIdToSave}`} variant="solid" radius="sm" size="sm" className="font-bold bg-black text-white w-3/4">
+              <Button as={Link} to={`/post/${postIdToSave}`} radius="sm" size="sm" className="ws-pill ws-pill-ink min-h-11 w-3/4">
                 Ver más
               </Button>
             ) : (
-              <Button as={Link} to="/login" variant="flat" radius="sm" size="sm" className="font-bold bg-gray-200 text-gray-500 w-3/4 border border-dashed border-gray-400">
+              <Button as={Link} to="/login" radius="sm" size="sm" className="ws-pill ws-pill-soft min-h-11 w-3/4">
                 Inicia sesión para ver
               </Button>
             )}
-            
-            
+
             {isAuthenticated ? (
-              <Button onClick={handleToggleFavorite} variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 min-h-11 bg-white border border-gray-200 hover:bg-yellow-50 text-black transition-colors" title={isFav ? "Quitar Favorito" : "Guardar Favorito"}>
-                <Star className={`w-4 h-4 ${isFav ? "text-warning" : ""}`} fill={isFav ? "currentColor" : "none"} />
+              <Button onClick={handleToggleFavorite} radius="sm" size="sm" isIconOnly className="ws-pill ws-pill-line w-1/4 min-h-11" title={isFav ? "Quitar favorito" : "Guardar favorito"} aria-label={isFav ? "Quitar favorito" : "Guardar favorito"} aria-pressed={isFav}>
+                <Star className={`w-5 h-5 ${isFav ? "text-ws-tomato-deep" : ""}`} />
               </Button>
             ) : (
-              <Button as={Link} to="/login" variant="flat" radius="sm" size="sm" isIconOnly className="w-1/4 min-h-11 bg-gray-100 border border-gray-300 text-gray-400" title="Guardar Favorito">
-                <Star className="w-4 h-4" />
+              <Button as={Link} to="/login" radius="sm" size="sm" isIconOnly className="ws-pill ws-pill-line w-1/4 min-h-11 text-ws-ink/60" title="Guardar favorito" aria-label="Inicia sesión para guardar favoritos">
+                <Star className="w-5 h-5" />
               </Button>
             )}
           </>
         )}
-      </CardFooter>
+      </footer>
     );
   };
 
-  const cardBgClass = variant === "favorite" ? "bg-gray-50" : "bg-white";
-
   return (
-    <Card
-      className={`w-full border border-gray-200 rounded-xl ${cardBgClass} shadow-sm hover:shadow-md flex flex-col transition-shadow`}
-    >
+    <article className="ws-ticket w-full flex flex-col">
       {renderHeader()}
-      <Divider className="bg-gray-200" />
-      
       {renderBody()}
       {renderImages()}
-      
-      {variant !== "creator" && <Divider className="bg-gray-200" />}
-      
       {renderFooter()}
-    </Card>
+    </article>
   );
 };
 

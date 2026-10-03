@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Card, CardBody } from '@heroui/react';
-import { Users, Globe, FileText, Star } from 'lucide-react';
+import { Users, Globe, FileText, Star } from '../ui/icons';
 
 const AdminMetricsTab = ({ users, countries, posts = [] }) => {
 

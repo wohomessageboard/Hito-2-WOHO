@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, Button, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from '@heroui/react';
 import SurfaceCard from '../ui/SurfaceCard';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from '../ui/icons';
 import api from '../../config/api';
 
 const AdminCitiesTab = ({ cities, setCities, countries }) => {

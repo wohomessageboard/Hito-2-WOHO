@@ -6,10 +6,11 @@ import { Link } from 'react-router-dom';
 
 import { Button, Input } from '@heroui/react';
 
-import { Search, Grid, Briefcase, Home, Users, Globe, Compass } from 'lucide-react';
+import { Search, Grid, Briefcase, Home, Users, Globe, Compass } from '../components/ui/icons';
 
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
+import EmptyState from '../components/ui/EmptyState';
 
 import { useScrollRestore } from '../hooks/useScrollRestore';
 
@@ -97,156 +98,134 @@ const Feed = () => {
   }, [selectedCategory, searchQuery, posts]);
 
   return (
-    <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto px-4 pb-12">
-      
-      
+    <div className="flex flex-col gap-8 md:gap-10 w-full">
+
       <section className="flex flex-col gap-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-titulo font-black text-black tracking-tighter uppercase">
-              {isAuthenticated ? 'Para Ti' : 'Anuncios recientes'}
+        <div className="grid md:grid-cols-12 gap-6 items-end">
+          <div className="md:col-span-7 space-y-3">
+            <h1 className="font-display text-6xl md:text-8xl">
+              {isAuthenticated ? <>Para <em className="text-ws-tomato-deep">ti</em></> : <>Anuncios <em className="text-ws-tomato-deep">recientes</em></>}
             </h1>
-            <p className="font-cuerpo text-default-600 text-lg max-w-xl">
+            <p className="font-cuerpo text-ws-ink/85 text-lg max-w-xl leading-relaxed">
               {isAuthenticated
                 ? 'Lo último en oportunidades en los destinos que sigues.'
                 : 'Lo último que publicó la comunidad. Explora sin cuenta; crea una para guardar y contactar.'}
             </p>
           </div>
-          
-          
-          <div className="w-full md:w-96 flex-shrink-0">
+
+          <div className="md:col-span-5">
             <Input
+              aria-label="Buscar anuncios"
               classNames={{
-                inputWrapper: "ws-input-border h-14 bg-white shadow-sm",
+                inputWrapper: "ws-input-border h-14",
                 input: "font-cuerpo text-lg"
               }}
-              placeholder="Ej: Granja, Sydney, Auto..."
-              radius="md"
+              placeholder="Ej: granja, Sydney, auto…"
+              radius="sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              startContent={<Search className="text-default-400 w-5 h-5" />}
+              startContent={<Search className="text-ws-ink w-5 h-5" aria-hidden="true" />}
               isClearable
               onClear={() => setSearchQuery('')}
             />
           </div>
         </div>
 
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl">
-
-
-          <div className="flex flex-wrap gap-2">
-
+        <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap gap-2 py-4 border-y-[1.5px] border-ws-ink">
+          <FilterChip
+            label="Todos"
+            icon={Grid}
+            isSelected={selectedCategory === "Todos"}
+            onClick={() => setSelectedCategory("Todos")}
+          />
+          {categories.map((cat) => (
             <FilterChip
-              label="Todos"
-              icon={Grid}
-              isSelected={selectedCategory === "Todos"}
-              onClick={() => setSelectedCategory("Todos")}
+              key={cat.key}
+              label={cat.label}
+              icon={CATEGORY_ICONS[cat.key] || Globe}
+              isSelected={selectedCategory === cat.key}
+              onClick={() => setSelectedCategory(cat.key)}
             />
-
-            {categories.map((cat) => (
-              <FilterChip
-                key={cat.key}
-                label={cat.label}
-                icon={CATEGORY_ICONS[cat.key] || Globe}
-                isSelected={selectedCategory === cat.key}
-                onClick={() => setSelectedCategory(cat.key)}
-              />
-            ))}
-          </div>
-
+          ))}
         </div>
       </section>
 
-      
-      <section className="pb-16">
-        
+      <section>
         {filteredPosts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-gray-300 rounded-xl bg-gray-50/50">
-            <span className="text-4xl mb-4">🌪️</span>
-            <h3 className="font-titulo font-black text-2xl mb-2">
-              {posts.length === 0
-                ? "Aún no sigues ningún destino"
-                : "Pueblo Fantasma"}
-            </h3>
-            <p className="font-cuerpo text-default-500 max-w-md">
-              {posts.length === 0
-                ? "Explora nuestra lista de Destinos mundiales y síguelos para ver avisos aquí."
-                : "No encontramos ningún anuncio que coincida con tus filtros. Intenta una búsqueda distinta."}
-            </p>
-
-            {posts.length === 0 ? (
-              <Button
-                as={Link}
-                to="/destinos"
-                variant="solid"
-                className="mt-6 font-bold bg-woho-purple text-white rounded-md h-10 px-6"
-              >
-                Ver Destinos
+          <EmptyState
+            stamp={posts.length === 0 ? 'SIN RUTA' : 'SIN AVISOS'}
+            title={posts.length === 0
+              ? (isAuthenticated ? "Aún no sigues ningún destino" : "Todavía no hay anuncios")
+              : "Pueblo fantasma"}
+            action={posts.length === 0 ? (
+              <Button as={Link} to="/destinos" radius="sm" className="ws-btn ws-btn-tomato mt-2 h-11 px-6">
+                Ver destinos
               </Button>
             ) : (
-              <Button
-                onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); }}
-                variant="flat"
-                className="mt-6 font-bold bg-black text-white rounded-md h-10 px-6"
-              >
-                Limpiar Búsqueda
+              <Button onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); }} radius="sm" className="ws-btn ws-btn-ink mt-2 h-11 px-6">
+                Limpiar búsqueda
               </Button>
             )}
-          </div>
+          >
+            {posts.length === 0
+              ? "Explora nuestra lista de destinos y síguelos para ver avisos aquí."
+              : "No encontramos ningún anuncio que coincida con tus filtros. Intenta una búsqueda distinta."}
+          </EmptyState>
         ) : (
-          <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
+          <div className="flex flex-col gap-6">
 
             {isAuthenticated && !isPersonalized && (
-              <div className="flex items-center gap-3 bg-woho-orange/10 rounded-xl p-4">
-                <Compass className="w-6 h-6 shrink-0 text-woho-orange" />
-                <p className="font-cuerpo text-sm font-bold text-woho-black">
+              <div className="flex items-center gap-3 bg-ws-mustard/40 border-[1.5px] border-ws-ink rounded-[2px] p-4">
+                <Compass className="w-6 h-6 shrink-0" aria-hidden="true" />
+                <p className="font-cuerpo text-sm font-bold text-ws-ink">
                   Aún no sigues ningún destino, así que te mostramos lo más reciente de toda la comunidad.{' '}
-                  <Link to="/destinos" className="underline underline-offset-2 text-woho-purple">
+                  <Link to="/destinos" className="underline underline-offset-2">
                     Sigue un destino
                   </Link>{' '}
-                  para personalizar tu "Para Ti".
+                  para personalizar tu "Para ti".
                 </p>
               </div>
             )}
 
             {!isAuthenticated && (
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                <p className="font-cuerpo text-sm font-bold text-black flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-ws-mustard/40 border-[1.5px] border-ws-ink rounded-[2px] p-4">
+                <p className="font-cuerpo text-sm font-bold text-ws-ink flex-1">
                   Estás explorando como visitante. Con una cuenta puedes guardar anuncios, contactar a quien publica y seguir destinos.
                 </p>
-                <Button as={Link} to="/register" className="bg-black text-white font-bold h-10 px-5 shrink-0">
+                <Button as={Link} to="/register" radius="sm" className="ws-btn ws-btn-ink h-10 px-5 shrink-0">
                   Crear cuenta
                 </Button>
               </div>
             )}
 
-            {filteredPosts.map((post) => {
-              const owner = post.owner || { 
-                id: post.user_id, 
-                name: String(post.author_name || "Viajero Anónimo"), 
-                avatar: post.author_avatar ? String(post.author_avatar) : null 
-              };
-              const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+              {filteredPosts.map((post) => {
+                const owner = post.owner || {
+                  id: post.user_id,
+                  name: String(post.author_name || "Viajero anónimo"),
+                  avatar: post.author_avatar ? String(post.author_avatar) : null
+                };
+                const isMyPost = !!currentUser?.id && currentUser.id === post.user_id;
 
-              const mappedPost = {
-                ...post,
-                country: post.country || post.country_name,
-                city: post.city || post.city_name,
-                type: post.type || post.category_name,
-                expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
-              };
+                const mappedPost = {
+                  ...post,
+                  country: post.country || post.country_name,
+                  city: post.city || post.city_name,
+                  type: post.type || post.category_name,
+                  expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
+                };
 
-              return (
-                <PostCard 
-                  key={post.id} 
-                  post={mappedPost} 
-                  owner={owner}
-                  variant="feed"
-                  isMyPost={isMyPost}
-                />
-              );
-            })}
+                return (
+                  <PostCard
+                    key={post.id}
+                    post={mappedPost}
+                    owner={owner}
+                    variant="feed"
+                    isMyPost={isMyPost}
+                  />
+                );
+              })}
+            </div>
           </div>
         )}
       </section>

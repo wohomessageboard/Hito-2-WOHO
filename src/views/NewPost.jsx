@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
 import SurfaceCard from '../components/ui/SurfaceCard';
-import { MapPin, Target, Send, Image as ImageIcon } from 'lucide-react';
+import { MapPin, Target, Send, Image as ImageIcon } from '../components/ui/icons';
 
 import api from '../config/api';
 
@@ -119,15 +119,15 @@ const NewPost = () => {
         
         
         <CardHeader className="flex flex-col items-start px-6 pt-8 pb-4">
-          <h1 className="text-4xl font-titulo font-black text-black uppercase tracking-tighter leading-none">
-            Crear Publicación
+          <h1 className="font-display text-5xl md:text-6xl">
+            Crear publicación
           </h1>
-          <p className="font-cuerpo text-default-600 mt-2">
+          <p className="font-cuerpo text-ws-ink/75 mt-2">
             Llena los datos a continuación para que la comunidad WOHO pueda encontrarte.
           </p>
         </CardHeader>
 
-        <Divider className="bg-black opacity-20" />
+        <Divider className="bg-ws-ink" />
 
         <CardBody className="px-6 py-8">
           
@@ -135,7 +135,7 @@ const NewPost = () => {
 
             
             <div className="space-y-4">
-              <h3 className="font-titulo font-extrabold text-xl text-woho-purple flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <Target className="w-5 h-5" /> 1. ¿De qué se trata?
               </h3>
               
@@ -145,14 +145,14 @@ const NewPost = () => {
                 placeholder="Ej: Busco compañero para alquilar en Sydney"
                 labelPlacement="inside"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 isRequired
                 value={formData.title}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border border-gray-200 bg-gray-50 focus-within:bg-white",
-                  label: "font-bold text-black text-sm"
+                  inputWrapper: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               />
 
@@ -163,14 +163,14 @@ const NewPost = () => {
                 placeholder="Selecciona una categoría"
                 labelPlacement="inside"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 isRequired
                 selectedKeys={formData.category_id ? [formData.category_id] : []}
                 onChange={handleSelectChange}
                 classNames={{ 
-                  trigger: "border border-gray-200 bg-gray-50",
-                  label: "font-bold text-black text-sm"
+                  trigger: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               >
                 
@@ -184,7 +184,7 @@ const NewPost = () => {
 
             
             <div className="space-y-4 mt-4">
-              <h3 className="font-titulo font-extrabold text-xl text-woho-orange flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <MapPin className="w-5 h-5" /> 2. ¿Dónde estás o a dónde vas?
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -196,14 +196,14 @@ const NewPost = () => {
                   placeholder="Elige un destino"
                   labelPlacement="inside"
                   variant="bordered"                  
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   selectedKeys={formData.country_id ? [formData.country_id] : []}
                   onChange={handleSelectChange}
                   classNames={{ 
-                    trigger: "border border-gray-200 bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    trigger: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 >
                   {countries.map(c => (
@@ -218,15 +218,15 @@ const NewPost = () => {
                   placeholder="Elige una ciudad"
                   labelPlacement="inside"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   selectedKeys={formData.city_id ? [formData.city_id] : []}
                   onChange={handleSelectChange}
                   isDisabled={!formData.country_id}
                   classNames={{ 
-                    trigger: "border border-gray-200 bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    trigger: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 >
                   {cities
@@ -242,7 +242,7 @@ const NewPost = () => {
 
             
             <div className="space-y-4 mt-4">
-              <h3 className="font-titulo font-extrabold text-xl text-black flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <Send className="w-5 h-5" /> 3. Cuéntanos más
               </h3>
               <Textarea
@@ -251,15 +251,15 @@ const NewPost = () => {
                 placeholder="Da información clara: fechas, presupuestos o requisitos..."
                 labelPlacement="inside"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 minRows={5}
                 isRequired
                 value={formData.description}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border border-gray-200 bg-gray-50",
-                  label: "font-bold text-black text-sm"
+                  inputWrapper: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               />
 
@@ -269,22 +269,22 @@ const NewPost = () => {
                 <Input
                   name="price"
                   type="number"
-                  label="Precio (Opcional)"
+                  label="Precio (opcional)"
                   startContent={
                     <div className="pointer-events-none flex items-center font-bold">
-                      <span className="text-default-500 text-sm">$</span>
+                      <span className="text-ws-ink/75 text-sm">$</span>
                     </div>
                   }
                   placeholder="0.00"
                   labelPlacement="inside"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   value={formData.price}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border border-gray-200 bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    inputWrapper: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 />
                 
@@ -296,14 +296,14 @@ const NewPost = () => {
                   placeholder="Ej: 15"
                   labelPlacement="inside"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   value={formData.duration_days}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border border-gray-200 bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    inputWrapper: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 />
               </div>
@@ -320,10 +320,10 @@ const NewPost = () => {
                 />
                 <label 
                   htmlFor="images-upload"
-                  className="border-2 border-gray-300 border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="border-2 border-ws-ink border-dashed rounded-[2px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
-                  <span className="font-bold font-cuerpo text-black">Añadir Fotos (Máx 5)</span>
+                  <span className="font-bold font-cuerpo text-black">Añadir fotos (máx. 5)</span>
                   <span className="text-xs mt-1">Sube fotos de alta calidad para destacar</span>
                 </label>
 
@@ -331,7 +331,7 @@ const NewPost = () => {
                 {previews.length > 0 && (
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {previews.map((src, i) => (
-                      <div key={i} className="aspect-square border border-gray-200 rounded-lg overflow-hidden relative">
+                      <div key={i} className="aspect-square ws-photo">
                         <img src={src} alt={`Preview ${i}`} className="w-full h-full object-cover" />
                         <button 
                           type="button"
@@ -341,7 +341,7 @@ const NewPost = () => {
                             setSelectedFiles(newFiles);
                             setPreviews(newPrevs);
                           }}
-                          className="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold border-l-2 border-b-2 border-white"
+                          className="absolute top-0 right-0 bg-ws-tomato text-ws-ink w-6 h-6 z-10 flex items-center justify-center text-xs font-bold border-l-[1.5px] border-b-[1.5px] border-ws-ink"
                         >
                           X
                         </button>
@@ -354,7 +354,7 @@ const NewPost = () => {
 
 
             {errorMsg && (
-              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm font-bold">
+              <div role="alert" className="bg-ws-tomato/15 border-[1.5px] border-ws-ink text-ws-ink rounded-[2px] p-3 text-sm font-bold">
                 <p>{errorMsg}</p>
               </div>
             )}
@@ -364,10 +364,10 @@ const NewPost = () => {
                 type="submit"
                 form="new-post-form"
                 isLoading={isSubmitting} 
-                className="w-full h-16 bg-woho-black text-white font-titulo font-black text-xl uppercase tracking-widest rounded-xl hover:bg-black transition-colors"
+                className="ws-btn ws-btn-tomato w-full h-14 text-lg"
                 endContent={!isSubmitting && <Send className="w-5 h-5 ml-2" />}
               >
-                {isSubmitting ? "Lanzando Aviso a la Nube..." : "Publicar Anuncio"}
+                {isSubmitting ? "Lanzando aviso a la nube..." : "Publicar anuncio"}
               </Button>
             </div>
 

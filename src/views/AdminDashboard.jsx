@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { Chip, Tabs, Tab } from '@heroui/react';
-import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText } from 'lucide-react';
+import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText } from '../components/ui/icons';
 import api from '../config/api';
 
 import AdminMetricsTab from '../components/admin/AdminMetricsTab';

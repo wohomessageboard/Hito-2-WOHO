@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { CardHeader, CardBody, Input, Button, Avatar, Textarea } from '@heroui/react';
 import SurfaceCard from '../components/ui/SurfaceCard';
-import { Camera, Instagram, User as UserIcon, Phone, Facebook } from 'lucide-react';
+import { Camera, Instagram, User as UserIcon, Phone, Facebook } from '../components/ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';  
 import api from '../config/api';                   
@@ -112,10 +112,10 @@ const EditProfile = () => {
     <div className="flex justify-center w-full px-4 py-8 md:py-12">
       <SurfaceCard elevated className="w-full max-w-lg">
         <CardHeader className="flex flex-col items-center pt-8 pb-4">
-          <h1 className="text-3xl font-titulo font-black text-black uppercase tracking-tighter leading-none mb-2">
+          <h1 className="font-display text-5xl md:text-6xl mb-2">
             Ajustes de Perfil
           </h1>
-          <p className="font-cuerpo text-default-600 text-center">
+          <p className="font-cuerpo text-ws-ink/75 text-center">
             Personaliza cómo te ven los demás viajeros en WOHO.
           </p>
         </CardHeader>
@@ -130,10 +130,10 @@ const EditProfile = () => {
                 <Avatar 
                   src={avatarPreview} 
                   name={currentUser.name} 
-                  className="w-24 h-24 border-2 border-gray-200 bg-gray-100 text-3xl font-bold" 
+                  className="w-24 h-24 border-2 border-ws-ink bg-ws-paper-deep text-3xl font-bold" 
                 />
                 
-                <label className="absolute inset-0 bg-black/50 text-white rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                <label className="absolute inset-0 bg-ws-ink/60 text-ws-paper-light rounded-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                   <Camera className="w-6 h-6 mb-1" />
                   <span className="text-[10px] font-bold">Cambiar</span>
                   
@@ -149,54 +149,54 @@ const EditProfile = () => {
               placeholder="Ej. Lucas Viajero"
               labelPlacement="inside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               value={formData.name}
               onChange={handleChange}
-              startContent={<UserIcon className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
+              startContent={<UserIcon className="text-xl text-ws-ink/60 font-bold mr-2" />}
+              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
               isRequired
             />
 
             
             <Input
               name="instagram_handle"
-              label="Usuario de Instagram (Opcional)"
+              label="Usuario de Instagram (opcional)"
               placeholder="@tu_usuario"
               labelPlacement="inside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               value={formData.instagram_handle}
               onChange={handleChange}
-              startContent={<Instagram className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
+              startContent={<Instagram className="text-xl text-ws-ink/60 font-bold mr-2" />}
+              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
             />
 
             
             <Input
               name="phone_whatsapp"
-              label="WhatsApp / Teléfono (Opcional)"
+              label="WhatsApp / Teléfono (opcional)"
               placeholder="+56 9 1234 5678"
               labelPlacement="inside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               value={formData.phone_whatsapp}
               onChange={handleChange}
-              startContent={<Phone className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
+              startContent={<Phone className="text-xl text-ws-ink/60 font-bold mr-2" />}
+              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
             />
 
             
             <Input
               name="facebook_url"
-              label="Enlace de Facebook (Opcional)"
+              label="Enlace de Facebook (opcional)"
               placeholder="https://facebook.com/tu_perfil"
               labelPlacement="inside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               value={formData.facebook_url}
               onChange={handleChange}
-              startContent={<Facebook className="text-xl text-default-400 font-bold mr-2" />}
-              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
+              startContent={<Facebook className="text-xl text-ws-ink/60 font-bold mr-2" />}
+              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
             />
 
             
@@ -206,20 +206,20 @@ const EditProfile = () => {
               placeholder="Cuéntale a la comunidad quién eres, de dónde vienes y qué buscas..."
               labelPlacement="inside"
               variant="bordered"
-              radius="md"
+              radius="sm"
               minRows={4}
               value={formData.bio}
               onChange={handleChange}
-              classNames={{ inputWrapper: "border border-gray-200", label: "font-bold text-black text-sm" }}
+              classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm" }}
             />
 
             
             <div className="pt-4 flex gap-4">
-              <Button as="button" type="button" onClick={() => navigate('/profile')} variant="flat" radius="md" className="w-1/3 bg-gray-100 font-bold">
+              <Button as="button" type="button" onClick={() => navigate('/profile')} variant="flat" radius="sm" className="ws-btn ws-btn-quiet w-1/3">
                 Cancelar
               </Button>
-              <Button type="submit" isLoading={isLoading} variant="solid" radius="md" className="w-2/3 bg-woho-purple text-white font-bold tracking-wider">
-                Guardar Cambios
+              <Button type="submit" isLoading={isLoading} variant="solid" radius="sm" className="ws-btn ws-btn-tomato w-2/3">
+                Guardar cambios
               </Button>
             </div>
 

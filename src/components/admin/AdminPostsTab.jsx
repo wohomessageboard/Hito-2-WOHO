@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { CardBody, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, Pagination } from '@heroui/react';
 import SurfaceCard from '../ui/SurfaceCard';
-import { Search, Trash2, Pin, PinOff } from 'lucide-react';
+import { Search, Trash2, Pin, PinOff } from '../ui/icons';
 
 const postColumns = [
   { name: "AVISO", uid: "title" },
