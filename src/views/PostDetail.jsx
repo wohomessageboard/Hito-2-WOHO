@@ -135,6 +135,11 @@ const PostDetail = () => {
               <span className="ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] bg-ws-paper-deep">
                 <MapPin className="w-4 h-4" aria-hidden="true" /> {country}, {city} <span aria-hidden="true">{post.flag}</span>
               </span>
+              {expiresInDays === null && (
+                <span className="ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] bg-ws-paper-deep">
+                  <Calendar className="w-4 h-4" aria-hidden="true" /> Aviso permanente
+                </span>
+              )}
               {expiresInDays !== null && (
                 <span className={`ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-ws-ink ${expiryTone}`}>
                   <Calendar className="w-4 h-4" aria-hidden="true" />

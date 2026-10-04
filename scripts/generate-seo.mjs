@@ -43,7 +43,7 @@ const llms = `# ${SITE_NAME}
 
 > ${SITE_SUMMARY}
 
-WOHO es gratis. Se puede explorar sin cuenta. Para contactar a quien publica hace falta iniciar sesión, y el contacto se hace por WhatsApp; el correo de las personas nunca se muestra.
+WOHO es gratis. Los avisos de la comunidad caducan a los 30 días como máximo, por eso la información es siempre vigente. Se puede explorar sin cuenta. Para contactar a quien publica hace falta iniciar sesión, y el contacto se hace por WhatsApp; el correo de las personas nunca se muestra.
 
 ## Páginas principales
 

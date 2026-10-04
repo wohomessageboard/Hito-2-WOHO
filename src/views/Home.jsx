@@ -79,6 +79,20 @@ const Home = () => {
         items={['Alojamiento', 'Trabajo temporario', 'Compañeros de ruta', 'De viajero a viajero', 'Sin algoritmo, sin relleno']}
       />
 
+      {/* Lo que nos distingue: los avisos caducan */}
+      <section aria-labelledby="avisos-caducan" className="ws-band ws-band-mustard ws-bleed py-14 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-12 gap-8 md:gap-10 items-center relative">
+          <h2 id="avisos-caducan" className="md:col-span-7 font-display text-5xl sm:text-6xl xl:text-7xl">
+            Los avisos <em>caducan.</em> Lo que lees, está vigente.
+          </h2>
+          <div className="md:col-span-5 space-y-4 font-cuerpo text-lg md:text-xl leading-relaxed">
+            <p>Cada aviso dura como máximo <strong>30 días</strong> y después desaparece. Nada de cuartos que ya se ocuparon ni de trabajos de hace meses.</p>
+            <p>Quien publica elige cuánto tiempo estará visible, y quien busca siempre encuentra información fresca.</p>
+          </div>
+          <Stamp variant="rect" center="30 DÍAS" top="VIGENTE" bottom="MÁXIMO" rotate={-6} className="hidden lg:block absolute -top-10 right-2 w-32 text-ws-ink" />
+        </div>
+      </section>
+
       {/* Nadie se salva solo */}
       <section
         aria-labelledby="nadie-se-salva-solo"

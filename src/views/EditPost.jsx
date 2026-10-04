@@ -6,10 +6,13 @@ import SurfaceCard from '../components/ui/SurfaceCard';
 import { MapPin, Target, Save, Image as ImageIcon, ArrowLeft } from '../components/ui/icons';
 import api from '../config/api';
 import { compressImages } from '../utils/compressImage';
+import DurationField from '../components/ui/DurationField';
 
 const EditPost = () => {
   const { id } = useParams();
   const { isAuthenticated, currentUser } = useUser();
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'superadmin';
+  const [originalDays, setOriginalDays] = useState(0);
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
@@ -52,6 +55,7 @@ const EditPost = () => {
           return;
         }
 
+        setOriginalDays(Number(p.duration_days) || 0);
         setFormData({
           title: p.title || '',
           category_id: String(p.category_id || ''),
@@ -281,23 +285,7 @@ const EditPost = () => {
 
               <div className="grid grid-cols-1 gap-4 mt-2">
                 
-                <Input
-                  name="duration_days"
-                  type="number"
-                  min={1}
-                  max={365}
-                  label="Días de duración"
-                  variant="bordered"
-                  radius="sm"
-                  size="lg"
-                  isRequired
-                  value={formData.duration_days}
-                  onChange={handleChange}
-                  classNames={{ 
-                    inputWrapper: "ws-input-border",
-                    label: "font-bold text-ws-ink text-sm"
-                  }}
-                />
+                <DurationField label="Días de duración" value={formData.duration_days} onChange={handleChange} isAdmin={isAdmin} currentDays={originalDays} />
               </div>
 
               <div className="space-y-3">
