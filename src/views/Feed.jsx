@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { Button, Input } from '@heroui/react';
 
-import { Search, Grid, Briefcase, Home, Users, Globe, Compass } from '../components/ui/icons';
+import { Search, Grid, Briefcase, Home, Users, Globe, Compass, Calendar } from '../components/ui/icons';
 
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
@@ -120,6 +120,9 @@ const Feed = () => {
               {isAuthenticated
                 ? 'Lo último en oportunidades en los destinos que sigues.'
                 : 'Lo último que publicó la comunidad. Explora sin cuenta; crea una para guardar y contactar.'}
+            </p>
+            <p className="ws-mono inline-flex items-center gap-2 bg-ws-paper-light rounded-[4px] px-2.5 py-1.5">
+              <Calendar className="w-4 h-4 shrink-0" aria-hidden="true" /> Solo avisos vigentes: caducan en 30 días o menos
             </p>
           </div>
 

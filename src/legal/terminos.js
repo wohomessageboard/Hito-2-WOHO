@@ -76,7 +76,7 @@ export const TERMINOS = {
       id: 'duracion',
       title: 'Duración de los avisos',
       blocks: [
-        'Al publicar eliges por cuántos días estará visible tu aviso (entre 1 y 365). Cuando vence, deja de aparecer en el listado. Puedes editarlo o eliminarlo cuando quieras.',
+        'Los avisos caducan para que quienes buscan siempre encuentren información vigente. Al publicar eliges por cuántos días estará visible tu aviso, **hasta un máximo de 30 días**. Cuando vence, deja de aparecer en el listado; si sigue vigente, puedes publicar uno nuevo. Solo el equipo de WOHO puede publicar avisos por más tiempo o sin caducidad. Puedes editar o eliminar tu aviso cuando quieras.',
       ],
     },
     {

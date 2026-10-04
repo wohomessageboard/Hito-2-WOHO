@@ -7,6 +7,7 @@ import { MapPin, Target, Send, Image as ImageIcon, Whatsapp } from '../component
 
 import api from '../config/api';
 import { compressImages } from '../utils/compressImage';
+import DurationField from '../components/ui/DurationField';
 
 const NewPost = () => {
   const { isAuthenticated, currentUser, login } = useUser();
@@ -55,6 +56,7 @@ const NewPost = () => {
   const [errorMsg, setErrorMsg] = useState('');
   // WhatsApp = único dato de contacto. Si aún no lo dejó, se pide aquí y se guarda en su perfil.
   const hasPhone = !!currentUser?.phone_whatsapp;
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'superadmin';
   const [phone, setPhone] = useState('');
 
   const handleChange = (e) => {
@@ -286,25 +288,7 @@ const NewPost = () => {
               <div className="grid grid-cols-1 gap-4 mt-2">
                 
                 
-                <Input
-                  name="duration_days"
-                  type="number"
-                  min={1}
-                  max={365}
-                  label="Días de duración del aviso"
-                  placeholder="Ej: 15"
-                  labelPlacement="inside"
-                  variant="bordered"
-                  radius="sm"
-                  size="lg"
-                  isRequired
-                  value={formData.duration_days}
-                  onChange={handleChange}
-                  classNames={{ 
-                    inputWrapper: "ws-input-border",
-                    label: "font-bold text-ws-ink text-sm"
-                  }}
-                />
+                <DurationField value={formData.duration_days} onChange={handleChange} isAdmin={isAdmin} />
               </div>
 
               

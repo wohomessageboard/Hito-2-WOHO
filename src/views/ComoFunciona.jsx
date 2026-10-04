@@ -36,7 +36,7 @@ const STEPS = [
     Icon: Send,
     title: 'Contacta o publica',
     block: 'bg-ws-plum text-ws-paper-light',
-    body: 'En un anuncio, pulsa «Escribir por WhatsApp»: se abre un chat con quien publica, con el aviso ya adjunto en el mensaje. ¿Tienes algo que ofrecer? Crea tu publicación con título, categoría, destino, descripción, hasta 5 fotos, los días que durará el aviso y tu WhatsApp.',
+    body: 'En un anuncio, pulsa «Escribir por WhatsApp»: se abre un chat con quien publica, con el aviso ya adjunto en el mensaje. ¿Tienes algo que ofrecer? Crea tu publicación con título, categoría, destino, descripción, hasta 5 fotos, los días que durará el aviso (hasta 30) y tu WhatsApp.',
     cta: { to: '/new-post', label: 'Crear publicación', authOnly: true },
   },
 ];
@@ -44,7 +44,7 @@ const STEPS = [
 // Tres ideas clave, justo después de la introducción.
 const RESUMEN = [
   'Explorar los avisos es gratis y no necesita cuenta.',
-  'Con tu cuenta guardas avisos, sigues destinos y contactas por WhatsApp.',
+  'Los avisos caducan a los 30 días como máximo: lo que lees siempre está vigente.',
   'Tu correo nunca se muestra: de ti solo se comparte tu WhatsApp, cuando contactas o te contactan.',
 ];
 

@@ -141,9 +141,9 @@ const Register = () => {
               classNames={{ label: "font-cuerpo text-sm leading-relaxed text-ws-ink" }}
             >
               Acepto los{' '}
-              <Link to="/terminos" target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-4" onClick={(e) => e.stopPropagation()}>Términos y Condiciones</Link>{' '}
+              <Link to="/terminos" target="_blank" rel="noopener noreferrer" className="relative z-10 font-bold underline underline-offset-4 inline-flex items-center min-h-11 -my-3" onClick={(e) => e.stopPropagation()}>Términos y Condiciones</Link>{' '}
               y la{' '}
-              <Link to="/privacidad" target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-4" onClick={(e) => e.stopPropagation()}>Política de Privacidad</Link>
+              <Link to="/privacidad" target="_blank" rel="noopener noreferrer" className="relative z-10 font-bold underline underline-offset-4 inline-flex items-center min-h-11 -my-3" onClick={(e) => e.stopPropagation()}>Política de Privacidad</Link>
             </Checkbox>
 
             {errorMsg && (

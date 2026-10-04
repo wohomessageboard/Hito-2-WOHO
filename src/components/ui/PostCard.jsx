@@ -59,7 +59,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             <p className="ws-mono truncate">{post.country}, {post.city}</p>
           </div>
           <span className={`ws-mono px-2 py-1 rounded-[4px] ${tone}`}>
-            {days === 0 ? '¡Expira hoy!' : `Expira en ${days} días`}
+            {days == null ? 'Aviso permanente' : days === 0 ? '¡Expira hoy!' : `Expira en ${days} días`}
           </span>
         </header>
       );

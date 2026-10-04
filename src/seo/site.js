@@ -5,7 +5,7 @@ import { FAQ } from './faq.js';
 
 export const SITE_NAME = 'WOHO';
 export const LOGO_URL = 'https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png';
-export const SITE_SUMMARY = 'Tablón de avisos gratuito para viajeros con visa Working Holiday: trabajo, alojamiento y compañeros de ruta, publicados por la comunidad.';
+export const SITE_SUMMARY = 'Tablón de avisos gratuito para viajeros con visa Working Holiday: trabajo, alojamiento y compañeros de ruta. Los avisos caducan a los 30 días como máximo, así que la información siempre está vigente.';
 
 // Páginas públicas e indexables. `h1` es el encabezado visible: debe diferir del `title`.
 // `summary` es el texto que ven los lectores sin JavaScript (buscadores simples y modelos de lenguaje).
@@ -13,14 +13,14 @@ export const PAGES = [
   {
     path: '/', priority: '1.0',
     title: 'Tablón Working Holiday: trabajo y alojamiento | WOHO',
-    description: 'Avisos gratis de trabajo, alojamiento y compañeros de ruta para quienes viajan con visa Working Holiday. Publicados por la comunidad.',
+    description: 'Avisos gratis de trabajo, alojamiento y compañeros de ruta para viajeros Working Holiday. Caducan a los 30 días: información siempre vigente.',
     h1: 'El coraje de migrar, la fuerza de unirse.',
-    summary: 'WOHO es un tablón de avisos hecho por viajeros Working Holiday. Explora sin cuenta, sigue destinos y contacta por WhatsApp. Es gratis.',
+    summary: 'WOHO es un tablón de avisos hecho por viajeros Working Holiday. Los avisos caducan a los 30 días como máximo: lo que lees está vigente. Explora sin cuenta, sigue destinos y contacta por WhatsApp. Es gratis.',
   },
   {
     path: '/feed', priority: '0.9',
     title: 'Anuncios de trabajo y alojamiento para viajeros | WOHO',
-    description: 'Explora los avisos más recientes de trabajo, alojamiento y planes publicados por viajeros. Filtra por destino y categoría; no necesitas cuenta.',
+    description: 'Avisos vigentes de trabajo, alojamiento y planes publicados por viajeros; cada uno caduca en 30 días o menos. Filtra por destino, sin cuenta.',
     h1: 'Anuncios recientes',
     summary: 'Los avisos más recientes de la comunidad, filtrables por destino y categoría: trabajo, alojamiento, social y otros.',
   },
@@ -34,7 +34,7 @@ export const PAGES = [
   {
     path: '/como-funciona', priority: '0.7',
     title: 'Cómo usar WOHO: explora, contacta y publica gratis',
-    description: 'Aprende a explorar avisos, crear tu cuenta, seguir destinos y contactar por WhatsApp. Gratis, sin mostrar tu correo y con consejos para viajar tranquilo.',
+    description: 'Explora avisos que caducan a los 30 días, crea tu cuenta gratis, sigue destinos y contacta por WhatsApp. Tu correo nunca se muestra.',
     h1: 'Cómo funciona WOHO',
     summary: 'Cuatro pasos: explora sin cuenta, crea tu cuenta gratis, sigue destinos y guarda avisos, y contacta por WhatsApp o publica el tuyo.',
   },
