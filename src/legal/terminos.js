@@ -117,6 +117,7 @@ export const TERMINOS = {
       blocks: [
         'Ofrecemos WOHO «tal como está»: hacemos lo posible por mantenerlo disponible y seguro, pero no garantizamos que funcione sin interrupciones ni errores, ni la veracidad, calidad o legalidad de los avisos.',
         'En la medida que la ley lo permita, WOHO no responde por los daños o pérdidas que resulten de acuerdos, pagos, viajes o encuentros entre personas usuarias, ni por el contenido que publican terceros. [[REVISAR CON UN ABOGADO: límites de responsabilidad según la ley de tu país y derechos irrenunciables del consumidor.]]',
+        '**Límite de responsabilidad.** En la medida que la ley lo permita, la responsabilidad total de WOHO frente a ti por cualquier reclamo relacionado con el servicio no superará [[US$ 100]] (como el servicio es gratis, no hay pagos que reembolsar), y WOHO no responde por daños indirectos, lucro cesante ni pérdida de oportunidades de trabajo o alojamiento. Esto no limita la responsabilidad que la ley no permita limitar, como la derivada de dolo o culpa grave, ni tus derechos como consumidor.',
       ],
     },
     {
@@ -137,8 +138,19 @@ export const TERMINOS = {
       id: 'ley',
       title: 'Ley aplicable',
       blocks: [
-        'Estos Términos se rigen por las leyes de [[PAÍS]]. Si hay un conflicto que no podamos resolver hablando, se someterá a los tribunales de [[CIUDAD / PAÍS]], sin perjuicio de los derechos que la ley te reconozca como consumidor.',
+        'Estos Términos se rigen por las leyes de [[PAÍS]], sin perjuicio de los derechos que la ley de tu país de residencia te reconozca como consumidor.',
         'Si tienes dudas o quieres reportar algo, escríbenos desde **Contacto**.',
+      ],
+    },
+    {
+      id: 'disputas',
+      title: 'Cómo resolvemos los conflictos',
+      blocks: [
+        '**Primero, hablemos.** Antes de iniciar cualquier reclamo, escríbenos desde **Contacto** y danos [[30]] días para resolverlo.',
+        '**Arbitraje.** Si no lo resolvemos, cualquier disputa entre tú y WOHO se resolverá de forma individual mediante arbitraje ante [[INSTITUCIÓN DE ARBITRAJE]], con sede en [[CIUDAD / PAÍS]] y en idioma español, en lugar de ir a tribunales. Puedes acudir a un tribunal de menor cuantía o de reclamos pequeños si tu caso califica.',
+        '**Sin demandas colectivas.** En la medida que la ley lo permita, ambas partes renuncian a participar como demandantes o integrantes de una demanda colectiva o representativa contra la otra.',
+        '**Lo que no se puede renunciar.** Nada de esto limita los derechos que la ley te garantice como consumidor, ni tu derecho a acudir a las autoridades de protección de datos o del consumidor de tu país, ni obliga a nadie a arbitrar donde la ley lo prohíba (por ejemplo, en muchos países un consumidor no puede ser obligado a renunciar a los tribunales de su domicilio).',
+        '[[REVISAR CON UN ABOGADO: el arbitraje obligatorio y la renuncia a demandas colectivas son habituales en EE. UU., pero suelen no ser válidos frente a consumidores de la UE, Chile y otros países. Decide si los mantienes o los reemplazas por tribunales de tu domicilio.]]',
       ],
     },
   ],
