@@ -118,7 +118,11 @@ const NewPost = () => {
       navigate('/profile', { state: { notice: '¡Aviso publicado!' } });
     } catch (error) {
       console.error('Error publicando el aviso:', error);
-      setErrorMsg(error.response?.data?.error || 'No pudimos publicar tu aviso. Revisa los datos e intenta de nuevo.');
+      setErrorMsg(
+        error.response?.status === 413
+          ? 'Las fotos pesan demasiado en conjunto. Prueba con menos fotos o con imágenes más livianas.'
+          : error.response?.data?.error || 'No pudimos publicar tu aviso. Revisa los datos e intenta de nuevo.'
+      );
       setIsSubmitting(false);
     }
   };

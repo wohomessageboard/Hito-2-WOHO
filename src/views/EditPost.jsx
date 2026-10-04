@@ -128,7 +128,11 @@ const EditPost = () => {
       navigate('/profile', { state: { notice: '¡Aviso actualizado correctamente!' } });
     } catch (error) {
       console.error('Error al actualizar el aviso:', error);
-      alert("Hubo un error al guardar los cambios.");
+      alert(
+        error?.response?.status === 413
+          ? 'Las fotos pesan demasiado en conjunto. Prueba con menos fotos o con imágenes más livianas.'
+          : error?.response?.data?.error || 'Hubo un error al guardar los cambios.'
+      );
     } finally {
       setIsSubmitting(false);
     }
