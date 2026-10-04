@@ -252,3 +252,10 @@
 @media (prefers-reduced-motion: reduce) {
   .ws-press:active, .ws-chip-idle:active, .ws-chip-selected:active, .ws-pill:active, .ws-surface-hover:active { transform: none; }
 }
+
+/* ---------- Campos en el teléfono ---------- */
+/* Safari (iPhone) hace zoom al enfocar un campo con letra menor a 16 px y la página queda
+   ampliada después de iniciar sesión. Con 16 px o más no hay zoom automático. */
+@media (max-width: 767px) {
+  input, textarea, select { font-size: 16px !important; }
+}

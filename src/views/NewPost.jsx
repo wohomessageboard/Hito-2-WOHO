@@ -69,12 +69,14 @@ const NewPost = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const MAX_PHOTOS = 5;
+  const [photoNotice, setPhotoNotice] = useState('');
+
   const handleFileChange = async (e) => {
-    const picked = Array.from(e.target.files);
-    if (picked.length > 5) {
-      alert("Solo puedes subir un máximo de 5 imágenes.");
-      return;
-    }
+    const chosen = Array.from(e.target.files);
+    // El selector del teléfono no permite limitar la cantidad: nos quedamos con las primeras 5.
+    const picked = chosen.slice(0, MAX_PHOTOS);
+    setPhotoNotice(chosen.length > MAX_PHOTOS ? `Elegiste ${chosen.length} fotos. El máximo es ${MAX_PHOTOS}: usaremos las primeras ${MAX_PHOTOS}.` : '');
     // Se reducen antes de subir: las fotos del celular pesan varios MB.
     const files = await compressImages(picked);
     setSelectedFiles(files);
@@ -311,6 +313,10 @@ const NewPost = () => {
                 </label>
 
                 
+                {photoNotice && (
+                  <p role="status" className="bg-ws-citron rounded-[6px] p-3 text-sm font-bold">{photoNotice}</p>
+                )}
+
                 {previews.length > 0 && (
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {previews.map((src, i) => (
