@@ -1,5 +1,8 @@
 // Política de Privacidad de WOHO — BORRADOR. Mismo formato que terminos.js.
 // Debe mantenerse al día con lo que la aplicación realmente hace con los datos.
+// Con VITE_GA4_ID definido, la política describe la analítica opcional (GA4) y las cookies.
+const GA = Boolean(import.meta.env.VITE_GA4_ID);
+
 export const PRIVACIDAD = {
   title: 'Política de Privacidad',
   intro:
@@ -113,7 +116,9 @@ export const PRIVACIDAD = {
       blocks: [
         {
           list: [
-            '**No usamos** analítica de terceros, píxeles de seguimiento, publicidad ni herramientas que graben tu sesión o lo que escribes.',
+            GA
+              ? '**Analítica opcional.** Solo si lo aceptas, usamos Google Analytics 4 (Google) para medir qué páginas se visitan y cómo se usa el sitio. Google recibe datos técnicos de tu visita (páginas vistas, dispositivo, navegador y ubicación aproximada) y coloca cookies analíticas. Puedes aceptar, rechazar o cambiar tu decisión cuando quieras en «Preferencias de analítica», al pie de la página. **No usamos** píxeles de publicidad ni herramientas que graben tu sesión o lo que escribes.'
+              : '**No usamos** analítica de terceros, píxeles de seguimiento, publicidad ni herramientas que graben tu sesión o lo que escribes.',
             'Las tipografías del sitio se sirven desde nuestros propios servidores, no desde Google.',
             'Las fotos de los avisos y el logo se cargan desde **Cloudinary**; por eso ese proveedor recibe tu dirección IP y datos técnicos de tu navegador cuando se muestran esas imágenes.',
             'Solo enviamos correos del servicio (por ejemplo, el enlace para recuperar tu contraseña). **No enviamos boletines ni publicidad.** Si algún día lo hiciéramos, te pediremos permiso antes, y cada correo traerá un enlace para darte de baja y nuestra dirección postal.',
@@ -125,7 +130,10 @@ export const PRIVACIDAD = {
       id: 'cookies',
       title: 'Cookies y almacenamiento',
       blocks: [
-        'WOHO no usa cookies de publicidad ni de seguimiento. Guardamos en tu navegador (almacenamiento local) lo necesario para mantener tu sesión y recordar pequeñas preferencias, como la posición en el listado o que ya viste una guía. Puedes borrarlo desde tu navegador; si lo haces tendrás que volver a iniciar sesión.',
+        (GA
+          ? 'WOHO no usa cookies de publicidad. Si aceptas la analítica, Google Analytics coloca cookies analíticas en tu navegador; si la rechazas, no se coloca ninguna. '
+          : 'WOHO no usa cookies de publicidad ni de seguimiento. ') +
+          'Guardamos en tu navegador (almacenamiento local) lo necesario para mantener tu sesión y recordar pequeñas preferencias, como la posición en el listado o que ya viste una guía. Puedes borrarlo desde tu navegador; si lo haces tendrás que volver a iniciar sesión.',
       ],
     },
     {

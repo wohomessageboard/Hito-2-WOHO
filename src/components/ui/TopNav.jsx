@@ -45,10 +45,10 @@ const TopNav = () => {
       </NavbarContent>
 
       <NavbarBrand className="mr-4">
-        <RouterLink to="/" className="flex items-center gap-2">
+        <RouterLink to="/" className="flex items-center gap-2 min-h-11">
           <img
             src="https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png"
-            alt="WOHO Logo"
+            alt="WOHO, tablón de avisos Working Holiday"
             className="h-9 w-auto object-contain"
           />
         </RouterLink>
@@ -77,13 +77,13 @@ const TopNav = () => {
           <>
             {isAdmin && (
               <NavbarItem className="hidden lg:flex">
-                <Button as={RouterLink} to="/admin-dashboard" radius="sm" className="ws-pill ws-pill-line h-10 px-4">
+                <Button as={RouterLink} to="/admin-dashboard" radius="sm" className="ws-pill ws-pill-line h-11 px-4">
                   Panel de admin
                 </Button>
               </NavbarItem>
             )}
             <NavbarItem className="hidden lg:flex">
-              <Button as={RouterLink} to="/new-post" radius="sm" className="ws-btn ws-btn-tomato h-10 px-5">
+              <Button as={RouterLink} to="/new-post" radius="sm" className="ws-btn ws-btn-ink h-11 px-5">
                 Crear publicación
               </Button>
             </NavbarItem>
@@ -96,12 +96,12 @@ const TopNav = () => {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button as={RouterLink} to="/register" radius="sm" className="ws-pill ws-pill-line h-10 px-4">
+              <Button as={RouterLink} to="/register" radius="sm" className="ws-pill ws-pill-line h-11 px-4">
                 Regístrate
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button as={RouterLink} to="/login" radius="sm" className="ws-btn ws-btn-tomato h-10 px-5">
+              <Button as={RouterLink} to="/login" radius="sm" className="ws-btn ws-btn-ink h-11 px-5">
                 Iniciar sesión
               </Button>
             </NavbarItem>
@@ -109,7 +109,17 @@ const TopNav = () => {
         )}
       </NavbarContent>
 
-      <NavbarMenu className="bg-ws-paper-light pt-6 pb-8 flex flex-col items-stretch gap-3">
+      <NavbarMenu
+        className="z-[45] !bg-ws-paper-light !backdrop-blur-none pt-10 pb-8 flex flex-col items-stretch gap-3"
+        // Aparece opaco y completo al instante: sin crecer de arriba abajo ni fundirse con la
+        // página, para que nunca se vea el contenido de debajo mezclado con el menú.
+        motionProps={{
+          initial: { opacity: 1, height: 'calc(100dvh - var(--navbar-height))' },
+          animate: { opacity: 1, height: 'calc(100dvh - var(--navbar-height))' },
+          exit: { opacity: 1, height: 'calc(100dvh - var(--navbar-height))' },
+          transition: { duration: 0 },
+        }}
+      >
         {NAV_LINKS.map(({ to, label, match }) => {
           const active = match(location.pathname);
           return (
@@ -135,7 +145,7 @@ const TopNav = () => {
                   Panel de admin
                 </Button>
               )}
-              <Button as={RouterLink} to="/new-post" radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base" onPress={() => setIsMenuOpen(false)}>
+              <Button as={RouterLink} to="/new-post" radius="sm" fullWidth className="ws-btn ws-btn-ink h-12 text-base" onPress={() => setIsMenuOpen(false)}>
                 Crear publicación
               </Button>
               <Button as={RouterLink} to="/profile" radius="sm" fullWidth className="ws-pill ws-pill-line h-12 text-base" onPress={() => setIsMenuOpen(false)}>
@@ -150,7 +160,7 @@ const TopNav = () => {
               <Button as={RouterLink} to="/register" radius="sm" fullWidth className="ws-pill ws-pill-line h-12 text-base" onPress={() => setIsMenuOpen(false)}>
                 Regístrate
               </Button>
-              <Button as={RouterLink} to="/login" radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base" onPress={() => setIsMenuOpen(false)}>
+              <Button as={RouterLink} to="/login" radius="sm" fullWidth className="ws-btn ws-btn-ink h-12 text-base" onPress={() => setIsMenuOpen(false)}>
                 Iniciar sesión
               </Button>
             </>

@@ -160,9 +160,9 @@ const EditPost = () => {
           <form id="edit-post-form" onSubmit={handleSubmit} className="flex flex-col gap-6">
             
             <div className="space-y-4">
-              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
+              <h2 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <Target className="w-5 h-5" /> ¿Qué quieres cambiar?
-              </h3>
+              </h2>
               
               <Input
                 name="title"
@@ -206,9 +206,9 @@ const EditPost = () => {
             </div>
 
             <div className="space-y-4 mt-4">
-              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
+              <h2 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <MapPin className="w-5 h-5" /> Ubicación
-              </h3>
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select
                   name="country_id"

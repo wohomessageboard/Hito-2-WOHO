@@ -56,7 +56,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
         <header className="flex items-center justify-between gap-2 px-4 pt-4">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-2xl" aria-hidden="true">{post.flag}</span>
-            <h5 className="ws-mono truncate">{post.country}, {post.city}</h5>
+            <p className="ws-mono truncate">{post.country}, {post.city}</p>
           </div>
           <span className={`ws-mono px-2 py-1 rounded-[4px] ${tone}`}>
             {days === 0 ? '¡Expira hoy!' : `Expira en ${days} días`}
@@ -76,12 +76,12 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
             <Avatar src={owner?.avatar} size="sm" radius="sm" className="bg-ws-paper-deep" />
           )}
           <div className="flex flex-col gap-1 items-start justify-center min-w-0">
-            <h4 className="text-sm font-bold leading-none text-ws-ink flex items-center gap-1 truncate">
+            <p className="text-sm font-bold leading-none text-ws-ink flex items-center gap-1 truncate">
               {variant === "feed" && isMyPost
                 ? "Yo (Tu aviso)"
                 : (isPublicFeed ? <span className="text-ws-ink/70 flex items-center gap-1"><Lock className="w-4 h-4" aria-hidden="true"/> Viajero protegido</span> : (owner?.name || "Anónimo"))
               }
-            </h4>
+            </p>
             <div className="ws-mono text-ws-ink/75 flex items-center gap-1.5">
               <span aria-hidden="true">{post.flag}</span>
               {variant === "favorite" ? <span>{post.country}, {post.city}</span> : <span>{post.city}</span>}
@@ -135,7 +135,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   const renderBody = () => (
     <div className="px-4 pt-4 pb-5 flex-1">
       <span className={`ws-tag ${typeTag} mb-3`}>{post.type}</span>
-      <Link to={`/post/${post.id}`} className="hover:underline decoration-ws-tomato decoration-2 underline-offset-4">
+      <Link to={`/post/${post.id}`} className="hover:underline decoration-ws-tomato decoration-2 underline-offset-4 inline-block py-2 -my-2">
         <h3 className="font-display text-3xl leading-[1.05] text-ws-ink mb-3">
           {post.title}
         </h3>

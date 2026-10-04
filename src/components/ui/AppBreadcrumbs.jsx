@@ -22,7 +22,7 @@ const AppBreadcrumbs = () => {
         }}
       >
         <BreadcrumbItem>
-          <RouterLink to="/" className="hover:underline underline-offset-4">
+          <RouterLink to="/" className="hover:underline underline-offset-4 inline-flex items-center min-h-11 -my-3">
             Inicio
           </RouterLink>
         </BreadcrumbItem>
@@ -102,7 +102,7 @@ const AppBreadcrumbs = () => {
               {last ? (
                 <span className="bg-ws-paper-light px-1.5">{title}</span>
               ) : (
-                <RouterLink to={to} className="hover:underline underline-offset-4">
+                <RouterLink to={to} className="hover:underline underline-offset-4 inline-flex items-center min-h-11 -my-3">
                   {title}
                 </RouterLink>
               )}

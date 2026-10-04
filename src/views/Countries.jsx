@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../config/api';
 import Stamp from '../components/ui/Stamp';
 import { ArrowRight } from '../components/ui/icons';
+import RelatedLinks from '../components/ui/RelatedLinks';
 
 // Cada destino es una página de pasaporte con su sello; color y giro rotan
 // para que la grilla no se vea fotocopiada.
@@ -72,6 +73,12 @@ const Countries = () => {
           ))
         )}
       </section>
+
+      <RelatedLinks links={[
+        { to: '/como-funciona', label: 'Cómo funciona', hint: 'Cuatro pasos, gratis.' },
+        { to: '/feed', label: 'Explorar anuncios', hint: 'Sin elegir país.' },
+        { to: '/manifiesto', label: 'Leer el manifiesto', hint: 'Por qué existe WOHO.' },
+      ]} />
 
     </div>
   );

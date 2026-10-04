@@ -128,7 +128,8 @@ const Feed = () => {
               aria-label="Buscar anuncios"
               classNames={{
                 inputWrapper: "ws-input-border h-14",
-                input: "font-cuerpo text-lg"
+                input: "font-cuerpo text-lg",
+                clearButton: "!w-11 !h-11 !min-w-11 flex items-center justify-center"
               }}
               placeholder="Ej: granja, Sydney, auto…"
               radius="sm"
@@ -160,7 +161,8 @@ const Feed = () => {
         </div>
       </section>
 
-      <section>
+      <section aria-labelledby="resultados">
+        <h2 id="resultados" className="sr-only">Resultados</h2>
         {filteredPosts.length === 0 ? (
           <EmptyState
             stamp={posts.length === 0 ? 'SIN RUTA' : 'SIN AVISOS'}
@@ -218,7 +220,7 @@ const Feed = () => {
                 <p className="font-cuerpo text-sm font-bold text-ws-ink flex-1">
                   Estás explorando como visitante. Con una cuenta puedes guardar anuncios, contactar a quien publica y seguir destinos.
                 </p>
-                <Button as={Link} to="/register" radius="sm" className="ws-btn ws-btn-ink h-10 px-5 shrink-0">
+                <Button as={Link} to="/register" radius="sm" className="ws-btn ws-btn-ink h-11 px-5 shrink-0">
                   Crear cuenta
                 </Button>
               </div>

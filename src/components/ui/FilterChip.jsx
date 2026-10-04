@@ -49,7 +49,7 @@ const FilterChip = ({
       }}
       className={[
         'cursor-pointer font-bold transition-colors',
-        isCompact ? 'text-xs px-1 h-8' : 'font-cuerpo h-9',
+        isCompact ? 'text-xs px-1 h-8 max-md:h-11' : 'font-cuerpo h-9 max-md:h-11',
         isSelected ? `${selected.fill} ${selected.text}` : 'ws-chip-idle',
         className,
       ].filter(Boolean).join(' ')}

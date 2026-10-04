@@ -9,6 +9,8 @@ import FilterChip from '../components/ui/FilterChip';
 import EmptyState from '../components/ui/EmptyState';
 import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
+import ShareLinks from '../components/ui/ShareLinks';
+import RelatedLinks from '../components/ui/RelatedLinks';
 
 const CATEGORY_ICONS = {
   'Todos': Grid,
@@ -163,7 +165,7 @@ const CountryFeed = () => {
       <section aria-label="Filtros" className="ws-surface p-4 md:p-6 flex flex-col gap-5">
         <Input
           aria-label={`Buscar en ${countryInfo.name}`}
-          classNames={{ inputWrapper: "ws-input-border h-14", input: "font-cuerpo text-lg" }}
+          classNames={{ inputWrapper: "ws-input-border h-14", input: "font-cuerpo text-lg", clearButton: "!w-11 !h-11 !min-w-11 flex items-center justify-center" }}
           placeholder={`Buscar en ${countryInfo.name}…`}
           radius="sm"
           value={searchQuery}
@@ -213,7 +215,8 @@ const CountryFeed = () => {
         </div>
       </section>
 
-      <section>
+      <section aria-labelledby="resultados">
+        <h2 id="resultados" className="sr-only">Anuncios en {countryInfo.name}</h2>
         {filteredPosts.length === 0 ? (
           <EmptyState
             title={`Pueblo fantasma en ${selectedCity !== 'Todas' ? selectedCity : countryInfo.name}`}
@@ -260,6 +263,17 @@ const CountryFeed = () => {
           </div>
         )}
       </section>
+
+      <section aria-label="Compartir este destino" className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <p className="font-bold">¿Alguien más viaja a {countryInfo.name}?</p>
+        <ShareLinks url={window.location.href} title={`Working Holiday en ${countryInfo.name}`} text={`Avisos de trabajo y alojamiento en ${countryInfo.name}:`} />
+      </section>
+
+      <RelatedLinks links={[
+        { to: '/destinos', label: 'Todos los destinos', hint: 'Elige otro país.' },
+        { to: '/como-funciona', label: 'Cómo funciona', hint: 'Cuatro pasos, gratis.' },
+        { to: '/feed', label: 'Explorar anuncios', hint: 'Sin filtrar por país.' },
+      ]} />
 
     </div>
   );
