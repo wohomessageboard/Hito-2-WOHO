@@ -45,10 +45,10 @@ const TopNav = () => {
       </NavbarContent>
 
       <NavbarBrand className="mr-4">
-        <RouterLink to="/" className="flex items-center gap-2">
+        <RouterLink to="/" className="flex items-center gap-2 min-h-11">
           <img
             src="https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png"
-            alt="WOHO Logo"
+            alt="WOHO, tablón de avisos Working Holiday"
             className="h-9 w-auto object-contain"
           />
         </RouterLink>
@@ -77,13 +77,13 @@ const TopNav = () => {
           <>
             {isAdmin && (
               <NavbarItem className="hidden lg:flex">
-                <Button as={RouterLink} to="/admin-dashboard" radius="sm" className="ws-pill ws-pill-line h-10 px-4">
+                <Button as={RouterLink} to="/admin-dashboard" radius="sm" className="ws-pill ws-pill-line h-11 px-4">
                   Panel de admin
                 </Button>
               </NavbarItem>
             )}
             <NavbarItem className="hidden lg:flex">
-              <Button as={RouterLink} to="/new-post" radius="sm" className="ws-btn ws-btn-tomato h-10 px-5">
+              <Button as={RouterLink} to="/new-post" radius="sm" className="ws-btn ws-btn-tomato h-11 px-5">
                 Crear publicación
               </Button>
             </NavbarItem>
@@ -96,12 +96,12 @@ const TopNav = () => {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button as={RouterLink} to="/register" radius="sm" className="ws-pill ws-pill-line h-10 px-4">
+              <Button as={RouterLink} to="/register" radius="sm" className="ws-pill ws-pill-line h-11 px-4">
                 Regístrate
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button as={RouterLink} to="/login" radius="sm" className="ws-btn ws-btn-tomato h-10 px-5">
+              <Button as={RouterLink} to="/login" radius="sm" className="ws-btn ws-btn-tomato h-11 px-5">
                 Iniciar sesión
               </Button>
             </NavbarItem>

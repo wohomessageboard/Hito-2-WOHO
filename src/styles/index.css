@@ -233,3 +233,22 @@
   .ws-btn, .ws-surface-hover { transition: none; }
   .ws-btn:hover, .ws-btn:active { transform: none; }
 }
+
+/* ---------- Respuesta inmediata al tocar ---------- */
+/* La respuesta empieza al presionar, no al soltar: los controles se hunden al instante. */
+.ws-press { transition: transform 0.1s ease-out, background-color 0.15s ease; }
+.ws-press:active { transform: scale(0.98); }
+.ws-chip-idle:active, .ws-chip-selected:active, .ws-pill:active { transform: scale(0.97); transition: transform 0.1s ease-out; }
+.ws-surface-hover:active { transform: scale(0.99); transition: transform 0.1s ease-out; }
+
+/* ---------- Preferencias de accesibilidad del sistema ---------- */
+/* Más contraste: filetes y bordes más marcados, sin depender del color de relleno. */
+@media (prefers-contrast: more) {
+  .ws-surface, .ws-surface-elevated, .ws-ticket { border-color: var(--ws-ink); }
+  .ws-input-border { border-color: var(--ws-ink); }
+  .ws-btn, .ws-pill { outline: 1px solid var(--ws-ink); }
+}
+/* Menos movimiento: sin hundimiento ni escalas; se conserva el cambio de color. */
+@media (prefers-reduced-motion: reduce) {
+  .ws-press:active, .ws-chip-idle:active, .ws-chip-selected:active, .ws-pill:active, .ws-surface-hover:active { transform: none; }
+}

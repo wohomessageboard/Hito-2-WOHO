@@ -24,7 +24,7 @@ const AuthShell = ({ scene = 'login', children }) => {
         aria-hidden="true"
         className={`ws-band ${s.band} rounded-[10px] hidden md:flex flex-col justify-between gap-8 p-10`}
       >
-        <h2 className="font-display text-5xl xl:text-6xl">{s.title}</h2>
+        <p className="font-display text-5xl xl:text-6xl">{s.title}</p>
         <Stamp solid variant="round" center={['WOHO']} top={s.stamp.top} bottom={s.stamp.bottom} rotate={-10} className={`w-40 self-end ${s.stamp.color}`} />
       </aside>
       <div className="w-full max-w-md mx-auto md:max-w-none self-center">{children}</div>

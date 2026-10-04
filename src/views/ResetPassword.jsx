@@ -53,7 +53,7 @@ const ResetPassword = () => {
     <AuthShell scene="login">
       <SurfaceCard elevated className="w-full overflow-visible">
         <CardHeader className="flex flex-col items-center pt-8 pb-0">
-          <h2 className="font-display text-4xl md:text-5xl text-ws-ink">Contraseña nueva</h2>
+          <h1 className="font-display text-4xl md:text-5xl text-ws-ink">Contraseña nueva</h1>
         </CardHeader>
         <CardBody className="p-8">
           {!token ? (

@@ -1,46 +1,26 @@
-// Genera public/sitemap.xml y public/robots.txt antes de cada build (npm run build).
-// La dirección del sitio sale de SITE_URL; si no existe, de la que Vercel entrega en
-// VERCEL_PROJECT_PRODUCTION_URL (cuando conectes tu dominio, defínela como SITE_URL).
-// Las páginas de países se leen de la API; si no responde, se omiten sin romper el build.
+// Genera public/sitemap.xml, public/robots.txt y public/llms.txt antes de cada build.
+// Las páginas salen de src/seo/site.js; los países, de la API.
 import { writeFileSync, mkdirSync } from 'node:fs';
+import { PAGES, countrySeo, SITE_NAME, SITE_SUMMARY } from '../src/seo/site.js';
+import { siteUrl, getCountries } from './seo-lib.mjs';
 
-const FALLBACK = 'https://woho-three.vercel.app';
-const site = (
-  process.env.SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : FALLBACK)
-).replace(/\/+$/, '');
+const site = siteUrl();
+const countries = await getCountries();
+const today = new Date().toISOString().slice(0, 10);
 
-// Solo páginas públicas e indexables. Las privadas (cuenta, admin, formularios) quedan fuera.
-const pages = [
-  ['/', '1.0'],
-  ['/feed', '0.9'],
-  ['/destinos', '0.8'],
-  ['/como-funciona', '0.7'],
-  ['/manifiesto', '0.6'],
-  ['/contacto', '0.4'],
-  ['/terminos', '0.3'],
-  ['/privacidad', '0.3'],
+const entries = [
+  ...PAGES.map((p) => ({ path: p.path, priority: p.priority })),
+  ...countries.map((name) => ({ path: `/destinos/${encodeURIComponent(name)}`, priority: '0.7' })),
 ];
 
-const countries = [];
-const api = process.env.VITE_API_URL;
-if (api) {
-  try {
-    const res = await fetch(`${api.replace(/\/+$/, '')}/countries`, { signal: AbortSignal.timeout(8000) });
-    if (res.ok) for (const c of await res.json()) if (c?.name) countries.push(c.name);
-  } catch {
-    console.warn('[seo] No se pudo leer la lista de países; el sitemap saldrá sin ellos.');
-  }
-}
-for (const name of countries) pages.push([`/destinos/${encodeURIComponent(name)}`, '0.7']);
-
-const today = new Date().toISOString().slice(0, 10);
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.map(([path, priority]) => `  <url><loc>${site}${path}</loc><lastmod>${today}</lastmod><priority>${priority}</priority></url>`).join('\n')}
+${entries.map((e) => `  <url><loc>${site}${e.path === '/' ? '' : e.path}</loc><lastmod>${today}</lastmod><priority>${e.priority}</priority></url>`).join('\n')}
 </urlset>
 `;
 
+// No hay paginación por URL (el feed carga y filtra en la misma página). Si algún día
+// existe /page/ o ?page=, añade aquí su Disallow.
 const robots = `User-agent: *
 Allow: /
 Disallow: /admin-dashboard
@@ -52,11 +32,34 @@ Disallow: /login
 Disallow: /register
 Disallow: /olvide-mi-contrasena
 Disallow: /restablecer
+Disallow: /page/
 
 Sitemap: ${site}/sitemap.xml
 `;
 
+const LABEL = { '/': 'Inicio', '/feed': 'Explorar anuncios', '/destinos': 'Destinos', '/como-funciona': 'Cómo funciona', '/manifiesto': 'Manifiesto', '/contacto': 'Contacto', '/terminos': 'Términos y condiciones', '/privacidad': 'Política de privacidad' };
+const line = (title, path, desc) => `- [${title}](${site}${path === '/' ? '' : path}): ${desc}`;
+const llms = `# ${SITE_NAME}
+
+> ${SITE_SUMMARY}
+
+WOHO es gratis. Se puede explorar sin cuenta. Para contactar a quien publica hace falta iniciar sesión, y el contacto se hace por WhatsApp; el correo de las personas nunca se muestra.
+
+## Páginas principales
+
+${PAGES.filter((p) => ['/', '/feed', '/destinos', '/como-funciona', '/manifiesto'].includes(p.path)).map((p) => line(LABEL[p.path] || p.h1, p.path, p.description)).join('\n')}
+
+## Destinos
+
+${countries.length ? countries.map((n) => line(n, `/destinos/${encodeURIComponent(n)}`, countrySeo(n).description)).join('\n') : '- Consulta la lista en ' + site + '/destinos'}
+
+## Información legal y contacto
+
+${PAGES.filter((p) => ['/terminos', '/privacidad', '/contacto'].includes(p.path)).map((p) => line(LABEL[p.path] || p.h1, p.path, p.description)).join('\n')}
+`;
+
 mkdirSync('public', { recursive: true });
-writeFileSync('public/sitemap.xml', xml);
+writeFileSync('public/sitemap.xml', sitemap);
 writeFileSync('public/robots.txt', robots);
-console.log(`[seo] sitemap.xml (${pages.length} páginas) y robots.txt para ${site}`);
+writeFileSync('public/llms.txt', llms);
+console.log(`[seo] sitemap (${entries.length} páginas), robots.txt y llms.txt para ${site}`);

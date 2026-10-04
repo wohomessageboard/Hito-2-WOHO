@@ -11,3 +11,4 @@ dist/
 # Generados por scripts/generate-seo.mjs en cada build
 public/sitemap.xml
 public/robots.txt
+public/llms.txt

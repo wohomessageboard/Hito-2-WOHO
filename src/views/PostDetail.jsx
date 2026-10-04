@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button, Avatar, useDisclosure } from '@heroui/react';
-import { ArrowLeft, Lock, MapPin, Calendar, Share2, AlertCircle, Whatsapp } from '../components/ui/icons';
+import { ArrowLeft, Lock, MapPin, Calendar, AlertCircle, Whatsapp } from '../components/ui/icons';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import EmptyState from '../components/ui/EmptyState';
 import Stamp from '../components/ui/Stamp';
 import ReportDialog from '../components/ui/ReportDialog';
+import ShareLinks from '../components/ui/ShareLinks';
+import { useSeo } from '../seo/useSeo';
 
 const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
 
@@ -19,7 +21,6 @@ const PostDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOpeningChat, setIsOpeningChat] = useState(false);
   const [contactError, setContactError] = useState('');
-  const [shared, setShared] = useState(false);
   const report = useDisclosure();
   const [reportNotice, setReportNotice] = useState('');
 
@@ -65,21 +66,24 @@ const PostDetail = () => {
     }
   };
 
-  // Compartir: hoja nativa si existe; si no, copia el enlace y lo avisa.
-  const handleShare = async () => {
-    const url = window.location.href;
+  // Enlace para compartir: pasa por el servidor, que devuelve la tarjeta con foto y título
+  // (Open Graph) y luego lleva a la persona al aviso.
+  const shareUrl = post ? `${(api.defaults.baseURL || '').replace(/\/+$/, '')}/share/posts/${post.id}` : '';
+
+  // Título y descripción de la pestaña y de los buscadores, según el aviso.
+  const firstImage = (() => {
     try {
-      if (navigator.share) {
-        await navigator.share({ title: post?.title, url });
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setShared(true);
-      setTimeout(() => setShared(false), 2500);
-    } catch {
-      /* el usuario cerró la hoja de compartir: no es un error */
-    }
-  };
+      const imgs = typeof post?.images === 'string' ? JSON.parse(post.images) : post?.images;
+      return Array.isArray(imgs) ? imgs[0] : undefined;
+    } catch { return undefined; }
+  })();
+  useSeo(post ? {
+    path: `/post/${id}`,
+    title: `${post.title.length > 52 ? `${post.title.slice(0, 51)}…` : post.title} | WOHO`,
+    description: (post.description || '').replace(/\s+/g, ' ').trim().slice(0, 155) || 'Aviso de la comunidad WOHO.',
+    image: firstImage,
+    noindex: false,
+  } : null);
 
   if (isLoading) {
     return <p role="status" className="ws-mono p-20 text-center">Abriendo anuncio…</p>;
@@ -226,10 +230,8 @@ const PostDetail = () => {
 
           <div className="ws-surface p-4 flex flex-col gap-3">
             <h3 className="ws-mono">Acciones adicionales</h3>
+            <ShareLinks url={shareUrl} title={post.title} text={`Mira este aviso en WOHO: ${post.title}`} />
             <div className="flex gap-2">
-              <Button onPress={handleShare} radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<Share2 className="w-5 h-5" aria-hidden="true" />}>
-                {shared ? '¡Enlace copiado!' : 'Compartir'}
-              </Button>
               {isMyPost ? null : isAuthenticated ? (
                 <Button onPress={report.onOpen} radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<AlertCircle className="w-5 h-5" aria-hidden="true" />}>
                   Reportar
@@ -241,13 +243,30 @@ const PostDetail = () => {
               )}
             </div>
             <p role="status" className={reportNotice ? 'font-cuerpo text-sm font-bold bg-ws-citron rounded-[6px] p-3' : 'sr-only'}>
-              {reportNotice || (shared ? 'Enlace copiado al portapapeles' : '')}
+              {reportNotice}
             </p>
           </div>
 
         </aside>
 
       </div>
+
+      {!isMyPost && (
+        <>
+          <div className="h-24 md:hidden" aria-hidden="true" />
+          <div className="fixed inset-x-0 bottom-0 z-40 md:hidden bg-ws-paper-light border-t border-ws-line px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            {isAuthenticated ? (
+              <Button onPress={handleWhatsapp} isLoading={isOpeningChat} radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base" startContent={!isOpeningChat && <Whatsapp className="w-5 h-5" aria-hidden="true" />}>
+                Escribir por WhatsApp
+              </Button>
+            ) : (
+              <Button as={Link} to="/login" radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base">
+                Inicia sesión para escribirle
+              </Button>
+            )}
+          </div>
+        </>
+      )}
 
       <ReportDialog postId={post.id} isOpen={report.isOpen} onOpenChange={report.onOpenChange} onSent={setReportNotice} />
     </div>

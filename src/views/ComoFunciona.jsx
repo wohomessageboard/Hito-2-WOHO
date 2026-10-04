@@ -4,6 +4,9 @@ import { Accordion, AccordionItem, Button } from '@heroui/react';
 import { Search, Users, Star, Send } from '../components/ui/icons';
 import Stamp from '../components/ui/Stamp';
 import { useUser } from '../context/UserContext';
+import { FAQ } from '../seo/faq';
+import ShareLinks from '../components/ui/ShareLinks';
+import RelatedLinks from '../components/ui/RelatedLinks';
 
 // Cada paso es una tarjeta con su bloque de color. Todo lo que dice coincide
 // con lo que la app hace hoy; si cambia el producto, cambia este texto.
@@ -38,6 +41,13 @@ const STEPS = [
   },
 ];
 
+// Tres ideas clave, justo después de la introducción.
+const RESUMEN = [
+  'Explorar los avisos es gratis y no necesita cuenta.',
+  'Con tu cuenta guardas avisos, sigues destinos y contactas por WhatsApp.',
+  'Tu correo nunca se muestra: de ti solo se comparte tu WhatsApp, cuando contactas o te contactan.',
+];
+
 const CATEGORIES = [
   { tag: 'ws-tag-blue', name: 'Alojamiento', text: 'Cuartos libres, casas rodantes y hostels para dividir la renta.' },
   { tag: 'ws-tag-tomato', name: 'Trabajo', text: 'Cosechas, hospitalidad o construcción, de viajero a viajero.' },
@@ -50,17 +60,6 @@ const TIPS = [
   'Desconfía de quien pide dinero por adelantado, depósitos sin contrato o cobros por darte un trabajo.',
   'Pide fotos, dirección y condiciones por escrito, y cuéntale tu plan a alguien de confianza.',
 ];
-
-const FAQ = [
-  ['¿Tiene costo?', 'Crear la cuenta y usar WOHO es gratis.'],
-  ['¿Qué datos míos se comparten?', 'Solo tu WhatsApp, y únicamente a quien tiene sesión iniciada y pulsa «Escribir por WhatsApp» en uno de tus anuncios. Tu correo nunca se muestra. Sin sesión no se ve ni quién publica. Puedes cambiar tu número desde tu perfil.'],
-  ['¿Cuánto dura un anuncio?', 'Lo eliges tú al publicar, en días. Cuando vence, deja de aparecer en Explorar.'],
-  ['¿Puedo editar o borrar mi anuncio?', 'Sí. En tu perfil, dentro de «Mis avisos», puedes editar o eliminar tus publicaciones.'],
-  ['¿Cómo aviso de un anuncio sospechoso?', 'Abre el anuncio y pulsa «Reportar». Llega al equipo de WOHO, que puede eliminarlo. Para otras dudas, usa la página de Contacto.'],
-  ['¿Cómo elimino mi cuenta?', 'En Editar perfil, al final, pulsa «Eliminar mi cuenta» y confirma con tu contraseña. Borramos tu cuenta, tus avisos y tus fotos en un plazo de hasta 5 días; puedes cancelar antes de que ocurra.'],
-  ['¿Qué destinos hay?', 'Los de la sección Destinos. Allí entras a cada país, ves sus anuncios y puedes seguirlo.'],
-];
-
 const ComoFunciona = () => {
   const { isAuthenticated } = useUser();
 
@@ -74,8 +73,20 @@ const ComoFunciona = () => {
         <p className="md:col-span-5 lg:pr-28 font-cuerpo text-lg md:text-xl leading-relaxed text-ws-ink/90">
           Un tablón de avisos hecho por viajeros. Encuentra, guarda y publica en cuatro pasos.
         </p>
+        <div className="md:col-span-5 md:col-start-8 lg:pr-28">
+          <Button as={Link} to={isAuthenticated ? '/feed' : '/register'} radius="sm" className="ws-btn ws-btn-ink h-12 px-6">
+            {isAuthenticated ? 'Explorar anuncios' : 'Crear mi cuenta gratis'}
+          </Button>
+        </div>
         <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="PASO A PASO" rotate={-10} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
       </header>
+
+      <section aria-labelledby="en-resumen" className="ws-surface p-6 md:p-8 grid md:grid-cols-[14rem_1fr] gap-4 md:gap-8">
+        <h2 id="en-resumen" className="font-display text-4xl md:text-5xl">En resumen</h2>
+        <ul className="list-none p-0 m-0 flex flex-col gap-3 font-cuerpo text-lg leading-relaxed">
+          {RESUMEN.map((t) => <li key={t} className="flex gap-3"><span aria-hidden="true" className="text-ws-accent font-bold">→</span><span>{t}</span></li>)}
+        </ul>
+      </section>
 
       <ol className="flex flex-col gap-6 list-none p-0 m-0">
         {STEPS.map(({ Icon, title, block, body, cta }, i) => {
@@ -152,6 +163,17 @@ const ComoFunciona = () => {
           ))}
         </Accordion>
       </section>
+
+      <section aria-label="Compartir" className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <p className="font-bold">¿Conoces a alguien que viaja pronto?</p>
+        <ShareLinks url={`${window.location.origin}/como-funciona`} title="Cómo funciona WOHO" text="Mira cómo funciona WOHO, el tablón de avisos para viajeros Working Holiday:" />
+      </section>
+
+      <RelatedLinks links={[
+        { to: '/destinos', label: 'Ver destinos', hint: 'Elige un país y mira sus avisos.' },
+        { to: '/feed', label: 'Explorar anuncios', hint: 'Lo más reciente de la comunidad.' },
+        { to: '/manifiesto', label: 'Leer el manifiesto', hint: 'Por qué existe WOHO.' },
+      ]} />
 
       <section className="ws-band ws-band-teal ws-bleed py-14 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-[1fr_auto] gap-8 items-center">

@@ -51,9 +51,9 @@ const Login = () => {
         
         
         <CardHeader className="flex flex-col items-center pt-8 pb-0">
-          <h2 className="font-display text-4xl md:text-5xl text-ws-ink">
+          <h1 className="font-display text-4xl md:text-5xl text-ws-ink">
             ¡Hola de nuevo!
-          </h2>
+          </h1>
           <p className="text-ws-ink/75 font-cuerpo mt-2 text-center px-4">
             Entra para guardar anuncios, contactar a quien publica y seguir destinos.
           </p>
@@ -97,7 +97,7 @@ const Login = () => {
             />
 
             
-            <Link to="/olvide-mi-contrasena" className="text-sm font-bold underline underline-offset-4 self-start">
+            <Link to="/olvide-mi-contrasena" className="text-sm font-bold underline underline-offset-4 self-start inline-flex items-center min-h-11">
               ¿Olvidaste tu contraseña?
             </Link>
 
@@ -127,7 +127,7 @@ const Login = () => {
             </span>
             <Link 
               to="/register"
-              className="font-bold text-ws-ink underline underline-offset-4 hover:text-ws-ink transition-colors"
+              className="font-bold text-ws-ink underline underline-offset-4 hover:text-ws-ink transition-colors inline-flex items-center min-h-11"
             >
               Regístrate aquí
             </Link>

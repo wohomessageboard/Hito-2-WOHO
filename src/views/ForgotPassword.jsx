@@ -32,7 +32,7 @@ const ForgotPassword = () => {
     <AuthShell scene="login">
       <SurfaceCard elevated className="w-full overflow-visible">
         <CardHeader className="flex flex-col items-center pt-8 pb-0">
-          <h2 className="font-display text-4xl md:text-5xl text-ws-ink">Recupera tu cuenta</h2>
+          <h1 className="font-display text-4xl md:text-5xl text-ws-ink">Recupera tu cuenta</h1>
           <p className="text-ws-ink/75 font-cuerpo mt-2 text-center px-4">
             Escribe tu correo y te enviamos un enlace para crear una contraseña nueva.
           </p>
