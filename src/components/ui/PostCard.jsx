@@ -134,12 +134,12 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
   const renderBody = () => (
     <div className="px-4 pt-4 pb-5 flex-1">
-      <span className={`ws-tag ${typeTag} mb-3`}>{post.type}</span>
       <Link to={`/post/${post.id}`} className="hover:underline decoration-ws-tomato decoration-2 underline-offset-4 inline-block py-2 -my-2">
-        <h3 className="font-display text-3xl leading-[1.05] text-ws-ink mb-3">
+        <h3 className="font-display text-3xl leading-[1.05] text-ws-ink">
           {post.title}
         </h3>
       </Link>
+      <span className={`ws-tag ${typeTag} mt-4 mb-3 block w-fit`}>{post.type}</span>
       {variant !== "favorite" && (
         <p className="text-sm font-cuerpo text-ws-ink/80 line-clamp-4 leading-relaxed">
           {post.description}

@@ -22,7 +22,8 @@ export const PRIVACIDAD = {
         {
           list: [
             '**Cuenta:** nombre, correo y contraseña (la contraseña se guarda cifrada; nosotros no podemos leerla).',
-            '**Perfil (opcional):** foto, biografía y número de WhatsApp. El WhatsApp es obligatorio para publicar.',
+            '**WhatsApp:** tu número, que pedimos al crear la cuenta porque es la única forma de contacto entre personas. Solo se usa para abrir el chat cuando alguien con sesión pulsa «Escribir por WhatsApp» en uno de tus avisos.',
+            '**Perfil (opcional):** foto y biografía.',
             '**Tu actividad:** los avisos que publicas (texto, fotos, país, ciudad, categoría y duración), tus favoritos y los destinos que sigues.',
             '**Contactos:** cuando pulsas «Escribir por WhatsApp» registramos quién contactó y sobre qué aviso, con la fecha. No guardamos el mensaje.',
             '**Reportes y mensajes:** lo que nos escribes en un reporte o en el formulario de Contacto, junto con tu nombre y correo.',

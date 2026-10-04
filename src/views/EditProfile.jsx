@@ -25,6 +25,9 @@ const EditProfile = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);   
   const [fileToUpload, setFileToUpload] = useState(null);     
   const [isLoading, setIsLoading] = useState(false);          
+  // Estado de la subida de la foto: la foto se sube al elegirla, sin esperar a «Guardar cambios».
+  const [avatarStatus, setAvatarStatus] = useState({ kind: '', text: '' });
+
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -47,10 +50,25 @@ const EditProfile = () => {
   const handleImageChange = async (e) => {
     const picked = e.target.files[0];
     const file = picked ? await compressImage(picked) : null;
-    if (file) {
-      setFileToUpload(file);                           
-      setAvatarPreview(URL.createObjectURL(file));     
+    if (!file) return;
+    setAvatarPreview(URL.createObjectURL(file));
+    setFileToUpload(file);
+    setAvatarStatus({ kind: 'busy', text: 'Subiendo tu foto…' });
+    try {
+      const imgData = new FormData();
+      imgData.append('avatar', file);
+      const avatarRes = await api.post('/users/me/avatar', imgData);
+      login({ ...currentUser, avatar: avatarRes.data.avatar });
+      setFileToUpload(null);   // ya está subida: «Guardar cambios» no la vuelve a enviar
+      setAvatarStatus({ kind: 'ok', text: 'Foto actualizada.' });
+    } catch (err) {
+      const status = err?.response?.status;
+      const text = status === 413 ? 'La foto pesa demasiado. Prueba con otra más liviana.'
+        : status === 401 ? 'Tu sesión expiró. Cierra sesión, vuelve a entrar e inténtalo de nuevo.'
+        : err?.response?.data?.error || 'No pudimos subir la foto. Se intentará de nuevo al guardar.';
+      setAvatarStatus({ kind: 'error', text });   // fileToUpload se conserva: «Guardar cambios» lo reintenta
     }
+    e.target.value = '';
   };
 
   const handleSubmit = async (e) => {
@@ -137,6 +155,12 @@ const EditProfile = () => {
                   <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
                 </label>
               </div>
+              <p
+                role="status"
+                className={`text-sm font-bold font-cuerpo min-h-5 ${avatarStatus.kind === 'error' ? 'text-ws-tomato-deep' : avatarStatus.kind === 'ok' ? 'text-ws-olive' : 'text-ws-ink/75'}`}
+              >
+                {avatarStatus.text}
+              </p>
             </div>
 
             

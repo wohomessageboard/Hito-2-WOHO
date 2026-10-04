@@ -9,6 +9,7 @@ import Stamp from '../components/ui/Stamp';
 import ReportDialog from '../components/ui/ReportDialog';
 import ShareLinks from '../components/ui/ShareLinks';
 import { useSeo } from '../seo/useSeo';
+import PhotoGallery from '../components/ui/PhotoGallery';
 
 const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
 
@@ -66,9 +67,9 @@ const PostDetail = () => {
     }
   };
 
-  // Enlace para compartir: pasa por el servidor, que devuelve la tarjeta con foto y título
-  // (Open Graph) y luego lleva a la persona al aviso.
-  const shareUrl = post ? `${(api.defaults.baseURL || '').replace(/\/+$/, '')}/share/posts/${post.id}` : '';
+  // Enlace para compartir: usa el dominio del sitio (/p/:id). Vercel lo reenvía al servidor, que
+  // devuelve la tarjeta con foto y título (Open Graph) y luego lleva a la persona al aviso.
+  const shareUrl = post ? `${window.location.origin}/p/${post.id}` : '';
 
   // Título y descripción de la pestaña y de los buscadores, según el aviso.
   const firstImage = (() => {
@@ -130,6 +131,10 @@ const PostDetail = () => {
         <div className="w-full lg:w-2/3 flex flex-col gap-8">
 
           <article className="ws-surface p-6 md:p-10 flex flex-col gap-6">
+            <h1 className="font-display text-5xl md:text-7xl leading-[0.98]">
+              {post.title}
+            </h1>
+
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`ws-tag ${TAG_BY_TYPE[type] || 'ws-tag-ink'}`}>{type}</span>
               <span className="ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] bg-ws-paper-deep">
@@ -147,10 +152,6 @@ const PostDetail = () => {
                 </span>
               )}
             </div>
-
-            <h1 className="font-display text-5xl md:text-7xl leading-[0.98]">
-              {post.title}
-            </h1>
 
             <hr className="border-0 border-t-[1.5px] border-dashed border-ws-ink/30" />
 
@@ -172,20 +173,7 @@ const PostDetail = () => {
             return (
               <section aria-labelledby="fotos" className="flex flex-col gap-4">
                 <h2 id="fotos" className="font-display text-4xl">Fotos del anuncio</h2>
-
-                <div className="ws-photo w-full aspect-video">
-                  <img src={displayImages[0]} alt="Foto principal del anuncio" className="w-full h-full object-cover" />
-                </div>
-
-                {displayImages.length > 1 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {displayImages.slice(1).map((imgUrl, idx) => (
-                      <div key={idx} className="ws-photo aspect-square">
-                        <img src={imgUrl} alt={`Foto ${idx + 2} del anuncio`} className="w-full h-full object-cover" />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <PhotoGallery images={displayImages} title={post.title} />
               </section>
             );
           })()}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { CardBody, CardHeader, Button, Input, Checkbox } from '@heroui/react';
 
-import { Mail, Lock, User } from '../components/ui/icons';
+import { Mail, Lock, User, Phone } from '../components/ui/icons';
 
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ const Register = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +39,7 @@ const Register = () => {
     }
     setIsLoading(true);
     try {
-      const res = await api.post('/auth/register', { name, email, password, accepted_terms: acceptedTerms, confirmed_age: confirmedAge });
+      const res = await api.post('/auth/register', { name, email, password, phone_whatsapp: phone, accepted_terms: acceptedTerms, confirmed_age: confirmedAge });
 
       const { token, user } = res.data;
       if (token && user) {
@@ -107,6 +108,23 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               startContent={<Mail className="w-5 h-5 text-ws-ink/75 pointer-events-none flex-shrink-0" aria-hidden="true" />}
               classNames={{ inputWrapper: "ws-input-border h-12", label: "font-bold text-ws-ink" }}
+            />
+
+            <Input
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              label="WhatsApp"
+              placeholder="+56 9 1234 5678"
+              description="Con código de país. Es la única forma de contacto: solo se comparte cuando alguien con sesión pulsa «Escribir por WhatsApp» en uno de tus avisos."
+              labelPlacement="outside"
+              variant="bordered"
+              radius="sm"
+              isRequired
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              startContent={<Phone className="w-5 h-5 text-ws-ink/75 pointer-events-none flex-shrink-0" aria-hidden="true" />}
+              classNames={{ inputWrapper: "ws-input-border h-12", label: "font-bold text-ws-ink", description: "text-ws-ink/75" }}
             />
 
             

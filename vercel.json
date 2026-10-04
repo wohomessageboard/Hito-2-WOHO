@@ -12,6 +12,10 @@
   ],
   "rewrites": [
     {
+      "source": "/p/:id",
+      "destination": "https://woho-backend.onrender.com/api/share/posts/:id"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
