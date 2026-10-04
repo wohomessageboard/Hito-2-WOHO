@@ -256,11 +256,11 @@ const PostDetail = () => {
           <div className="h-24 md:hidden" aria-hidden="true" />
           <div className="fixed inset-x-0 bottom-0 z-40 md:hidden bg-ws-paper-light border-t border-ws-line px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
             {isAuthenticated ? (
-              <Button onPress={handleWhatsapp} isLoading={isOpeningChat} radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base" startContent={!isOpeningChat && <Whatsapp className="w-5 h-5" aria-hidden="true" />}>
+              <Button onPress={handleWhatsapp} isLoading={isOpeningChat} radius="sm" fullWidth className="ws-btn ws-btn-ink h-12 text-base" startContent={!isOpeningChat && <Whatsapp className="w-5 h-5" aria-hidden="true" />}>
                 Escribir por WhatsApp
               </Button>
             ) : (
-              <Button as={Link} to="/login" radius="sm" fullWidth className="ws-btn ws-btn-tomato h-12 text-base">
+              <Button as={Link} to="/login" radius="sm" fullWidth className="ws-btn ws-btn-ink h-12 text-base">
                 Inicia sesión para escribirle
               </Button>
             )}

@@ -24,7 +24,7 @@ const StickyCta = () => {
           to={isAuthenticated ? '/new-post' : '/register'}
           radius="sm"
           fullWidth
-          className="ws-btn ws-btn-tomato h-12 text-base"
+          className="ws-btn ws-btn-ink h-12 text-base"
         >
           {isAuthenticated ? 'Publicar un aviso' : 'Crear cuenta gratis'}
         </Button>
