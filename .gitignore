@@ -2,7 +2,7 @@ node_modules/
 GUIA_BACKEND_WOHO.md
 clean_back.cjs 
 clean_front.cjs
-utils
+/utils
 dist/
 .env
 .env.*
