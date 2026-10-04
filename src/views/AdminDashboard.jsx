@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { Chip, Tabs, Tab } from '@heroui/react';
-import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText } from 'lucide-react';
+import { ShieldCheck, Users, Globe, MapPin, BarChart3, FileText, Mail, Trash2 } from '../components/ui/icons';
 import api from '../config/api';
 
 import AdminMetricsTab from '../components/admin/AdminMetricsTab';
@@ -11,6 +11,8 @@ import AdminCountriesTab from '../components/admin/AdminCountriesTab';
 import AdminCitiesTab from '../components/admin/AdminCitiesTab';
 import AdminPostsTab from '../components/admin/AdminPostsTab';
 import AdminCategoriesTab from '../components/admin/AdminCategoriesTab';
+import AdminInboxTab from '../components/admin/AdminInboxTab';
+import AdminDeletionsTab from '../components/admin/AdminDeletionsTab';
 
 const AdminDashboard = () => {
   const { isAuthenticated, currentUser } = useUser();
@@ -22,24 +24,28 @@ const AdminDashboard = () => {
     }
   }, [isAuthenticated, currentUser, navigate]);
 
-  if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return null;
-
   const [users, setUsers] = useState([]);
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [inboxOpen, setInboxOpen] = useState(0);
+  const [deletionsPending, setDeletionsPending] = useState(0);
 
   useEffect(() => {
     if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return;
 
     const fetchData = async () => {
       try {
-        const [usersRes, countriesRes, citiesRes, postsRes] = await Promise.all([
+        const [usersRes, countriesRes, citiesRes, postsRes, inboxRes, deletionsRes] = await Promise.all([
           api.get('/admin/users').catch(() => ({ data: [] })),
           api.get('/countries').catch(() => ({ data: [] })),
           api.get('/cities').catch(() => ({ data: [] })),
-          api.get('/admin/posts').catch(() => ({ data: [] }))
+          api.get('/admin/posts').catch(() => ({ data: [] })),
+          api.get('/admin/inbox').catch(() => ({ data: { open_count: 0 } })),
+          api.get('/admin/deletion-requests').catch(() => ({ data: { pending_count: 0 } }))
         ]);
+        setDeletionsPending(deletionsRes.data.pending_count || 0);
+        setInboxOpen(inboxRes.data.open_count || 0);
         setUsers(usersRes.data);
         setCountries(countriesRes.data);
         setCities(citiesRes.data);
@@ -52,25 +58,53 @@ const AdminDashboard = () => {
     fetchData();
   }, [currentUser]);
 
-  const handleToggleBan = async (userId) => {
+  if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) return null;
 
-    setUsers(prevUsers => prevUsers.map(user => 
+  const handleToggleBan = async (userId) => {
+    const targetUser = users.find(u => u.id === userId);
+    if (!targetUser) return;
+
+    const action = targetUser.is_active ? 'banear' : 'restaurar';
+    if (!window.confirm(`¿Seguro que quieres ${action} a ${targetUser.name}?`)) return;
+
+    setUsers(prevUsers => prevUsers.map(user =>
       user.id === userId ? { ...user, is_active: !user.is_active } : user
     ));
-    await api.put(`/admin/users/${userId}/ban`).catch(err => console.log(err));
+    try {
+      await api.put(`/admin/users/${userId}/ban`);
+    } catch (err) {
+      console.error(err);
+      setUsers(prevUsers => prevUsers.map(user =>
+        user.id === userId ? { ...user, is_active: targetUser.is_active } : user
+      ));
+      alert(`No se pudo ${action === 'banear' ? 'banear' : 'restaurar'} a ${targetUser.name}. Intenta de nuevo.`);
+    }
   };
 
   const handleToggleRole = async (userId) => {
     const targetUser = users.find(u => u.id === userId);
-    const newRole = targetUser?.role === 'admin' ? 'user' : 'admin';
-    setUsers(prevUsers => prevUsers.map(user => 
+    if (!targetUser || targetUser.role === 'superadmin') return;
+
+    const newRole = targetUser.role === 'admin' ? 'user' : 'admin';
+    if (!window.confirm(`¿Cambiar el rol de ${targetUser.name} de "${targetUser.role}" a "${newRole}"?`)) return;
+
+    setUsers(prevUsers => prevUsers.map(user =>
       user.id === userId ? { ...user, role: newRole } : user
     ));
-    await api.put(`/admin/users/${userId}/role`, { role: newRole }).catch(err => console.log(err));
+    try {
+      await api.put(`/admin/users/${userId}/role`, { role: newRole });
+    } catch (err) {
+      console.error(err);
+      setUsers(prevUsers => prevUsers.map(user =>
+        user.id === userId ? { ...user, role: targetUser.role } : user
+      ));
+      alert(`No se pudo cambiar el rol de ${targetUser.name}. Intenta de nuevo.`);
+    }
   };
 
   const handleDeleteUser = async (userId) => {
     if (userId.toString() === currentUser.id?.toString()) return alert("No puedes borrarte a ti mismo.");
+    if (!window.confirm('¿Eliminar definitivamente esta cuenta, sus avisos y sus fotos? No se puede deshacer.')) return;
     setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
     await api.delete(`/admin/users/${userId}`).catch(err => console.log(err));
   };
@@ -83,6 +117,7 @@ const AdminDashboard = () => {
   };
 
   const handleDeletePost = async (postId) => {
+    if (!window.confirm('¿Eliminar definitivamente este aviso y sus fotos? No se puede deshacer.')) return;
     setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
     await api.delete(`/admin/posts/${postId}`).catch(err => console.log(err));
   };
@@ -91,10 +126,10 @@ const AdminDashboard = () => {
     <div className="flex flex-col w-full max-w-7xl mx-auto px-4 py-8 md:py-12 gap-8">
       
       
-      <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-[3px] border-black pb-6">
+      <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-gray-200 pb-6">
         <div className="space-y-2">
-          <Chip color="danger" variant="flat" startContent={<ShieldCheck className="w-4 h-4 ml-1" />} className="font-bold border-[2px] border-danger">
-            Modo SuperAdmin
+          <Chip color="danger" variant="flat" startContent={<ShieldCheck className="w-4 h-4 ml-1" />} className="font-bold">
+            {currentUser?.role === 'superadmin' ? 'Modo SuperAdmin' : 'Modo Admin'}
           </Chip>
           <h1 className="text-4xl md:text-5xl font-titulo font-black text-black tracking-tighter uppercase">
             Panel de Control Central
@@ -112,13 +147,27 @@ const AdminDashboard = () => {
         variant="solid" 
         radius="full"
         classNames={{
-          tabList: "bg-gray-100 p-2 border-[2px] border-black w-full overflow-x-auto flex-nowrap",
-          cursor: "bg-black shadow-none",
+          tabList: "bg-gray-100 p-2 w-full overflow-x-auto flex-nowrap",
+          cursor: "bg-woho-purple shadow-none",
           tab: "h-12 px-4 md:px-6 flex-1",
           tabContent: "font-titulo font-bold text-lg group-data-[selected=true]:text-white flex items-center gap-2"
         }}
       >
         
+ <Tab
+          key="inbox"
+          title={<><Mail className="w-5 h-5"/> <span className="hidden sm:inline">Bandeja</span>{inboxOpen > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{inboxOpen}</span>}</>}
+        >
+          <AdminInboxTab onOpenCountChange={setInboxOpen} />
+        </Tab>
+
+        <Tab
+          key="deletions"
+          title={<><Trash2 className="w-5 h-5"/> <span className="hidden sm:inline">Eliminaciones</span>{deletionsPending > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{deletionsPending}</span>}</>}
+        >
+          <AdminDeletionsTab onPendingCountChange={setDeletionsPending} />
+        </Tab>
+
         <Tab 
           key="stats" 
           title={<><BarChart3 className="w-5 h-5"/> <span className="hidden sm:inline">Métricas</span></>}

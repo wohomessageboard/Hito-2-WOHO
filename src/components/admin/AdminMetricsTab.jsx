@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 import { Card, CardBody } from '@heroui/react';
-import { Users, Globe, FileText, Star } from 'lucide-react';
+import { Users, Globe, FileText, Star } from '../ui/icons';
 
 const AdminMetricsTab = ({ users, countries, posts = [] }) => {
 
-  const totalUsers = users.length;
-  const totalCountries = countries.length;
   const totalPosts = posts.length;
 
   const mostPopularCountry = useMemo(() => {
@@ -21,21 +19,21 @@ const AdminMetricsTab = ({ users, countries, posts = [] }) => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
-      <Card className="border-[2px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-woho-purple">
+      <Card className="rounded-xl shadow-sm bg-woho-purple">
         <CardBody className="p-8 flex flex-col items-center justify-center text-center">
           <Users className="w-12 h-12 text-white mb-2" />
           <h3 className="font-titulo font-black text-white text-5xl">{users.length}</h3>
           <p className="font-cuerpo text-white/80 font-bold uppercase tracking-widest mt-1">Usuarios Totales</p>
         </CardBody>
       </Card>
-      <Card className="border-[2px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-woho-orange">
+      <Card className="rounded-xl shadow-sm bg-woho-orange">
         <CardBody className="p-8 flex flex-col items-center justify-center text-center">
           <Globe className="w-12 h-12 text-white mb-2" />
           <h3 className="font-titulo font-black text-white text-5xl">{countries.length}</h3>
           <p className="font-cuerpo text-white/80 font-bold uppercase tracking-widest mt-1">Países Creados</p>
         </CardBody>
       </Card>
-      <Card className="border-[2px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-woho-purple text-white">
+      <Card className="rounded-xl shadow-sm bg-woho-purple text-white">
         <CardBody className="p-8 flex flex-col items-center justify-center text-center">
           <Star className="w-12 h-12 mb-2" />
           <h3 className="font-titulo font-black text-3xl md:text-4xl min-h-[48px] flex items-center">{mostPopularCountry}</h3>
@@ -43,7 +41,7 @@ const AdminMetricsTab = ({ users, countries, posts = [] }) => {
         </CardBody>
       </Card>
       
-      <Card className="border-[2px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-black text-white">
+      <Card className="rounded-xl shadow-sm bg-woho-black text-white">
         <CardBody className="p-8 flex flex-col items-center justify-center text-center">
           <FileText className="w-12 h-12 mb-2" />
           <h3 className="font-titulo font-black text-5xl min-h-[48px] flex items-center">{totalPosts}</h3>

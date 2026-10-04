@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { Card, CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
-import { MapPin, Target, Send, Image as ImageIcon } from 'lucide-react';
+import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
+import SurfaceCard from '../components/ui/SurfaceCard';
+import { MapPin, Target, Send, Image as ImageIcon, Whatsapp } from '../components/ui/icons';
 
 import api from '../config/api';
+import { compressImages } from '../utils/compressImage';
 
 const NewPost = () => {
-  const { isAuthenticated, currentUser } = useUser();
+  const { isAuthenticated, currentUser, login } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,13 +46,16 @@ const NewPost = () => {
     country_id: '',
     city_id: '',
     description: '',
-    price: '',
     duration_days: ''
   });
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  // WhatsApp = único dato de contacto. Si aún no lo dejó, se pide aquí y se guarda en su perfil.
+  const hasPhone = !!currentUser?.phone_whatsapp;
+  const [phone, setPhone] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,23 +67,36 @@ const NewPost = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 5) {
+  const handleFileChange = async (e) => {
+    const picked = Array.from(e.target.files);
+    if (picked.length > 5) {
       alert("Solo puedes subir un máximo de 5 imágenes.");
       return;
     }
+    // Se reducen antes de subir: las fotos del celular pesan varios MB.
+    const files = await compressImages(picked);
     setSelectedFiles(files);
 
-    const newPreviews = files.map(file => URL.createObjectURL(file));
-    setPreviews(newPreviews);
+    previews.forEach(url => URL.revokeObjectURL(url));
+    setPreviews(files.map(file => URL.createObjectURL(file)));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg('');
 
     try {
+      if (!hasPhone) {
+        if (!phone.trim()) {
+          setErrorMsg('Agrega tu WhatsApp: es el medio por el que te contactarán.');
+          setIsSubmitting(false);
+          return;
+        }
+        const me = await api.put('/users/me', { name: currentUser.name, phone_whatsapp: phone });
+        login({ ...currentUser, ...me.data });
+      }
+
       const formToSend = new FormData();
       formToSend.append('title', formData.title);
       formToSend.append('description', formData.description);
@@ -97,11 +115,15 @@ const NewPost = () => {
       });
 
       setIsSubmitting(false);
-      navigate('/profile');
+      navigate('/profile', { state: { notice: '¡Aviso publicado!' } });
     } catch (error) {
       console.error('Error publicando el aviso:', error);
+      setErrorMsg(
+        error.response?.status === 413
+          ? 'Las fotos pesan demasiado en conjunto. Prueba con menos fotos o con imágenes más livianas.'
+          : error.response?.data?.error || 'No pudimos publicar tu aviso. Revisa los datos e intenta de nuevo.'
+      );
       setIsSubmitting(false);
-
     }
   };
 
@@ -112,22 +134,19 @@ const NewPost = () => {
     <div className="flex justify-center w-full px-4 py-8 md:py-12">
       
       
-      <Card className="w-full max-w-2xl border-[2px] border-black rounded-xl bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col overflow-visible">
+      <SurfaceCard elevated className="w-full max-w-2xl flex flex-col overflow-visible">
         
         
         <CardHeader className="flex flex-col items-start px-6 pt-8 pb-4">
-          <span className="text-woho-orange font-black uppercase tracking-widest text-sm mb-1">
-            Nuevo Aviso
-          </span>
-          <h1 className="text-4xl font-titulo font-black text-black uppercase tracking-tighter leading-none">
-            Crear Publicación
+          <h1 className="font-display text-5xl md:text-6xl">
+            Crear publicación
           </h1>
-          <p className="font-cuerpo text-default-600 mt-2">
+          <p className="font-cuerpo text-ws-ink/75 mt-2">
             Llena los datos a continuación para que la comunidad WOHO pueda encontrarte.
           </p>
         </CardHeader>
 
-        <Divider className="bg-black opacity-20" />
+        <Divider className="bg-ws-ink" />
 
         <CardBody className="px-6 py-8">
           
@@ -135,7 +154,7 @@ const NewPost = () => {
 
             
             <div className="space-y-4">
-              <h3 className="font-titulo font-extrabold text-xl text-woho-purple flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <Target className="w-5 h-5" /> 1. ¿De qué se trata?
               </h3>
               
@@ -145,14 +164,14 @@ const NewPost = () => {
                 placeholder="Ej: Busco compañero para alquilar en Sydney"
                 labelPlacement="inside"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 isRequired
                 value={formData.title}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50 focus-within:bg-white",
-                  label: "font-bold text-black text-sm"
+                  inputWrapper: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               />
 
@@ -163,14 +182,14 @@ const NewPost = () => {
                 placeholder="Selecciona una categoría"
                 labelPlacement="inside"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 isRequired
                 selectedKeys={formData.category_id ? [formData.category_id] : []}
                 onChange={handleSelectChange}
                 classNames={{ 
-                  trigger: "border-[2px] border-black bg-gray-50",
-                  label: "font-bold text-black text-sm"
+                  trigger: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               >
                 
@@ -184,7 +203,7 @@ const NewPost = () => {
 
             
             <div className="space-y-4 mt-4">
-              <h3 className="font-titulo font-extrabold text-xl text-woho-orange flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <MapPin className="w-5 h-5" /> 2. ¿Dónde estás o a dónde vas?
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -196,14 +215,14 @@ const NewPost = () => {
                   placeholder="Elige un destino"
                   labelPlacement="inside"
                   variant="bordered"                  
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   selectedKeys={formData.country_id ? [formData.country_id] : []}
                   onChange={handleSelectChange}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    trigger: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 >
                   {countries.map(c => (
@@ -218,15 +237,15 @@ const NewPost = () => {
                   placeholder="Elige una ciudad"
                   labelPlacement="inside"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   selectedKeys={formData.city_id ? [formData.city_id] : []}
                   onChange={handleSelectChange}
                   isDisabled={!formData.country_id}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    trigger: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 >
                   {cities
@@ -242,7 +261,7 @@ const NewPost = () => {
 
             
             <div className="space-y-4 mt-4">
-              <h3 className="font-titulo font-extrabold text-xl text-black flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <Send className="w-5 h-5" /> 3. Cuéntanos más
               </h3>
               <Textarea
@@ -251,59 +270,39 @@ const NewPost = () => {
                 placeholder="Da información clara: fechas, presupuestos o requisitos..."
                 labelPlacement="inside"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 minRows={5}
                 isRequired
                 value={formData.description}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50",
-                  label: "font-bold text-black text-sm"
+                  inputWrapper: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               />
 
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                
-                <Input
-                  name="price"
-                  type="number"
-                  label="Precio (Opcional)"
-                  startContent={
-                    <div className="pointer-events-none flex items-center font-bold">
-                      <span className="text-default-500 text-sm">$</span>
-                    </div>
-                  }
-                  placeholder="0.00"
-                  labelPlacement="inside"
-                  variant="bordered"
-                  radius="md"
-                  size="lg"
-                  value={formData.price}
-                  onChange={handleChange}
-                  classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
-                  }}
-                />
+              <div className="grid grid-cols-1 gap-4 mt-2">
                 
                 
                 <Input
                   name="duration_days"
                   type="number"
+                  min={1}
+                  max={365}
                   label="Días de duración del aviso"
                   placeholder="Ej: 15"
                   labelPlacement="inside"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   value={formData.duration_days}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    inputWrapper: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 />
               </div>
@@ -320,10 +319,10 @@ const NewPost = () => {
                 />
                 <label 
                   htmlFor="images-upload"
-                  className="border-[2px] border-black border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="border-2 border-ws-ink/30 border-dashed rounded-[8px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
-                  <span className="font-bold font-cuerpo text-black">Añadir Fotos (Máx 5)</span>
+                  <span className="font-bold font-cuerpo text-black">Añadir fotos (máx. 5)</span>
                   <span className="text-xs mt-1">Sube fotos de alta calidad para destacar</span>
                 </label>
 
@@ -331,7 +330,7 @@ const NewPost = () => {
                 {previews.length > 0 && (
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {previews.map((src, i) => (
-                      <div key={i} className="aspect-square border-[2px] border-black rounded-lg overflow-hidden relative">
+                      <div key={i} className="aspect-square ws-photo">
                         <img src={src} alt={`Preview ${i}`} className="w-full h-full object-cover" />
                         <button 
                           type="button"
@@ -341,7 +340,7 @@ const NewPost = () => {
                             setSelectedFiles(newFiles);
                             setPreviews(newPrevs);
                           }}
-                          className="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold border-l-2 border-b-2 border-black"
+                          className="absolute top-0 right-0 bg-ws-tomato text-ws-ink w-6 h-6 z-10 flex items-center justify-center text-xs font-bold"
                         >
                           X
                         </button>
@@ -352,22 +351,56 @@ const NewPost = () => {
               </div>
             </div>
 
-            
+
+            <div className="space-y-4">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
+                <Whatsapp className="w-5 h-5" /> 4. ¿Cómo te contactan?
+              </h3>
+              {hasPhone ? (
+                <p className="font-cuerpo text-ws-ink/90 leading-relaxed">
+                  Te escribirán por WhatsApp al <strong>{currentUser.phone_whatsapp}</strong>.{' '}
+                  <Link to="/edit-profile" className="font-bold underline underline-offset-4">Cambiar número</Link>
+                </p>
+              ) : (
+                <Input
+                  name="phone_whatsapp"
+                  type="tel"
+                  label="Tu WhatsApp"
+                  placeholder="+56 9 1234 5678"
+                  labelPlacement="inside"
+                  variant="bordered"
+                  radius="sm"
+                  size="lg"
+                  isRequired
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  description="Con código de país. Es el único dato de contacto que compartimos: quien se interese abrirá un chat contigo. Tu correo nunca se muestra."
+                  classNames={{ inputWrapper: "ws-input-border", label: "font-bold text-ws-ink text-sm", description: "text-ws-ink/75" }}
+                />
+              )}
+            </div>
+
+            {errorMsg && (
+              <div role="alert" className="bg-ws-tomato/15 text-ws-ink rounded-[6px] p-3 text-sm font-bold">
+                <p>{errorMsg}</p>
+              </div>
+            )}
+
             <div className="mt-8">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 form="new-post-form"
                 isLoading={isSubmitting} 
-                className="w-full h-16 bg-woho-black text-white font-titulo font-black text-xl uppercase tracking-widest rounded-xl hover:bg-black transition-colors"
+                className="ws-btn ws-btn-tomato w-full h-14 text-lg"
                 endContent={!isSubmitting && <Send className="w-5 h-5 ml-2" />}
               >
-                {isSubmitting ? "Lanzando Aviso a la Nube..." : "Publicar Anuncio"}
+                {isSubmitting ? "Lanzando aviso a la nube..." : "Publicar anuncio"}
               </Button>
             </div>
 
           </form>
         </CardBody>
-      </Card>
+      </SurfaceCard>
     </div>
   );
 };

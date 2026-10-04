@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { Card, CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
-import { MapPin, Target, Save, Image as ImageIcon, ArrowLeft } from 'lucide-react';
+import { CardHeader, CardBody, Input, Button, Textarea, Select, SelectItem, Divider } from '@heroui/react';
+import SurfaceCard from '../components/ui/SurfaceCard';
+import { MapPin, Target, Save, Image as ImageIcon, ArrowLeft } from '../components/ui/icons';
 import api from '../config/api';
+import { compressImages } from '../utils/compressImage';
 
 const EditPost = () => {
   const { id } = useParams();
@@ -20,7 +22,6 @@ const EditPost = () => {
     country_id: '',
     city_id: '',
     description: '',
-    price: '',
     duration_days: ''
   });
 
@@ -57,7 +58,6 @@ const EditPost = () => {
           country_id: String(p.country_id || ''),
           city_id: String(p.city_id || ''),
           description: p.description || '',
-          price: p.price || '',
           duration_days: String(p.duration_days || '')
         });
 
@@ -88,21 +88,18 @@ const EditPost = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 5) {
+  const handleFileChange = async (e) => {
+    const picked = Array.from(e.target.files);
+    if (picked.length > 5) {
       alert("Solo puedes subir un máximo de 5 imágenes.");
       return;
     }
+    // Se reducen antes de subir: las fotos del celular pesan varios MB.
+    const files = await compressImages(picked);
     setSelectedFiles(files);
-    
-    const newPreviews = files.map(file => URL.createObjectURL(file));
-    setPreviews(newPreviews);
+
+    previews.forEach(url => URL.revokeObjectURL(url));
+    setPreviews(files.map(file => URL.createObjectURL(file)));
   };
 
   const handleSubmit = async (e) => {
@@ -117,7 +114,6 @@ const EditPost = () => {
       formToSend.append('category_id', formData.category_id);
       formToSend.append('country_id', formData.country_id);
       formToSend.append('city_id', formData.city_id);
-      if (formData.price) formToSend.append('price', formData.price);
 
       if (selectedFiles.length > 0) {
         selectedFiles.forEach(file => {
@@ -129,42 +125,42 @@ const EditPost = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      alert("¡Aviso actualizado correctamente!");
-      navigate('/profile');
+      navigate('/profile', { state: { notice: '¡Aviso actualizado correctamente!' } });
     } catch (error) {
       console.error('Error al actualizar el aviso:', error);
-      alert("Hubo un error al guardar los cambios.");
+      alert(
+        error?.response?.status === 413
+          ? 'Las fotos pesan demasiado en conjunto. Prueba con menos fotos o con imágenes más livianas.'
+          : error?.response?.data?.error || 'Hubo un error al guardar los cambios.'
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isLoading) return <div className="p-20 text-center font-bold text-xl uppercase animate-pulse text-woho-purple">Abriendo maleta del aviso...</div>;
+  if (isLoading) return <p role="status" className="ws-mono p-20 text-center">Abriendo maleta del aviso…</p>;
 
   return (
     <div className="flex justify-center w-full px-4 py-8 md:py-12">
-      <Card className="w-full max-w-2xl border-[2px] border-black rounded-xl bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <SurfaceCard elevated className="w-full max-w-2xl">
         <CardHeader className="flex flex-col items-start px-6 pt-8 pb-4">
           <div className="flex justify-between w-full items-center mb-4">
-            <Button variant="flat" size="sm" onPress={() => navigate(-1)} className="border-2 border-black font-bold">
+            <Button variant="flat" size="sm" onPress={() => navigate(-1)} radius="sm" className="ws-pill ws-pill-line h-11 px-4">
                <ArrowLeft className="w-4 h-4 mr-1" /> Volver
             </Button>
-            <span className="text-woho-purple font-black uppercase tracking-widest text-sm">
-                Edición de Aviso
-            </span>
           </div>
-          <h1 className="text-4xl font-titulo font-black text-black uppercase tracking-tighter leading-none">
-            Modificar Publicación
+          <h1 className="font-display text-5xl md:text-6xl">
+            Modificar publicación
           </h1>
         </CardHeader>
 
-        <Divider className="bg-black opacity-20" />
+        <Divider className="bg-ws-ink" />
 
         <CardBody className="px-6 py-8">
           <form id="edit-post-form" onSubmit={handleSubmit} className="flex flex-col gap-6">
             
             <div className="space-y-4">
-              <h3 className="font-titulo font-extrabold text-xl text-woho-black flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <Target className="w-5 h-5" /> ¿Qué quieres cambiar?
               </h3>
               
@@ -173,14 +169,14 @@ const EditPost = () => {
                 label="Título del aviso"
                 placeholder="Ej: Busco compañero para alquilar en Sydney"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 isRequired
                 value={formData.title}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50 focus-within:bg-white",
-                  label: "font-bold text-black text-sm"
+                  inputWrapper: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               />
 
@@ -188,7 +184,7 @@ const EditPost = () => {
                 name="category_id"
                 label="Categoría"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 isRequired
                 selectedKeys={formData.category_id ? new Set([formData.category_id]) : new Set([])}
@@ -197,8 +193,8 @@ const EditPost = () => {
                   setFormData(prev => ({ ...prev, category_id: String(selectedValue) }));
                 }}
                 classNames={{ 
-                  trigger: "border-[2px] border-black bg-gray-50",
-                  label: "font-bold text-black text-sm"
+                  trigger: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               >
                 {categories.map((cat) => (
@@ -210,7 +206,7 @@ const EditPost = () => {
             </div>
 
             <div className="space-y-4 mt-4">
-              <h3 className="font-titulo font-extrabold text-xl text-woho-orange flex items-center gap-2">
+              <h3 className="font-display text-3xl text-ws-ink flex items-center gap-2">
                 <MapPin className="w-5 h-5" /> Ubicación
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -218,7 +214,7 @@ const EditPost = () => {
                   name="country_id"
                   label="País de destino"
                   variant="bordered"                  
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   selectedKeys={formData.country_id ? new Set([formData.country_id]) : new Set([])}
@@ -227,8 +223,8 @@ const EditPost = () => {
                     setFormData(prev => ({ ...prev, country_id: String(selectedValue), city_id: '' }));
                   }}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    trigger: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 >
                   {countries.map(c => (
@@ -241,7 +237,7 @@ const EditPost = () => {
                   name="city_id"
                   label="Ciudad"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   selectedKeys={formData.city_id ? new Set([formData.city_id]) : new Set([])}
@@ -251,8 +247,8 @@ const EditPost = () => {
                   }}
                   isDisabled={!formData.country_id}
                   classNames={{ 
-                    trigger: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    trigger: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 >
                   {cities
@@ -271,48 +267,35 @@ const EditPost = () => {
                 name="description"
                 label="Descripción"
                 variant="bordered"
-                radius="md"
+                radius="sm"
                 size="lg"
                 minRows={5}
                 isRequired
                 value={formData.description}
                 onChange={handleChange}
                 classNames={{ 
-                  inputWrapper: "border-[2px] border-black bg-gray-50",
-                  label: "font-bold text-black text-sm"
+                  inputWrapper: "ws-input-border",
+                  label: "font-bold text-ws-ink text-sm"
                 }}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                <Input
-                  name="price"
-                  type="number"
-                  label="Precio (Opcional)"
-                  startContent={<span className="text-default-500 font-bold">$</span>}
-                  variant="bordered"
-                  radius="md"
-                  size="lg"
-                  value={formData.price}
-                  onChange={handleChange}
-                  classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
-                  }}
-                />
+              <div className="grid grid-cols-1 gap-4 mt-2">
                 
                 <Input
                   name="duration_days"
                   type="number"
+                  min={1}
+                  max={365}
                   label="Días de duración"
                   variant="bordered"
-                  radius="md"
+                  radius="sm"
                   size="lg"
                   isRequired
                   value={formData.duration_days}
                   onChange={handleChange}
                   classNames={{ 
-                    inputWrapper: "border-[2px] border-black bg-gray-50",
-                    label: "font-bold text-black text-sm"
+                    inputWrapper: "ws-input-border",
+                    label: "font-bold text-ws-ink text-sm"
                   }}
                 />
               </div>
@@ -321,17 +304,17 @@ const EditPost = () => {
                 <input type="file" id="images-upload" multiple accept="image/*" className="hidden" onChange={handleFileChange} />
                 <label 
                   htmlFor="images-upload"
-                  className="border-[2px] border-black border-dashed rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 text-default-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="border-2 border-ws-ink/30 border-dashed rounded-[8px] p-8 flex flex-col items-center justify-center bg-ws-paper-light text-ws-ink hover:bg-ws-mustard/30 transition-colors cursor-pointer"
                 >
                   <ImageIcon className="w-10 h-10 mb-2 opacity-50 text-black" />
-                  <span className="font-bold font-cuerpo text-black">Cambiar Fotos (Máx 5)</span>
-                  <span className="text-xs mt-1 text-center font-bold text-woho-orange">Aviso: Si subes fotos nuevas, se reemplazarán todas las anteriores.</span>
+                  <span className="font-bold font-cuerpo text-black">Cambiar fotos (máx. 5)</span>
+                  <span className="text-xs mt-1 text-center font-bold text-ws-tomato-deep">Aviso: Si subes fotos nuevas, se reemplazarán todas las anteriores.</span>
                 </label>
 
                 {previews.length > 0 && (
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {previews.map((src, i) => (
-                      <div key={i} className="aspect-square border-[2px] border-black rounded-lg overflow-hidden relative">
+                      <div key={i} className="aspect-square ws-photo">
                         <img src={src} alt="Preview" className="w-full h-full object-cover" />
                       </div>
                     ))}
@@ -344,15 +327,15 @@ const EditPost = () => {
               <Button 
                 type="submit" 
                 isLoading={isSubmitting} 
-                className="w-full h-16 bg-woho-purple text-white font-titulo font-black text-xl uppercase tracking-widest rounded-xl hover:opacity-90 transition-opacity"
+                className="ws-btn ws-btn-tomato w-full h-14 text-lg"
               >
-                {isSubmitting ? "Guardando Cambios..." : "Actualizar Anuncio"}
+                {isSubmitting ? "Guardando cambios..." : "Actualizar anuncio"}
               </Button>
             </div>
 
           </form>
         </CardBody>
-      </Card>
+      </SurfaceCard>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import Stamp, { InkFilter } from '../components/ui/Stamp';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../config/api';
 
@@ -35,7 +36,7 @@ export const UserProvider = ({ children }) => {
     if (token) {
       api.get('/users/me')
         .then(res => setCurrentUser(res.data))
-        .catch(err => {
+        .catch(() => {
           console.error('La sesión expiró o el token es inválido.');
           localStorage.removeItem('token');
         })
@@ -82,9 +83,10 @@ export const UserProvider = ({ children }) => {
 
   if (isInitializing) {
     return (
-      <div className="min-h-screen bg-woho-black flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl text-white font-titulo font-black uppercase mb-4 animate-pulse">Desempacando la mochila...</h1>
-        <div className="w-16 h-16 border-4 border-white border-t-woho-orange rounded-full animate-spin"></div>
+      <div role="status" className="min-h-screen bg-ws-paper flex flex-col items-center justify-center p-4 text-center">
+        <h1 className="font-display text-5xl md:text-6xl text-ws-ink mb-6">Desempacando la <em>mochila…</em></h1>
+        <Stamp variant="oval" center="CARGANDO" bottom="WOHO" rotate={-5} className="w-48 text-ws-ink motion-safe:animate-pulse" />
+        <InkFilter />
       </div>
     );
   }

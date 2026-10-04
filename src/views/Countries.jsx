@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, Button } from '@heroui/react';
 import { Link } from 'react-router-dom';
-import { PlaneTakeoff } from 'lucide-react';
 import api from '../config/api';
+import Stamp from '../components/ui/Stamp';
+import { ArrowRight } from '../components/ui/icons';
+
+// Cada destino es una página de pasaporte con su sello; color y giro rotan
+// para que la grilla no se vea fotocopiada.
+const INKS = ['text-ws-tomato-deep', 'text-ws-ocean', 'text-ws-plum', 'text-ws-olive'];
+const TILTS = [-4, 3, -2, 5, -5, 2];
 
 const Countries = () => {
   const [countries, setCountries] = useState([]);
@@ -21,44 +26,49 @@ const Countries = () => {
     };
     fetchCountries();
   }, []);
+
   return (
-    <div className="flex flex-col gap-8 md:gap-12 w-full max-w-7xl mx-auto px-4 py-8">
-      
-      
-      <section className="flex justify-between items-end gap-4 border-b-[3px] border-black pb-6">
-        <div className="space-y-2">
-          <h1 className="text-4xl md:text-5xl font-titulo font-black text-black tracking-tighter uppercase flex items-center gap-3">
-            <PlaneTakeoff className="w-10 h-10 md:w-12 md:h-12 text-woho-orange" />
-            Elige tu Destino
-          </h1>
-          <p className="font-cuerpo text-default-600 text-lg max-w-xl">
-            Selecciona un país para ver las oportunidades de trabajo, alojamiento y compañeros de ruta activos allí.
-          </p>
-        </div>
+    <div className="flex flex-col gap-10 md:gap-14 w-full">
+
+      <section className="relative grid md:grid-cols-12 gap-6 items-end">
+        <h1 className="md:col-span-7 font-display text-6xl md:text-8xl">
+          Elige tu <em className="text-ws-accent">destino</em>
+        </h1>
+        <p className="md:col-span-5 font-cuerpo text-lg text-ws-ink/85 leading-relaxed">
+          Selecciona un país para ver las oportunidades de trabajo, alojamiento y compañeros de ruta activos allí.
+        </p>
       </section>
 
-      
-      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <section aria-label="Destinos" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {isLoading ? (
-          <div className="w-full text-center p-12 text-xl font-bold col-span-full">Cargando destinos mundiales...</div>
+          <p role="status" className="ws-mono col-span-full py-12 text-center">Cargando destinos…</p>
         ) : (
-          countries.map(country => (
-            <Card 
-              key={country.id} 
-              isPressable
-              as={Link}
+          countries.map((country, i) => (
+            <Link
+              key={country.id}
               to={`/destinos/${country.name}`}
-              className="w-full border-[3px] border-black rounded-xl bg-white flex flex-col hover:-translate-y-2 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group"
+              className="ws-surface ws-surface-hover group flex flex-col p-4 md:p-5 min-h-[15rem]"
             >
-              <CardBody className="flex flex-col items-center justify-center p-8 text-center min-h-[180px]">
-                <span className="text-6xl mb-4 group-hover:scale-125 transition-transform duration-300">
-                  {country.flag}
-                </span>
-                <h2 className="text-sm sm:text-xl lg:text-2xl font-titulo font-black text-black uppercase text-center leading-tight">
-                  {country.name}
-                </h2>
-              </CardBody>
-            </Card>
+              <span className="flex items-start justify-between">
+                <span className="text-3xl leading-none" aria-hidden="true">{country.flag}</span>
+                <span className="ws-mono text-ws-ink/60" aria-hidden="true">N.º {String(i + 1).padStart(2, '0')}</span>
+              </span>
+              <span className="flex-1 grid place-items-center py-3">
+                <Stamp
+                  variant="rect"
+                  top="DESTINO"
+                  center={country.name.toUpperCase()}
+                  bottom="WORKING HOLIDAY"
+                  rotate={TILTS[i % TILTS.length]}
+                  className={`w-full max-w-[14rem] ${INKS[i % INKS.length]}`}
+                />
+                <h2 className="sr-only">{country.name}</h2>
+              </span>
+              <span className="ws-mono flex items-center justify-between border-t border-ws-line pt-3">
+                Ver anuncios
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </span>
+            </Link>
           ))
         )}
       </section>

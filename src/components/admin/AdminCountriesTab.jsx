@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, Button, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@heroui/react';
-import { Plus, Edit, Trash2, Save } from 'lucide-react';
+import SurfaceCard from '../ui/SurfaceCard';
+import { Plus, Edit, Trash2, Save } from '../ui/icons';
 import api from '../../config/api';
 
 const AdminCountriesTab = ({ countries, setCountries }) => {
@@ -20,7 +21,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
       setNewCountry({ name: '', flag: '', image: '' });
     } catch (error) {
       console.error(error);
-      alert('Error al intentar guardar el país en la Base de Datos.');
+      alert(error?.response?.data?.error || 'Error al intentar guardar el país en la Base de Datos.');
     }
   };
 
@@ -60,7 +61,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
       onClose();
     } catch (error) {
       console.error(error);
-      alert('Error al actualizar el país.');
+      alert(error?.response?.data?.error || 'Error al actualizar el país.');
     }
   };
 
@@ -68,7 +69,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
     <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
         <div className="lg:col-span-1">
-          <Card className="border-[2px] border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-woho-orange">
+          <Card className="rounded-xl shadow-sm bg-woho-orange">
             <CardHeader className="pt-6 px-6">
               <h3 className="font-titulo font-black text-white text-2xl">Añadir País Rápido</h3>
             </CardHeader>
@@ -104,10 +105,10 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
         </div>
 
         <div className="lg:col-span-2">
-          <Card className="border-[2px] border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <SurfaceCard>
             <CardBody className="p-0 overflow-hidden">
               <Table aria-label="Lista de Países" removeWrapper radius="none" className="min-w-full">
-                <TableHeader className="bg-gray-100 border-b-[2px] border-black">
+                <TableHeader className="bg-gray-100 border-b border-gray-200">
                   <TableColumn className="font-titulo font-black text-black uppercase w-16">ID</TableColumn>
                   <TableColumn className="font-titulo font-black text-black uppercase">País</TableColumn>
                   <TableColumn className="font-titulo font-black text-black uppercase text-right">Moderar</TableColumn>
@@ -123,10 +124,24 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
                         </div>
                       </TableCell>
                       <TableCell className="text-right flex justify-end gap-2">
-                        <Button size="sm" isIconOnly variant="flat" color="primary" onPress={() => openEditModal(country)}>
+                        <Button
+                          size="sm"
+                          isIconOnly
+                          variant="flat"
+                          color="primary"
+                          aria-label={`Editar ${country.name}`}
+                          onPress={() => openEditModal(country)}
+                        >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" isIconOnly variant="flat" color="danger" onPress={() => handleDeleteCountry(country.id)}>
+                        <Button
+                          size="sm"
+                          isIconOnly
+                          variant="flat"
+                          color="danger"
+                          aria-label={`Borrar ${country.name}`}
+                          onPress={() => handleDeleteCountry(country.id)}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </TableCell>
@@ -135,7 +150,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
                 </TableBody>
               </Table>
             </CardBody>
-          </Card>
+          </SurfaceCard>
         </div>
       </div>
 
@@ -152,7 +167,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
                   value={editingCountry.name}
                   onChange={(e) => setEditingCountry({ ...editingCountry, name: e.target.value })}
                   variant="bordered"
-                  classNames={{ inputWrapper: "border-[2px] border-black" }}
+                  classNames={{ inputWrapper: "border border-gray-200" }}
                 />
                 <Input
                   label="Emoji de Bandera"
@@ -160,7 +175,7 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
                   value={editingCountry.flag}
                   onChange={(e) => setEditingCountry({ ...editingCountry, flag: e.target.value })}
                   variant="bordered"
-                  classNames={{ inputWrapper: "border-[2px] border-black" }}
+                  classNames={{ inputWrapper: "border border-gray-200" }}
                 />
                 <Input
                   label="URL de Foto Cover"
@@ -168,10 +183,10 @@ const AdminCountriesTab = ({ countries, setCountries }) => {
                   value={editingCountry.image}
                   onChange={(e) => setEditingCountry({ ...editingCountry, image: e.target.value })}
                   variant="bordered"
-                  classNames={{ inputWrapper: "border-[2px] border-black" }}
+                  classNames={{ inputWrapper: "border border-gray-200" }}
                 />
                 {editingCountry.image && (
-                  <img src={editingCountry.image} alt="Preview" className="w-full h-32 object-cover rounded-lg border-2 border-black" />
+                  <img src={editingCountry.image} alt="Preview" className="w-full h-32 object-cover rounded-lg border border-gray-200" />
                 )}
               </div>
             )}

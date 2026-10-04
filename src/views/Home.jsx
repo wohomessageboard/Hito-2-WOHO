@@ -1,133 +1,163 @@
 import React from 'react';
-import { Button, Card, CardBody, Image } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Users, Briefcase } from 'lucide-react';
+import { Search, Home as HomeIcon, Users, Briefcase, ArrowRight } from '../components/ui/icons';
+import BoardingPass from '../components/ui/BoardingPass';
+import Marquee from '../components/ui/Marquee';
+import Stamp from '../components/ui/Stamp';
+
+// Tablero de salidas: una fila por categoría, con su color de etiqueta.
+const DEPARTURES = [
+  {
+    code: 'ALJ',
+    name: 'Alojamiento',
+    Icon: HomeIcon,
+    text: 'Encuentra o publica cuartos libres, casas rodantes y hostels. Ideal para dividir la renta.',
+    hover: 'hover:bg-ws-teal',
+  },
+  {
+    code: 'TRB',
+    name: 'Trabajo temporario',
+    Icon: Briefcase,
+    text: 'Cosechas, hospitalidad o construcción. Los mejores datos pasados de viajero a viajero.',
+    hover: 'hover:bg-ws-tomato',
+  },
+  {
+    code: 'SOC',
+    name: 'Social y rutas',
+    Icon: Users,
+    text: 'Busca compañeros para hacer roadtrips, comprar un auto a medias o tomar unas cervezas.',
+    hover: 'hover:bg-ws-citron',
+  },
+];
 
 const Home = () => {
   return (
-    <div className="flex flex-col gap-16 md:gap-24 mb-12">
-      
-      
-      <section className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-8 lg:mt-16">
-        <div className="flex-1 space-y-8">
-          <div className="inline-block px-4 py-1 bg-woho-orange text-white font-bold font-titulo rounded-full border-2 border-black transform -rotate-2">
-            La comunidad oficial Working Holiday
-          </div>
-          <h1 className="text-5xl md:text-7xl font-titulo font-black text-black leading-none tracking-tighter">
-            EL CORAJE DE MIGRAR,<br />
-            <span className="text-woho-purple underline decoration-black decoration-[4px] underline-offset-8">LA FUERZA DE UNIRSE.</span>
+    <div className="flex flex-col gap-14 md:gap-20 -mb-16">
+
+      {/* Hero: pertenencia y partida */}
+      <section className="grid lg:grid-cols-12 gap-14 lg:gap-8 items-center pt-4 lg:pt-10">
+        <div className="lg:col-span-7 space-y-8">
+          <h1 className="font-display text-6xl sm:text-7xl xl:text-8xl text-ws-ink">
+            El coraje de migrar, <em className="text-ws-accent">la fuerza de unirse.</em>
           </h1>
-          <p className="text-xl md:text-2xl font-cuerpo text-default-700 max-w-lg">
-            Un ecosistema de apoyo mutuo diseñado para viajeros. Encuentra trabajo, hogar y la mano amiga que necesitas para triunfar en tu destino.
+          <p className="text-lg md:text-xl font-cuerpo text-ws-ink/85 max-w-xl leading-relaxed">
+            La comunidad oficial Working Holiday: un ecosistema de apoyo mutuo diseñado para viajeros. Encuentra trabajo, hogar y la mano amiga que necesitas para triunfar en tu destino.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button 
-              as={Link} 
-              to="/feed" 
+          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <Button
+              as={Link}
+              to="/feed"
               size="lg"
-              variant="solid" 
-              radius="md" 
-              className="font-titulo font-bold bg-woho-purple text-white border-2 border-black w-full sm:w-auto h-14 text-lg"
-              endContent={<Search className="w-5 h-5" />}
+              radius="sm"
+              className="ws-btn ws-btn-tomato w-full sm:w-auto h-14 px-8 text-lg"
+              endContent={<Search className="w-5 h-5" aria-hidden="true" />}
             >
-              Explorar Anuncios
+              Explorar anuncios
             </Button>
-            <Button 
-              as={Link} 
-              to="/manifiesto" 
+            <Button
+              as={Link}
+              to="/manifiesto"
               size="lg"
-              variant="flat" 
-              radius="md" 
-              className="font-titulo font-bold bg-white text-black border-2 border-black w-full sm:w-auto h-14 text-lg"
+              radius="sm"
+              className="ws-btn ws-btn-quiet w-full sm:w-auto h-14 px-8 text-lg"
             >
-              Ver Manifiesto
+              Ver manifiesto
             </Button>
           </div>
         </div>
 
-        
-        <div className="flex-1 flex justify-center lg:justify-end relative w-full max-w-lg lg:max-w-none">
-          <div className="absolute inset-0 bg-woho-orange rounded-full blur-3xl opacity-20 transform translate-x-10 translate-y-10"></div>
-          
-          <Card className="relative z-10 w-full max-w-md border-[3px] border-black rounded-xl bg-white rotate-2 overflow-visible">
-            <div className="absolute -top-6 -left-6 bg-yellow-400 text-black font-titulo font-black border-[2px] border-black rounded-full w-14 h-14 flex items-center justify-center text-xl z-20">
-              ✈️
-            </div>
-            <img 
-              src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=800" 
-              alt="Backpackers"
-              className="w-full h-64 object-cover rounded-t-xl border-b-[3px] border-black block"
-            />
-            <CardBody className="p-6">
-              <h3 className="font-titulo font-extrabold text-2xl mb-2">Nadie se salva solo</h3>
-              <p className="font-cuerpo text-default-600 block">
-                Únete a una red donde quienes ya recorrieron el camino iluminan el sendero a los que recién llegan. Solidaridad real en cada rincón del mundo.
-              </p>
-            </CardBody>
-          </Card>
+        <div className="lg:col-span-5 relative px-3 sm:px-8 lg:px-0 py-6">
+          <div aria-hidden="true" className="absolute inset-x-0 inset-y-0 sm:inset-x-4 bg-ws-teal rotate-[3deg] rounded-[10px]" />
+          <BoardingPass className="relative max-w-md mx-auto" />
         </div>
       </section>
 
-      
-      <section className="space-y-10">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-titulo font-black text-black">
-            Todo lo que necesitas
+      {/* Cinta de rótulos */}
+      <Marquee
+        className="ws-band ws-band-ink ws-bleed text-ws-paper-light"
+        items={['Alojamiento', 'Trabajo temporario', 'Compañeros de ruta', 'De viajero a viajero', 'Sin algoritmo, sin relleno']}
+      />
+
+      {/* Nadie se salva solo */}
+      <section
+        aria-labelledby="nadie-se-salva-solo"
+        className="ws-band ws-band-ocean ws-bleed py-16 md:py-24"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-12 gap-10 items-end relative">
+          <h2 id="nadie-se-salva-solo" className="md:col-span-7 font-display text-6xl sm:text-7xl xl:text-8xl">
+            Nadie se salva <em className="text-ws-mustard">solo.</em>
           </h2>
-          <p className="text-lg font-cuerpo text-default-600 max-w-2xl mx-auto">
-            Categorías concretas sin algoritmo, sin relleno. Lo que la gente publica es lo que ves.
+          <p className="md:col-span-5 font-cuerpo text-lg md:text-xl leading-relaxed text-ws-paper-light/95">
+            Únete a una red donde quienes ya recorrieron el camino iluminan el sendero a los que recién llegan. Solidaridad real en cada rincón del mundo.
+          </p>
+          <Stamp solid variant="oval" center="CONFIRMADO" bottom="COMUNIDAD" rotate={-6} className="hidden lg:block absolute -top-14 right-4 w-36 text-ws-mustard" />
+        </div>
+      </section>
+
+      {/* Tablero de salidas: categorías */}
+      <section aria-labelledby="todo-lo-que-necesitas" className="space-y-10">
+        <div className="grid md:grid-cols-12 gap-6 items-end">
+          <h2 id="todo-lo-que-necesitas" className="md:col-span-7 font-display text-5xl md:text-7xl text-ws-ink">
+            Todo lo que <em>necesitas</em>
+          </h2>
+          <p className="md:col-span-5 font-cuerpo text-lg text-ws-ink/80 leading-relaxed">
+            Categorías concretas, sin algoritmo ni relleno. Lo que la gente publica es lo que ves.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="border-[2px] border-black rounded-lg bg-blue-50/50 hover:bg-blue-50 transition-colors">
-            <CardBody className="p-8 flex flex-col items-center text-center gap-4">
-              <div className="w-16 h-16 bg-blue-200 border-2 border-black rounded-full flex items-center justify-center text-blue-700">
-                <MapPin className="w-8 h-8" />
-              </div>
-              <h3 className="font-titulo font-extrabold text-2xl">Alojamiento</h3>
-              <p className="font-cuerpo text-default-600">Encuentra o publica cuartos libres, casas rodantes y hostels. Ideal para dividir la renta.</p>
-            </CardBody>
-          </Card>
-
-          <Card className="border-[2px] border-black rounded-lg bg-orange-50/50 hover:bg-orange-50 transition-colors transform md:-translate-y-4">
-            <CardBody className="p-8 flex flex-col items-center text-center gap-4">
-              <div className="w-16 h-16 bg-woho-orange border-2 border-black rounded-full flex items-center justify-center text-white">
-                <Briefcase className="w-8 h-8" />
-              </div>
-              <h3 className="font-titulo font-extrabold text-2xl">Trabajo Temporario</h3>
-              <p className="font-cuerpo text-default-600">Cosechas, hospitalidad o construcción. Los mejores datos pasados de viajero a viajero.</p>
-            </CardBody>
-          </Card>
-
-          <Card className="border-[2px] border-black rounded-lg bg-green-50/50 hover:bg-green-50 transition-colors">
-            <CardBody className="p-8 flex flex-col items-center text-center gap-4">
-              <div className="w-16 h-16 bg-green-300 border-2 border-black rounded-full flex items-center justify-center text-green-900">
-                <Users className="w-8 h-8" />
-              </div>
-              <h3 className="font-titulo font-extrabold text-2xl">Social & Rutas</h3>
-              <p className="font-cuerpo text-default-600">Busca compañeros para hacer roadtrips, comprar un auto a medias o tomar unas cervezas.</p>
-            </CardBody>
-          </Card>
-        </div>
+        <ul className="border-t border-ws-ink/25">
+          {DEPARTURES.map(({ code, name, Icon, text, hover }) => (
+            <li key={code} className="border-b border-ws-ink/25">
+              <Link
+                to="/feed"
+                className={`group grid grid-cols-[auto_1fr_auto] md:grid-cols-[6rem_minmax(0,1fr)_minmax(0,1.1fr)_auto] items-center gap-x-5 gap-y-2 py-6 md:py-8 px-3 md:px-5 transition-colors ${hover}`}
+              >
+                <span className="ws-mono font-medium text-lg flex items-center gap-3">
+                  <Icon className="w-8 h-8" aria-hidden="true" />
+                  <span className="hidden md:inline">{code}</span>
+                </span>
+                <span className="font-display text-4xl md:text-6xl">{name}</span>
+                <span className="col-span-3 md:col-span-1 md:col-start-3 row-start-2 md:row-start-1 font-cuerpo text-base md:text-lg leading-relaxed text-ws-ink/85">{text}</span>
+                <span className="col-start-3 md:col-start-4 row-start-1 grid place-items-center w-11 h-11 rounded-[6px] bg-ws-paper-deep group-hover:bg-ws-ink group-hover:text-ws-paper-light transition-colors" aria-hidden="true">
+                  <ArrowRight className="w-6 h-6" />
+                </span>
+                <span className="sr-only">Ver anuncios de {name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      
-      <section className="bg-woho-black text-white p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center justify-between gap-8 border-2 border-black shadow-sm">
-        <div className="space-y-2 text-center md:text-left">
-          <h2 className="text-3xl font-titulo font-black text-woho-white">¿Listo para sumarte?</h2>
-          <p className="font-cuerpo text-gray-300">Crea tu cuenta y empieza a construir tu red global hoy mismo.</p>
+      {/* CTA final */}
+      <section className="ws-band ws-band-teal ws-bleed py-14 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
+          <div className="space-y-4">
+            <h2 className="font-display text-5xl md:text-7xl">¿Listo para <em>sumarte?</em></h2>
+            <p className="font-cuerpo text-lg md:text-xl max-w-xl">Crea tu cuenta y empieza a construir tu red global hoy mismo.</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <Button
+              as={Link}
+              to="/como-funciona"
+              size="lg"
+              radius="sm"
+              className="ws-btn ws-btn-quiet h-14 px-8 text-lg w-full md:w-auto"
+            >
+              Cómo funciona
+            </Button>
+            <Button
+              as={Link}
+              to="/register"
+              size="lg"
+              radius="sm"
+              className="ws-btn ws-btn-ink h-14 px-8 text-lg w-full md:w-auto"
+            >
+              Únete a la aventura
+            </Button>
+          </div>
+          <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={14} className="hidden lg:block absolute -right-2 -bottom-24 w-36 text-ws-plum" />
         </div>
-        <Button 
-          as={Link} 
-          to="/register" 
-          size="lg"
-          variant="solid" 
-          radius="md" 
-          className="font-titulo font-bold bg-woho-orange text-white border-2 border-white w-full md:w-auto hover:bg-white hover:text-woho-orange transition-colors"
-        >
-          Únete a la aventura
-        </Button>
       </section>
 
     </div>

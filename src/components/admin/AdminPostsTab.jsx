@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Card, CardBody, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, Pagination } from '@heroui/react';
-import { Search, Trash2, Pin, PinOff } from 'lucide-react';
+import { CardBody, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, Pagination } from '@heroui/react';
+import SurfaceCard from '../ui/SurfaceCard';
+import { Search, Trash2, Pin, PinOff } from '../ui/icons';
 
 const postColumns = [
   { name: "AVISO", uid: "title" },
@@ -18,7 +19,7 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
 
     let currentPosts = posts.filter(post => post.is_pinned === true);
 
-    if (Boolean(filterValue)) {
+    if (filterValue) {
       currentPosts = currentPosts.filter((post) =>
         post.title.toLowerCase().includes(filterValue.toLowerCase())
       );
@@ -52,13 +53,14 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
             <span className="text-default-400 text-xs">ID Dueño: {post.user_id}</span>
           </div>
         );
-      case "location":
+      case "location": {
         const country = countries.find(c => c.id.toString() === post.country_id?.toString());
         return (
           <div className="flex items-center gap-1 font-bold">
             {country ? `${country.flag} ${country.name}` : "Global"}
           </div>
         );
+      }
       case "is_pinned":
         return (
           <Chip
@@ -105,19 +107,19 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
   }, [handleTogglePin, handleDeletePost, countries, currentUser]);
 
   return (
-    <Card className="mt-4 border-[2px] border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+    <SurfaceCard className="mt-4">
       <CardBody className="p-0 overflow-hidden">
         <Table 
           aria-label="Tabla de moderación de Posts" 
           removeWrapper 
           radius="none"
           topContent={
-            <div className="p-4 border-b-[2px] border-black bg-gray-50 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="p-4 border-b border-gray-200 bg-gray-50 flex flex-col md:flex-row gap-4 items-center justify-between">
               <Input
                 isClearable
                 classNames={{
                   base: "w-full sm:max-w-[44%]",
-                  inputWrapper: "border-[2px] border-black bg-white focus-within:bg-gray-100",
+                  inputWrapper: "border border-gray-200 bg-white focus-within:bg-gray-100",
                 }}
                 placeholder="Buscar aviso por título..."
                 size="md"
@@ -132,7 +134,7 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
             </div>
           }
           bottomContent={
-            <div className="flex w-full justify-center p-4 border-t-[2px] border-black bg-gray-50">
+            <div className="flex w-full justify-center p-4 border-t border-gray-200 bg-gray-50">
               <Pagination
                 isCompact
                 showControls
@@ -141,12 +143,12 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
                 page={page}
                 total={pages}
                 onChange={(page) => setPage(page)}
-                classNames={{ cursor: "bg-black border-[2px] border-black text-white" }}
+                classNames={{ cursor: "bg-woho-black text-white" }}
               />
             </div>
           }
           classNames={{
-            th: "bg-gray-100 border-b-[2px] border-black font-titulo font-black text-black uppercase text-sm"
+            th: "bg-gray-100 border-b border-gray-200 font-titulo font-black text-black uppercase text-sm"
           }}
         >
           <TableHeader columns={postColumns}>
@@ -165,7 +167,7 @@ const AdminPostsTab = ({ posts, handleTogglePin, handleDeletePost, countries, cu
           </TableBody>
         </Table>
       </CardBody>
-    </Card>
+    </SurfaceCard>
   );
 };
 

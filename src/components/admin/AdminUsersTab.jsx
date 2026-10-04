@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Card, CardBody, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, User, Tooltip, Pagination } from '@heroui/react';
-import { Search, Eye, Edit, Trash2, Ban, CheckCircle2 } from 'lucide-react';
+import { CardBody, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, User, Tooltip, Pagination } from '@heroui/react';
+import SurfaceCard from '../ui/SurfaceCard';
+import { Search, Eye, Edit, Trash2, Ban, CheckCircle2 } from '../ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
 
 const userColumns = [
@@ -16,7 +17,7 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
 
   const filteredUsers = useMemo(() => {
     let currentUsers = [...users];
-    if (Boolean(filterValue)) {
+    if (filterValue) {
       currentUsers = currentUsers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase())
       );
@@ -56,15 +57,27 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
       case "role":
         return (
           <div className="flex flex-col gap-1 items-start">
-            <Chip 
-              className={`capitalize font-bold border-2 cursor-pointer hover:opacity-80 transition-opacity ${user.role === 'admin' ? "border-danger text-danger" : "border-gray-300 text-gray-700"}`}
-              color={user.role === 'admin' ? "danger" : "default"} 
-              variant="flat"
-              size="sm"
-              onClick={() => handleToggleRole(user.id)}
-            >
-              {user.role === 'admin' ? 'Superadmin' : 'Usuario'}
-            </Chip>
+            {user.role === 'superadmin' ? (
+              <Tooltip content="El rol de superadmin no se cambia desde esta tabla">
+                <Chip
+                  className="capitalize font-bold border-2 border-purple-400 text-purple-700"
+                  color="secondary"
+                  variant="flat"
+                  size="sm"
+                >
+                  Superadmin
+                </Chip>
+              </Tooltip>
+            ) : (
+              <Chip
+                className={`capitalize font-bold border-2 ${user.role === 'admin' ? "border-danger text-danger" : "border-gray-300 text-gray-700"}`}
+                color={user.role === 'admin' ? "danger" : "default"}
+                variant="flat"
+                size="sm"
+              >
+                {user.role === 'admin' ? 'Admin' : 'Usuario'}
+              </Chip>
+            )}
             {!user.is_active && (
               <Chip size="sm" color="danger" variant="solid" className="font-bold text-xs uppercase" startContent={<Ban className="w-3 h-3 ml-1"/>}>
                 Baneado
@@ -76,33 +89,45 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
         return (
           <div className="relative flex items-center gap-2 justify-end">
             <Tooltip content="Ver perfil">
-              <RouterLink to={`/profile/${user.id}`} className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-black transition-colors">
+              <RouterLink
+                to={`/profile/${user.id}`}
+                aria-label={`Ver perfil de ${user.name}`}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-black transition-colors"
+              >
                 <Eye className="w-5 h-5"/>
               </RouterLink>
             </Tooltip>
-            
-            <Tooltip content="Ascender / Degradar (Rol)">
-              <span 
-                className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-blue-500 transition-colors"
-                onClick={() => handleToggleRole(user.id)}
-              >
-                <Edit className="w-5 h-5"/>
-              </span>
-            </Tooltip>
+
+            {user.role !== 'superadmin' && (
+              <Tooltip content="Ascender / Degradar (Rol)">
+                <button
+                  type="button"
+                  aria-label={`Cambiar rol de ${user.name}`}
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-blue-500 transition-colors"
+                  onClick={() => handleToggleRole(user.id)}
+                >
+                  <Edit className="w-5 h-5"/>
+                </button>
+              </Tooltip>
+            )}
 
             <Tooltip color={user.is_active ? "danger" : "success"} content={user.is_active ? "Banear (Soft Delete)" : "Restaurar Usuario"}>
-              <span 
+              <button
+                type="button"
+                aria-label={user.is_active ? `Banear a ${user.name}` : `Restaurar a ${user.name}`}
                 className={`text-lg cursor-pointer active:opacity-50 transition-opacity ${user.is_active ? 'text-danger hover:opacity-80' : 'text-success hover:opacity-80'}`}
                 onClick={() => handleToggleBan(user.id)}
               >
                 {user.is_active ? <Ban className="w-5 h-5"/> : <CheckCircle2 className="w-5 h-5"/>}
-              </span>
+              </button>
             </Tooltip>
 
-            
+
             {currentUser?.role === 'superadmin' && (
               <Tooltip color="danger" content="Borrado Total (Destructivo)">
-                <span 
+                <button
+                  type="button"
+                  aria-label={`Eliminar definitivamente a ${user.name}`}
                   className="text-lg text-default-400 cursor-pointer active:opacity-50 hover:text-danger hover:bg-red-50 rounded-md transition-all"
                   onClick={() => {
                     if (window.confirm(`¿Estás SEGURO de eliminar DEFINITIVAMENTE a ${user.name}? Esta acción borrará sus favs y posts.`)) {
@@ -111,7 +136,7 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
                   }}
                 >
                   <Trash2 className="w-5 h-5"/>
-                </span>
+                </button>
               </Tooltip>
             )}
           </div>
@@ -122,19 +147,19 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
   }, [handleToggleBan, handleToggleRole, handleDeleteUser, currentUser]);
 
   return (
-    <Card className="mt-4 border-[2px] border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+    <SurfaceCard className="mt-4">
       <CardBody className="p-0 overflow-hidden">
         <Table 
           aria-label="Tabla de usuarios dinámica con buscador" 
           removeWrapper 
           radius="none"
           topContent={
-            <div className="p-4 border-b-[2px] border-black bg-gray-50 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="p-4 border-b border-gray-200 bg-gray-50 flex flex-col md:flex-row gap-4 items-center justify-between">
               <Input
                 isClearable
                 classNames={{
                   base: "w-full sm:max-w-[44%]",
-                  inputWrapper: "border-[2px] border-black bg-white focus-within:bg-gray-100",
+                  inputWrapper: "border border-gray-200 bg-white focus-within:bg-gray-100",
                 }}
                 placeholder="Buscar por nombre..."
                 size="md"
@@ -145,14 +170,11 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
               />
               <div className="flex w-full sm:w-auto items-center gap-3">
                 <span className="text-default-400 text-sm font-bold">Total: {filteredUsers.length} usuarios</span>
-                <Button className="bg-woho-black text-white font-bold h-10 border border-white">
-                  + Agregar
-                </Button>
               </div>
             </div>
           }
           bottomContent={
-            <div className="flex w-full justify-center p-4 border-t-[2px] border-black bg-gray-50">
+            <div className="flex w-full justify-center p-4 border-t border-gray-200 bg-gray-50">
               <Pagination
                 isCompact
                 showControls
@@ -161,12 +183,12 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
                 page={page}
                 total={pages}
                 onChange={(page) => setPage(page)}
-                classNames={{ cursor: "bg-black border-[2px] border-black text-white" }}
+                classNames={{ cursor: "bg-woho-black text-white" }}
               />
             </div>
           }
           classNames={{
-            th: "bg-gray-100 border-b-[2px] border-black font-titulo font-black text-black uppercase text-sm"
+            th: "bg-gray-100 border-b border-gray-200 font-titulo font-black text-black uppercase text-sm"
           }}
         >
           <TableHeader columns={userColumns}>
@@ -185,7 +207,7 @@ const AdminUsersTab = ({ users, handleToggleBan, handleToggleRole, handleDeleteU
           </TableBody>
         </Table>
       </CardBody>
-    </Card>
+    </SurfaceCard>
   );
 };
 
