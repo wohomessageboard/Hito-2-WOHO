@@ -1,5 +1,5 @@
 // Utilidades compartidas por los generadores de SEO del build.
-const FALLBACK = 'https://woho-three.vercel.app';
+const FALLBACK = 'https://driftler.com';
 
 // Dirección del sitio: SITE_URL > dirección de producción de Vercel > respaldo.
 export const siteUrl = () =>

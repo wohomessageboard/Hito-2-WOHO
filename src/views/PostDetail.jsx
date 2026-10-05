@@ -80,7 +80,7 @@ const PostDetail = () => {
   })();
   useSeo(post ? {
     path: `/post/${id}`,
-    title: `${post.title.length > 52 ? `${post.title.slice(0, 51)}…` : post.title} | Driftler`,
+    title: `Driftler | ${post.title.length > 52 ? `${post.title.slice(0, 51)}…` : post.title}`,
     description: (post.description || '').replace(/\s+/g, ' ').trim().slice(0, 155) || 'Aviso de la comunidad Driftler.',
     image: firstImage,
     noindex: false,
