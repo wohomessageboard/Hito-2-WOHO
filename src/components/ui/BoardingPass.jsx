@@ -54,7 +54,7 @@ const BoardingPass = ({ className = '' }) => (
       </div>
     </div>
 
-    <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={12} animate className="hidden sm:block absolute -bottom-16 sm:-right-14 w-28 sm:w-36 text-ws-ocean" />
+    <Stamp variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={12} animate className="hidden sm:block absolute -bottom-16 sm:-right-14 w-28 sm:w-36 text-ws-ocean" />
     <Stamp variant="rect" top="LLEGADA" center="ARRIBO" bottom="2026" rotate={-7} className="absolute -top-12 -left-5 sm:-left-14 w-28 sm:w-36 text-ws-plum" />
   </div>
 );

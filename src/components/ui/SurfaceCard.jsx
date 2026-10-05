@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@heroui/react';
 
 /**
- * The standard WOHO "white surface": a bordered, lightly-shadowed panel
+ * The standard Driftler "white surface": a bordered, lightly-shadowed panel
  * used for cards, form panels and content sections across the app.
  * Centralizes the ws-surface token so a visual-system change (border
  * weight, shadow, radius) happens in src/styles/index.css, not in every

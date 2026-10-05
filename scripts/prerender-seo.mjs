@@ -4,7 +4,7 @@
 // buscadores, tarjetas al compartir y modelos de lenguaje. Vercel sirve estos archivos
 // antes de aplicar la regla que manda todo a index.html.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { PAGES, countrySeo, jsonLdFor, LOGO_URL } from '../src/seo/site.js';
+import { PAGES, countrySeo, jsonLdFor, LOGO_PATH } from '../src/seo/site.js';
 import { siteUrl, getCountries } from './seo-lib.mjs';
 
 const site = siteUrl();
@@ -19,7 +19,8 @@ function render(meta) {
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(meta.title)}</title>`)
     .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(meta.description)}" />`)
     .replace(/<meta property="og:title"[^>]*>/, `<meta property="og:title" content="${esc(meta.title)}" />`)
-    .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(meta.description)}" />`);
+    .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(meta.description)}" />`)
+    .replace(/<meta property="og:image"[^>]*>/, `<meta property="og:image" content="${site}${LOGO_PATH}" />`);
   const extra = [
     `<link rel="canonical" href="${url}" />`,
     `<meta property="og:url" content="${url}" />`,
@@ -45,4 +46,4 @@ const write = (path, html) => {
 for (const page of PAGES) write(page.path, render(page));
 const countries = await getCountries();
 for (const name of countries) write(`/destinos/${name}`, render({ path: `/destinos/${encodeURIComponent(name)}`, ...countrySeo(name), country: name }));
-console.log(`[seo] HTML previo para ${PAGES.length + countries.length} rutas (${site}); logo ${LOGO_URL ? 'ok' : ''}`);
+console.log(`[seo] HTML previo para ${PAGES.length + countries.length} rutas (${site}); logo ${LOGO_PATH}`);

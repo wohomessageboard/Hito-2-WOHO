@@ -117,7 +117,7 @@ const AdminInboxTab = ({ onOpenCountChange }) => {
                   <Button radius="sm" className="ws-btn ws-btn-tomato h-11 px-4" onPress={() => deletePost(item)}>Eliminar aviso</Button>
                 )}
                 {item.kind === 'contact' && item.email && (
-                  <Button as="a" href={`mailto:${item.email}?subject=${encodeURIComponent('Respuesta de WOHO')}`} radius="sm" className="ws-btn ws-btn-ink h-11 px-4"
+                  <Button as="a" href={`mailto:${item.email}?subject=${encodeURIComponent('Respuesta de Driftler')}`} radius="sm" className="ws-btn ws-btn-ink h-11 px-4"
                     onPress={() => resolve(item.id, 'replied')}>
                     Responder por correo
                   </Button>

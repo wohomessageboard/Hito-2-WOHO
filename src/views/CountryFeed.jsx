@@ -158,7 +158,7 @@ const CountryFeed = () => {
             <span className="text-5xl md:text-6xl block mb-2" aria-hidden="true">{countryInfo.flag}</span>
             <h1 className="font-display text-6xl md:text-8xl break-words">{countryInfo.name}</h1>
           </div>
-          <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="DESTINO" rotate={-10} className="hidden md:block w-28 shrink-0 text-ws-mustard" />
+          <Stamp solid variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="DESTINO" rotate={-10} className="hidden md:block w-28 shrink-0 text-ws-mustard" />
         </div>
       </header>
 

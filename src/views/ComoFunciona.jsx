@@ -68,7 +68,7 @@ const ComoFunciona = () => {
 
       <header className="relative grid md:grid-cols-12 gap-8 items-end pt-2">
         <h1 className="md:col-span-7 font-display text-6xl sm:text-7xl xl:text-8xl">
-          Cómo funciona <em className="text-ws-accent">WOHO</em>
+          Cómo funciona <em className="text-ws-accent">Driftler</em>
         </h1>
         <p className="md:col-span-5 lg:pr-28 font-cuerpo text-lg md:text-xl leading-relaxed text-ws-ink/90">
           Un tablón de avisos hecho por viajeros. Encuentra, guarda y publica en cuatro pasos.
@@ -78,7 +78,7 @@ const ComoFunciona = () => {
             {isAuthenticated ? 'Explorar anuncios' : 'Crear mi cuenta gratis'}
           </Button>
         </div>
-        <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="PASO A PASO" rotate={-10} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
+        <Stamp variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="PASO A PASO" rotate={-10} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
       </header>
 
       <section aria-labelledby="en-resumen" className="ws-surface p-6 md:p-8 grid md:grid-cols-[14rem_1fr] gap-4 md:gap-8">
@@ -166,13 +166,13 @@ const ComoFunciona = () => {
 
       <section aria-label="Compartir" className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p className="font-bold">¿Conoces a alguien que viaja pronto?</p>
-        <ShareLinks url={`${window.location.origin}/como-funciona`} title="Cómo funciona WOHO" text="Mira cómo funciona WOHO, el tablón de avisos para viajeros Working Holiday:" />
+        <ShareLinks url={`${window.location.origin}/como-funciona`} title="Cómo funciona Driftler" text="Mira cómo funciona Driftler, el tablón de avisos para viajeros Working Holiday:" />
       </section>
 
       <RelatedLinks links={[
         { to: '/destinos', label: 'Ver destinos', hint: 'Elige un país y mira sus avisos.' },
         { to: '/feed', label: 'Explorar anuncios', hint: 'Lo más reciente de la comunidad.' },
-        { to: '/manifiesto', label: 'Leer el manifiesto', hint: 'Por qué existe WOHO.' },
+        { to: '/manifiesto', label: 'Leer el manifiesto', hint: 'Por qué existe Driftler.' },
       ]} />
 
       <section className="ws-band ws-band-teal ws-bleed py-14 md:py-20">

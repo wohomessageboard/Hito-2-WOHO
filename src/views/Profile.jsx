@@ -126,7 +126,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="PASAPORTE" rotate={12} className="hidden lg:block w-32 shrink-0 text-ws-mustard" />
+        <Stamp solid variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="PASAPORTE" rotate={12} className="hidden lg:block w-32 shrink-0 text-ws-mustard" />
       </section>
 
       

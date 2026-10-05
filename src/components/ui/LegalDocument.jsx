@@ -23,7 +23,7 @@ const LegalDocument = ({ doc, other }) => (
       <p className="ws-mono text-ws-ink/80">Versión {LEGAL_VERSION} · actualizada el {LEGAL_UPDATED}</p>
       {IS_DRAFT && (
         <p role="note" className="bg-ws-paper-light rounded-[8px] p-4 font-cuerpo leading-relaxed max-w-3xl">
-          <strong>Borrador.</strong> Este texto se preparó a partir de cómo funciona WOHO y no reemplaza la asesoría de una persona abogada. Los datos resaltados como <mark className="bg-ws-mustard px-1 rounded-[3px]">[[así]]</mark> faltan por completar o decidir, y el documento debe revisarse antes de publicarse como definitivo.
+          <strong>Borrador.</strong> Este texto se preparó a partir de cómo funciona Driftler y no reemplaza la asesoría de una persona abogada. Los datos resaltados como <mark className="bg-ws-mustard px-1 rounded-[3px]">[[así]]</mark> faltan por completar o decidir, y el documento debe revisarse antes de publicarse como definitivo.
         </p>
       )}
       <p className="font-cuerpo text-lg leading-relaxed max-w-3xl text-ws-ink/90">{doc.intro}</p>

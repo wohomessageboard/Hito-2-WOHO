@@ -46,7 +46,7 @@ const ReportDialog = ({ postId, isOpen, onOpenChange, onSent }) => {
           <>
             <ModalHeader className="flex flex-col gap-1">
               <span className="font-display text-4xl font-normal">Reportar este aviso</span>
-              <span className="font-cuerpo text-sm font-normal text-ws-ink/80">Lo revisa el equipo de WOHO. No se le avisa a quien publicó.</span>
+              <span className="font-cuerpo text-sm font-normal text-ws-ink/80">Lo revisa el equipo de Driftler. No se le avisa a quien publicó.</span>
             </ModalHeader>
             <ModalBody>
               <RadioGroup aria-label="Motivo del reporte" value={reason} onValueChange={setReason}>

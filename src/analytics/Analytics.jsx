@@ -63,7 +63,7 @@ const Analytics = () => {
   return (
     <div role="dialog" aria-label="Preferencias de analítica" className="fixed inset-x-3 bottom-3 z-50 md:left-auto md:right-6 md:bottom-6 md:max-w-md ws-surface-elevated p-5 flex flex-col gap-4">
       <p className="font-cuerpo leading-relaxed">
-        ¿Nos ayudas a mejorar WOHO? Con tu permiso usamos Google Analytics para medir qué páginas se visitan. Sin permiso, no se carga nada de Google.{' '}
+        ¿Nos ayudas a mejorar Driftler? Con tu permiso usamos Google Analytics para medir qué páginas se visitan. Sin permiso, no se carga nada de Google.{' '}
         <Link to="/privacidad" className="font-bold underline underline-offset-4">Más información</Link>
       </p>
       <div className="flex gap-3">

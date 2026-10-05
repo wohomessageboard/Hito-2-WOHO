@@ -85,7 +85,7 @@ export const UserProvider = ({ children }) => {
     return (
       <div role="status" className="min-h-screen bg-ws-paper flex flex-col items-center justify-center p-4 text-center">
         <h1 className="font-display text-5xl md:text-6xl text-ws-ink mb-6">Desempacando la <em>mochila…</em></h1>
-        <Stamp variant="oval" center="CARGANDO" bottom="WOHO" rotate={-5} className="w-48 text-ws-ink motion-safe:animate-pulse" />
+        <Stamp variant="oval" center="CARGANDO" bottom="DRIFTLER" rotate={-5} className="w-48 text-ws-ink motion-safe:animate-pulse" />
         <InkFilter />
       </div>
     );

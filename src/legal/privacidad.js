@@ -1,4 +1,4 @@
-// Política de Privacidad de WOHO — BORRADOR. Mismo formato que terminos.js.
+// Política de Privacidad de Driftler — BORRADOR. Mismo formato que terminos.js.
 // Debe mantenerse al día con lo que la aplicación realmente hace con los datos.
 // Con VITE_GA4_ID definido, la política describe la analítica opcional (GA4) y las cookies.
 const GA = Boolean(import.meta.env.VITE_GA4_ID);
@@ -74,7 +74,7 @@ export const PRIVACIDAD = {
             '**Cloudinary** — almacenamiento y entrega de fotos.',
             '**Resend** — envío de correos del servicio.',
             '**[[PROVEEDOR DE HOSTING DEL SITIO]]** y **[[PROVEEDOR DE LA BASE DE DATOS]]** — alojamiento de la aplicación y de los datos.',
-            '**WhatsApp (Meta)** — cuando una persona abre el chat; esa conversación ocurre en WhatsApp y se rige por sus condiciones, no por las de WOHO.',
+            '**WhatsApp (Meta)** — cuando una persona abre el chat; esa conversación ocurre en WhatsApp y se rige por sus condiciones, no por las de Driftler.',
           ],
         },
         'No vendemos tus datos. Podemos entregarlos si una autoridad competente nos lo exige conforme a la ley.',
@@ -132,8 +132,8 @@ export const PRIVACIDAD = {
       title: 'Cookies y almacenamiento',
       blocks: [
         (GA
-          ? 'WOHO no usa cookies de publicidad. Si aceptas la analítica, Google Analytics coloca cookies analíticas en tu navegador; si la rechazas, no se coloca ninguna. '
-          : 'WOHO no usa cookies de publicidad ni de seguimiento. ') +
+          ? 'Driftler no usa cookies de publicidad. Si aceptas la analítica, Google Analytics coloca cookies analíticas en tu navegador; si la rechazas, no se coloca ninguna. '
+          : 'Driftler no usa cookies de publicidad ni de seguimiento. ') +
           'Guardamos en tu navegador (almacenamiento local) lo necesario para mantener tu sesión y recordar pequeñas preferencias, como la posición en el listado o que ya viste una guía. Puedes borrarlo desde tu navegador; si lo haces tendrás que volver a iniciar sesión.',
       ],
     },
@@ -156,7 +156,7 @@ export const PRIVACIDAD = {
       id: 'menores',
       title: 'Menores de edad',
       blocks: [
-        'WOHO es solo para personas de **18 años o más**: al registrarte te pedimos confirmarlo, y no recopilamos a sabiendas datos de menores. Si descubrimos una cuenta de una persona menor, la eliminaremos.',
+        'Driftler es solo para personas de **18 años o más**: al registrarte te pedimos confirmarlo, y no recopilamos a sabiendas datos de menores. Si descubrimos una cuenta de una persona menor, la eliminaremos.',
       ],
     },
     {

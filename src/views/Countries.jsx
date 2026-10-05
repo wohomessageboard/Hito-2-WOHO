@@ -77,7 +77,7 @@ const Countries = () => {
       <RelatedLinks links={[
         { to: '/como-funciona', label: 'Cómo funciona', hint: 'Cuatro pasos, gratis.' },
         { to: '/feed', label: 'Explorar anuncios', hint: 'Sin elegir país.' },
-        { to: '/manifiesto', label: 'Leer el manifiesto', hint: 'Por qué existe WOHO.' },
+        { to: '/manifiesto', label: 'Leer el manifiesto', hint: 'Por qué existe Driftler.' },
       ]} />
 
     </div>

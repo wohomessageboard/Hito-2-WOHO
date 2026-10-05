@@ -80,8 +80,8 @@ const PostDetail = () => {
   })();
   useSeo(post ? {
     path: `/post/${id}`,
-    title: `${post.title.length > 52 ? `${post.title.slice(0, 51)}…` : post.title} | WOHO`,
-    description: (post.description || '').replace(/\s+/g, ' ').trim().slice(0, 155) || 'Aviso de la comunidad WOHO.',
+    title: `${post.title.length > 52 ? `${post.title.slice(0, 51)}…` : post.title} | Driftler`,
+    description: (post.description || '').replace(/\s+/g, ' ').trim().slice(0, 155) || 'Aviso de la comunidad Driftler.',
     image: firstImage,
     noindex: false,
   } : null);
@@ -183,7 +183,7 @@ const PostDetail = () => {
         <aside className="w-full lg:w-1/3 flex flex-col gap-6 lg:sticky lg:top-28">
 
           <div className="ws-band ws-band-ink rounded-[10px] p-6 flex flex-col items-center text-center">
-            <Stamp solid variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="ANUNCIANTE" rotate={12} className="absolute -top-3 -right-3 w-20 text-ws-mustard" />
+            <Stamp solid variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="ANUNCIANTE" rotate={12} className="absolute -top-3 -right-3 w-20 text-ws-mustard" />
 
             {isPublicViewer ? (
               <Avatar radius="sm" className="w-24 h-24 text-large border-2 border-dashed border-ws-paper-light/70 bg-ws-ink mb-4" />
@@ -197,7 +197,7 @@ const PostDetail = () => {
             </h2>
 
             <p className="text-sm font-cuerpo text-ws-paper-light/80 mb-6">
-              {isPublicViewer ? "Identidad oculta por seguridad." : "Miembro de la comunidad WOHO."}
+              {isPublicViewer ? "Identidad oculta por seguridad." : "Miembro de la comunidad Driftler."}
             </p>
 
             <div className="w-full flex flex-col gap-3">
@@ -223,7 +223,7 @@ const PostDetail = () => {
 
           <div className="ws-surface p-4 flex flex-col gap-3">
             <h3 className="ws-mono">Acciones adicionales</h3>
-            <ShareLinks url={shareUrl} title={post.title} text={`Mira este aviso en WOHO: ${post.title}`} />
+            <ShareLinks url={shareUrl} title={post.title} text={`Mira este aviso en Driftler: ${post.title}`} />
             <div className="flex gap-2">
               {isMyPost ? null : isAuthenticated ? (
                 <Button onPress={report.onOpen} radius="sm" className="ws-pill ws-pill-line flex-1 min-h-11" startContent={<AlertCircle className="w-5 h-5" aria-hidden="true" />}>
