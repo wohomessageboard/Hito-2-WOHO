@@ -11,6 +11,7 @@ import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
 import ShareLinks from '../components/ui/ShareLinks';
 import RelatedLinks from '../components/ui/RelatedLinks';
+import AdSlot from '../ads/AdSlot';
 
 const CATEGORY_ICONS = {
   'Todos': Grid,
@@ -19,6 +20,10 @@ const CATEGORY_ICONS = {
   'Social': Users,
   'Otro': Globe,
 };
+
+// Anuncio entre tarjetas: ocupa la fila completa; nunca antes de la 4.ª tarjeta, uno cada 6 y
+// como máximo 3 por carga. Con menos de 6 avisos no se muestra ninguno.
+const adAfter = (i, total) => total >= 6 && i >= 3 && (i - 3) % 6 === 0 && (i - 3) / 6 < 3;
 
 const CountryFeed = () => {
   const { countryName } = useParams();
@@ -234,7 +239,7 @@ const CountryFeed = () => {
           </EmptyState>
         ) : (
           <div className="grid md:grid-cols-2 gap-6 items-start">
-            {filteredPosts.map(post => {
+            {filteredPosts.flatMap((post, index) => {
               const owner = post.owner || {
                 id: post.user_id,
                 name: String(post.author_name || "Viajero anónimo"),
@@ -250,7 +255,7 @@ const CountryFeed = () => {
                 expiresInDays: post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null,
               };
 
-              return (
+              const card = (
                 <PostCard
                   key={post.id}
                   post={mappedPost}
@@ -259,6 +264,9 @@ const CountryFeed = () => {
                   isMyPost={isMyPost}
                 />
               );
+              return adAfter(index, filteredPosts.length)
+                ? [card, <AdSlot key={`ad-${post.id}`} variant="feed" className="md:col-span-2" />]
+                : [card];
             })}
           </div>
         )}

@@ -10,6 +10,8 @@ import RouteSeo from '../seo/RouteSeo';
 import StickyCta from '../components/ui/StickyCta';
 import Analytics from '../analytics/Analytics';
 import { GA_ID, openConsent } from '../analytics/consent';
+import AdRails from '../ads/AdRails';
+import { ADS_CLIENT, openAdPreferences } from '../ads/config';
 
 const MainLayout = () => {
   const { pathname } = useLocation();
@@ -55,6 +57,9 @@ const MainLayout = () => {
             <Link as={RouterLink} to="/terminos" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Términos</Link>
             <Link as={RouterLink} to="/privacidad" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Privacidad</Link>
             <Link as={RouterLink} to="/contacto" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Contacto</Link>
+            {ADS_CLIENT && (
+              <button type="button" onClick={openAdPreferences} className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11 font-bold">Preferencias de publicidad</button>
+            )}
             {GA_ID && (
               <button type="button" onClick={openConsent} className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11 font-bold">Preferencias de analítica</button>
             )}
@@ -71,6 +76,7 @@ const MainLayout = () => {
         </div>
       </footer>
       <StickyCta />
+      <AdRails />
       <Analytics />
     </div>
   );

@@ -2,6 +2,8 @@
 // Formato: cada sección tiene `id`, `title` y `blocks`. Un bloque es un párrafo (string)
 // o una lista ({ list: [...] }). Escribe [[así]] lo que debes completar o decidir, y
 // **así** lo que va en negrita.
+const ADS = Boolean(import.meta.env.VITE_ADSENSE_CLIENT);
+
 export const TERMINOS = {
   title: 'Términos y Condiciones',
   intro:
@@ -108,7 +110,7 @@ export const TERMINOS = {
       id: 'gratuidad',
       title: 'Costo del servicio',
       blocks: [
-        'Driftler es gratis para las personas usuarias. Si en el futuro agregamos funciones de pago, lo anunciaremos con al menos [[30]] días de anticipación y nada de lo que hoy es gratis pasará a ser de pago sin avisarte antes.',
+        (ADS ? 'Driftler es gratis para las personas usuarias y se financia con publicidad de terceros (Google AdSense). Esos anuncios no son avisos de Driftler ni los respaldamos, y no debes tratarlos como recomendaciones. ' : 'Driftler es gratis para las personas usuarias. ') + 'Si en el futuro agregamos funciones de pago, lo anunciaremos con al menos [[30]] días de anticipación y nada de lo que hoy es gratis pasará a ser de pago sin avisarte antes.',
       ],
     },
     {

@@ -1,6 +1,6 @@
 // Genera public/sitemap.xml, public/robots.txt y public/llms.txt antes de cada build.
 // Las páginas salen de src/seo/site.js; los países, de la API.
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, unlinkSync } from 'node:fs';
 import { PAGES, countrySeo, SITE_NAME, SITE_SUMMARY } from '../src/seo/site.js';
 import { siteUrl, getCountries } from './seo-lib.mjs';
 
@@ -62,4 +62,10 @@ mkdirSync('public', { recursive: true });
 writeFileSync('public/sitemap.xml', sitemap);
 writeFileSync('public/robots.txt', robots);
 writeFileSync('public/llms.txt', llms);
+// ads.txt: solo si hay AdSense configurado; si no, se borra para no dejar uno viejo.
+const adsClient = process.env.VITE_ADSENSE_CLIENT || '';
+const adsId = adsClient.match(/^ca-(pub-\d{10,})$/)?.[1];
+if (adsId) writeFileSync('public/ads.txt', `google.com, ${adsId}, DIRECT, f08c47fec0942fa0\n`);
+else if (existsSync('public/ads.txt')) unlinkSync('public/ads.txt');
+
 console.log(`[seo] sitemap (${entries.length} páginas), robots.txt y llms.txt para ${site}`);

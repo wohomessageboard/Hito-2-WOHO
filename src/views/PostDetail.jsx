@@ -10,6 +10,7 @@ import ReportDialog from '../components/ui/ReportDialog';
 import ShareLinks from '../components/ui/ShareLinks';
 import { useSeo } from '../seo/useSeo';
 import PhotoGallery from '../components/ui/PhotoGallery';
+import AdSlot from '../ads/AdSlot';
 
 const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
 
@@ -159,6 +160,9 @@ const PostDetail = () => {
               {post.description}
             </div>
           </article>
+
+          <AdSlot variant="post" className="hidden md:flex" />
+          <AdSlot variant="mobile" className="md:hidden" />
 
           {(() => {
             let displayImages;

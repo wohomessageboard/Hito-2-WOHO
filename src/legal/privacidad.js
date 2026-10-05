@@ -1,7 +1,8 @@
 // Política de Privacidad de Driftler — BORRADOR. Mismo formato que terminos.js.
 // Debe mantenerse al día con lo que la aplicación realmente hace con los datos.
 // Con VITE_GA4_ID definido, la política describe la analítica opcional (GA4) y las cookies.
-const GA = Boolean(import.meta.env.VITE_GA4_ID);
+const ADS = Boolean(import.meta.env.VITE_ADSENSE_CLIENT);
+const GA = Boolean(import.meta.env.VITE_GA4_ID) && !ADS;
 
 export const PRIVACIDAD = {
   title: 'Política de Privacidad',
@@ -117,9 +118,11 @@ export const PRIVACIDAD = {
       blocks: [
         {
           list: [
-            GA
-              ? '**Analítica opcional.** Solo si lo aceptas, usamos Google Analytics 4 (Google) para medir qué páginas se visitan y cómo se usa el sitio. Google recibe datos técnicos de tu visita (páginas vistas, dispositivo, navegador y ubicación aproximada) y coloca cookies analíticas. Puedes aceptar, rechazar o cambiar tu decisión cuando quieras en «Preferencias de analítica», al pie de la página. **No usamos** píxeles de publicidad ni herramientas que graben tu sesión o lo que escribes.'
-              : '**No usamos** analítica de terceros, píxeles de seguimiento, publicidad ni herramientas que graben tu sesión o lo que escribes.',
+            ...(ADS
+              ? ['**Publicidad.** Mostramos anuncios de Google AdSense. Google y sus socios pueden usar cookies e identificadores de tu dispositivo para mostrar y medir anuncios y, según tu consentimiento y tu ubicación, para personalizarlos. Reciben datos técnicos de tu visita (dirección IP, navegador y páginas vistas). Puedes aceptar, rechazar o cambiar tu decisión en «Preferencias de publicidad», al pie de la página. Para desactivar los anuncios personalizados visita adssettings.google.com o aboutads.info. Más información en policies.google.com/technologies/partner-sites. **No enviamos a Google tu correo, tu teléfono ni los datos de tu cuenta**, y no usamos herramientas que graben tu sesión o lo que escribes.']
+              : [GA
+                ? '**Analítica opcional.** Solo si lo aceptas, usamos Google Analytics 4 (Google) para medir qué páginas se visitan y cómo se usa el sitio. Google recibe datos técnicos de tu visita (páginas vistas, dispositivo, navegador y ubicación aproximada) y coloca cookies analíticas. Puedes aceptar, rechazar o cambiar tu decisión cuando quieras en «Preferencias de analítica», al pie de la página. **No usamos** píxeles de publicidad ni herramientas que graben tu sesión o lo que escribes.'
+                : '**No usamos** analítica de terceros, píxeles de seguimiento, publicidad ni herramientas que graben tu sesión o lo que escribes.']),
             'Las tipografías del sitio se sirven desde nuestros propios servidores, no desde Google.',
             'Las fotos de los avisos y el logo se cargan desde **Cloudinary**; por eso ese proveedor recibe tu dirección IP y datos técnicos de tu navegador cuando se muestran esas imágenes.',
             'Solo enviamos correos del servicio (por ejemplo, el enlace para recuperar tu contraseña). **No enviamos boletines ni publicidad.** Si algún día lo hiciéramos, te pediremos permiso antes, y cada correo traerá un enlace para darte de baja y nuestra dirección postal.',
@@ -131,7 +134,9 @@ export const PRIVACIDAD = {
       id: 'cookies',
       title: 'Cookies y almacenamiento',
       blocks: [
-        (GA
+        (ADS
+          ? 'Los anuncios de Google AdSense pueden colocar cookies de publicidad y medición en tu navegador; te pedimos tu consentimiento donde la ley lo exige. '
+          : GA
           ? 'Driftler no usa cookies de publicidad. Si aceptas la analítica, Google Analytics coloca cookies analíticas en tu navegador; si la rechazas, no se coloca ninguna. '
           : 'Driftler no usa cookies de publicidad ni de seguimiento. ') +
           'Guardamos en tu navegador (almacenamiento local) lo necesario para mantener tu sesión y recordar pequeñas preferencias, como la posición en el listado o que ya viste una guía. Puedes borrarlo desde tu navegador; si lo haces tendrás que volver a iniciar sesión.',
@@ -142,7 +147,7 @@ export const PRIVACIDAD = {
       title: 'Si estás en la Unión Europea, el Reino Unido o California',
       blocks: [
         'Si estás en la UE, el EEE o el Reino Unido, tienes los derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad que reconoce la normativa de protección de datos (RGPD), y puedes presentar una reclamación ante tu autoridad de control. Para ejercerlos, usa los medios de la sección «Tus derechos». [[COMPLETAR: REPRESENTANTE EN LA UE, SI CORRESPONDE, Y DATOS DE CONTACTO PARA ESTOS DERECHOS.]]',
-        'Si estás en California u otro estado de EE. UU. con una ley de privacidad, puedes pedir saber qué datos tuyos tenemos, corregirlos o borrarlos. **No vendemos ni compartimos tus datos personales con fines publicitarios.** Para pedirlo, escríbenos desde Contacto.',
+        'Si estás en California u otro estado de EE. UU. con una ley de privacidad, puedes pedir saber qué datos tuyos tenemos, corregirlos o borrarlos. ' + (ADS ? 'Los anuncios de terceros pueden considerarse «compartir» datos con fines publicitarios según algunas leyes de EE. UU.; en Preferencias de publicidad puedes limitarlo. [[REVISAR CON UN ABOGADO: California y otros estados.]] ' : '**No vendemos ni compartimos tus datos personales con fines publicitarios.** ') + 'Para pedirlo, escríbenos desde Contacto.',
       ],
     },
     {
