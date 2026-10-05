@@ -7,7 +7,7 @@ const UIKit = () => {
       <div className="max-w-6xl mx-auto space-y-12">
         
         <div>
-          <h1 className="text-5xl font-titulo font-black mb-4">WOHO UI Kit</h1>
+          <h1 className="text-5xl font-titulo font-black mb-4">Driftler UI Kit</h1>
           <p className="text-xl text-gray-600 font-cuerpo">
             Kit de elementos reutilizables para construir las interfaces. Mezcla utilidades de Tailwind con HeroUI.
           </p>

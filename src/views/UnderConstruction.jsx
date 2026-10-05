@@ -11,7 +11,7 @@ const UnderConstruction = ({ title = "Página", message = "Estamos trabajando en
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center gap-5">
-      <Stamp variant="oval" center="EN OBRAS" bottom="WOHO" rotate={-6} className="w-48 text-ws-tomato-deep" />
+      <Stamp variant="oval" center="EN OBRAS" bottom="DRIFTLER" rotate={-6} className="w-48 text-ws-tomato-deep" />
 
       <h1 className="font-display text-5xl md:text-7xl text-ws-ink">
         {title} <em className="text-ws-accent">en reparación</em>

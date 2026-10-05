@@ -93,7 +93,7 @@ const DeleteAccount = () => {
     <section aria-labelledby="eliminar-cuenta" className="mt-10 pt-8 border-t border-ws-line space-y-3">
       <h2 id="eliminar-cuenta" className="font-display text-4xl">Eliminar mi cuenta</h2>
       <p className="font-cuerpo text-ws-ink/85 leading-relaxed max-w-xl">
-        Si ya no quieres estar en WOHO, puedes pedir que borremos tu cuenta, tus avisos, tus fotos y tus favoritos. Lo hacemos en un plazo de hasta {DAYS} días y puedes cancelar antes de que ocurra.
+        Si ya no quieres estar en Driftler, puedes pedir que borremos tu cuenta, tus avisos, tus fotos y tus favoritos. Lo hacemos en un plazo de hasta {DAYS} días y puedes cancelar antes de que ocurra.
         Más detalles en nuestra <Link to="/contacto" className="underline underline-offset-4">página de contacto</Link>.
       </p>
       <Button radius="sm" onPress={modal.onOpen} className="ws-btn bg-ws-tomato text-ws-ink h-11 px-5">

@@ -50,7 +50,7 @@ const Round = ({ top, bottom, center, id }) => (
           x="100"
           y={center.length === 1 ? 108 : 94 + i * 24}
           style={i === 0 ? { ...sans, fontWeight: 800 } : mono}
-          fontSize={i === 0 ? 26 : 13}
+          fontSize={i === 0 ? Math.max(14, Math.min(26, Math.floor(88 / (line.length * 0.66)))) : 13}
           letterSpacing={i === 0 ? 0 : 2}
         >
           {line}
@@ -97,9 +97,9 @@ const Stamp = ({
 }) => {
   const id = useId().replace(/:/g, '');
   const body =
-    variant === 'rect' ? <Rect top={top} center={center || 'WOHO'} bottom={bottom || ''} /> :
+    variant === 'rect' ? <Rect top={top} center={center || 'Driftler'} bottom={bottom || ''} /> :
     variant === 'oval' ? <Oval center={center || 'APROBADO'} bottom={bottom} /> :
-    <Round id={id} top={top} bottom={bottom || 'WOHO · 2026'} center={Array.isArray(center) ? center : [center || 'WOHO']} />;
+    <Round id={id} top={top} bottom={bottom || 'Driftler · 2026'} center={Array.isArray(center) ? center : [center || 'Driftler']} />;
   return (
     <span
       aria-hidden="true"

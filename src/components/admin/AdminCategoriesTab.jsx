@@ -84,7 +84,7 @@ const AdminCategoriesTab = () => {
       </div>
 
       <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-        <Table aria-label="Tabla de Categorías WOHO" removeWrapper>
+        <Table aria-label="Tabla de Categorías Driftler" removeWrapper>
           <TableHeader>
             <TableColumn className="bg-black text-white font-titulo font-bold uppercase py-4">ID de BD</TableColumn>
             <TableColumn className="bg-black text-white font-titulo font-bold uppercase py-4">Nombre de Categoría</TableColumn>

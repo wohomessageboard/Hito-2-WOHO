@@ -1,4 +1,4 @@
-import { jsonLdFor, LOGO_URL } from './site.js';
+import { jsonLdFor, LOGO_PATH } from './site.js';
 
 // Dirección pública del sitio (para canónicas y datos estructurados).
 export const siteUrl = () => (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/+$/, '');
@@ -23,7 +23,7 @@ export function applySeo(meta) {
   setMeta('property', 'og:title', meta.title);
   setMeta('property', 'og:description', meta.description);
   setMeta('property', 'og:url', url);
-  setMeta('property', 'og:image', meta.image || LOGO_URL);
+  setMeta('property', 'og:image', meta.image || `${site}${LOGO_PATH}`);
   upsert('link[rel="canonical"]', () => { const l = document.createElement('link'); l.rel = 'canonical'; return l; }).href = url;
 
   const robots = document.head.querySelector('meta[name="robots"]');

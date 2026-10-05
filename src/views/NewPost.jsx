@@ -146,7 +146,7 @@ const NewPost = () => {
             Crear publicación
           </h1>
           <p className="font-cuerpo text-ws-ink/75 mt-2">
-            Llena los datos a continuación para que la comunidad WOHO pueda encontrarte.
+            Llena los datos a continuación para que la comunidad Driftler pueda encontrarte.
           </p>
         </CardHeader>
 

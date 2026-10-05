@@ -28,7 +28,7 @@ const MainLayout = () => {
 
       {/* Cintillo de edición: dato editorial, no navegación. */}
       <div className="bg-ws-ink text-ws-paper-light ws-mono py-1.5 px-4 text-center tracking-[0.14em]" aria-hidden="true">
-        WOHO · <span className="hidden sm:inline">Tablón de avisos </span>Working Holiday · Edición {year}
+        Driftler · <span className="hidden sm:inline">Tablón de avisos </span>Working Holiday · Edición {year}
       </div>
 
       <TopNav />
@@ -46,7 +46,7 @@ const MainLayout = () => {
               Viajar no es escapar, <em className="text-ws-mustard">es encontrarse.</em>
             </p>
             <p className="font-cuerpo text-sm text-ws-paper-light/80">
-              © {year} WOHO. Hecho para viajeros, con ayuda de otros viajeros.
+              © {year} Driftler. Hecho para viajeros, con ayuda de otros viajeros.
             </p>
           </div>
           <nav aria-label="Enlaces del pie" className="flex flex-wrap gap-x-6 gap-y-0 font-cuerpo text-sm font-bold">
@@ -62,7 +62,7 @@ const MainLayout = () => {
           <Stamp
             solid
             variant="round"
-            center={['WOHO']}
+            center={['DRIFTLER']}
             top="WORKING HOLIDAY"
             bottom={`EST. ${year}`}
             rotate={-10}

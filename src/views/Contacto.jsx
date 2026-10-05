@@ -39,7 +39,7 @@ const Contacto = () => {
         <p className="font-cuerpo text-ws-ink/80 max-w-md leading-relaxed">
           ¿Viste un aviso sospechoso? Abre el aviso y usa <strong>Reportar</strong>: así llega directo al equipo, con el aviso asociado.
         </p>
-        <Stamp variant="oval" center="ESCRÍBENOS" bottom="WOHO" rotate={-6} className="hidden md:block w-44 text-ws-plum" />
+        <Stamp variant="oval" center="ESCRÍBENOS" bottom="DRIFTLER" rotate={-6} className="hidden md:block w-44 text-ws-plum" />
       </header>
 
       <section className="md:col-span-7" aria-labelledby="form-contacto">

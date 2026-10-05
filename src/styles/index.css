@@ -37,7 +37,7 @@
 }
 
 /*
- * WOHO design tokens — editorial de viaje vintage.
+ * Driftler design tokens — editorial de viaje vintage.
  * Paleta y fuentes en tailwind.config.js (--ws-*). Estas reglas van DESPUÉS de
  * las utilidades a propósito: HeroUI mete sus propias utilidades (rounded-large,
  * shadow-medium, bg-default...) y los tokens deben ganarles. Cambiar el look de

@@ -170,7 +170,7 @@ const Home = () => {
               Únete a la aventura
             </Button>
           </div>
-          <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={14} className="hidden lg:block absolute -right-2 -bottom-24 w-36 text-ws-plum" />
+          <Stamp variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="BIENVENIDO" rotate={14} className="hidden lg:block absolute -right-2 -bottom-24 w-36 text-ws-plum" />
         </div>
       </section>
 

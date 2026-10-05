@@ -11,7 +11,7 @@ const PRINCIPLES = [
     title: <>El coraje de <em>migrar</em></>,
     band: 'ws-band-tomato',
     photo: { file: 'manifiesto-coraje', alt: 'Paisaje de ruta: el primer paso de quien decide migrar', hint: 'Foto del primer paso: una ruta, una maleta, una frontera' },
-    body: 'Dejar atrás lo conocido requiere una valentía inmensa. Cuando empacas tu vida en una mochila, no solo te llevas ropa, te llevas sueños, incertidumbres y la esperanza de construir algo mejor. En WOHO entendemos que ser inmigrante, viajero o nómada es de las experiencias más desafiantes y hermosas que un ser humano puede vivir. Lo celebramos y lo apoyamos.',
+    body: 'Dejar atrás lo conocido requiere una valentía inmensa. Cuando empacas tu vida en una mochila, no solo te llevas ropa, te llevas sueños, incertidumbres y la esperanza de construir algo mejor. En Driftler entendemos que ser inmigrante, viajero o nómada es de las experiencias más desafiantes y hermosas que un ser humano puede vivir. Lo celebramos y lo apoyamos.',
   },
   {
     id: 'solos',
@@ -25,7 +25,7 @@ const PRINCIPLES = [
     title: <>Solidaridad en <em>acción</em></>,
     band: 'ws-band-citron',
     photo: { file: 'manifiesto-solidaridad', alt: 'Un lugar que acoge a quien llega', hint: 'Foto de un gesto de ayuda o un lugar que te acogió' },
-    body: 'WOHO no es solo una plataforma para buscar un cuarto o un trabajo temporal. Es un ecosistema creado para que aquellos que ya recorrieron el camino puedan iluminarle el sendero a los que recién llegan. Un sofá disponible, un consejo sobre un trámite, o el dato de un trabajo pueden ser la diferencia entre rendirse y triunfar.',
+    body: 'Driftler no es solo una plataforma para buscar un cuarto o un trabajo temporal. Es un ecosistema creado para que aquellos que ya recorrieron el camino puedan iluminarle el sendero a los que recién llegan. Un sofá disponible, un consejo sobre un trámite, o el dato de un trabajo pueden ser la diferencia entre rendirse y triunfar.',
   },
 ];
 
@@ -40,7 +40,7 @@ const Manifiesto = () => {
         <p className="md:col-span-5 font-display italic text-3xl md:text-4xl leading-tight text-ws-ink/90">
           Viajar no es escapar, es encontrarse. Creemos en el poder transformador de migrar y en la fuerza invencible de la comunidad.
         </p>
-        <Stamp variant="round" center={['WOHO']} top="WORKING HOLIDAY" bottom="MANIFIESTO" rotate={-12} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
+        <Stamp variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="MANIFIESTO" rotate={-12} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
       </header>
 
       <div className="relative">
@@ -61,7 +61,7 @@ const Manifiesto = () => {
                 <PhotoSlot file={photo.file} alt={photo.alt} ratio="4 / 3" hint={photo.hint} />
                 <Stamp
                   variant="round"
-                  center={['WOHO']}
+                  center={['DRIFTLER']}
                   top="WORKING HOLIDAY"
                   bottom="MANIFIESTO"
                   rotate={flip ? 10 : -10}

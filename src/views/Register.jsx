@@ -67,7 +67,7 @@ const Register = () => {
         
         <CardHeader className="flex flex-col items-center pt-8 pb-0">
           <h1 className="font-display text-4xl md:text-5xl text-ws-ink">
-            Únete a WOHO
+            Únete a Driftler
           </h1>
           <p className="text-ws-ink/75 font-cuerpo mt-2 text-center px-4">
             Crea tu cuenta gratis y empieza a conectar con otros viajeros.

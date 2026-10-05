@@ -4,6 +4,7 @@ import { useLocation, Link as RouterLink } from 'react-router-dom';
 
 import { useUser } from '../../context/UserContext';
 import { Menu as MenuIcon, Close as CloseIcon } from './icons';
+import BrandLogo from './BrandLogo';
 
 // Enlaces principales. El feed es público: "Explorar" se ve con o sin sesión.
 const NAV_LINKS = [
@@ -46,11 +47,8 @@ const TopNav = () => {
 
       <NavbarBrand className="mr-4">
         <RouterLink to="/" className="flex items-center gap-2 min-h-11">
-          <img
-            src="https://res.cloudinary.com/dpxpixlpl/image/upload/v1772886330/WOHO_logo_uxi9wo.png"
-            alt="WOHO, tablón de avisos Working Holiday"
-            className="h-9 w-auto object-contain"
-          />
+          <BrandLogo />
+          <span className="sr-only">Driftler, tablón de avisos Working Holiday: inicio</span>
         </RouterLink>
       </NavbarBrand>
 

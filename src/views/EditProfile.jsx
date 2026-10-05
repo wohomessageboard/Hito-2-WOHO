@@ -131,7 +131,7 @@ const EditProfile = () => {
             Ajustes de Perfil
           </h1>
           <p className="font-cuerpo text-ws-ink/75 text-center">
-            Personaliza cómo te ven los demás viajeros en WOHO.
+            Personaliza cómo te ven los demás viajeros en Driftler.
           </p>
         </CardHeader>
         
