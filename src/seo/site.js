@@ -2,6 +2,7 @@
 // Lo usan la web (src/seo/RouteSeo.jsx) y el generador del build (scripts/*.mjs), por eso
 // es JavaScript puro, sin JSX ni imports del navegador.
 import { FAQ } from './faq.js';
+import { GUIAS, ORIGENES, guiaPor, origenPorSlug } from '../data/guias.js';
 
 export const SITE_NAME = 'Driftler';
 // Imagen por defecto al compartir y logo en los datos estructurados (ruta dentro del sitio).
@@ -38,6 +39,13 @@ export const PAGES = [
     description: 'Explora avisos que caducan a los 30 días, crea tu cuenta gratis, sigue destinos y contacta por WhatsApp. Tu correo nunca se muestra.',
     h1: 'Cómo funciona Driftler',
     summary: 'Cuatro pasos: explora sin cuenta, crea tu cuenta gratis, sigue destinos y guarda avisos, y contacta por WhatsApp o publica el tuyo.',
+  },
+  {
+    path: '/guias', priority: '0.8',
+    title: 'Driftler | Guías de visa Working Holiday según tu pasaporte',
+    description: 'La visa Working Holiday cambia según tu pasaporte. Guías para chilenos, argentinos, españoles, peruanos, mexicanos y colombianos: requisitos, costos, cupos y trabajo permitido, con fuentes oficiales.',
+    h1: 'Guías de visa',
+    summary: 'Guías de la visa Working Holiday según tu pasaporte (chileno, argentino, español, peruano, mexicano o colombiano): países con acuerdo, edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
   },
   {
     path: '/manifiesto', priority: '0.6',
@@ -89,6 +97,31 @@ export const countrySeo = (name) => ({
   summary: `Anuncios de la comunidad Driftler en ${name}: trabajo, alojamiento y planes. Filtra por ciudad y categoría.`,
 });
 
+// SEO de las guías de visa: /guias/<pasaporte> y /guias/<pasaporte>/<destino>.
+export const origenSeo = (o) => ({
+  path: `/guias/${o.slug}`,
+  title: `Driftler | Working Holiday para ${o.gentilicio}: ${o.listaCompleta ? 'países con acuerdo' : 'guías por destino'}`,
+  description: o.listaCompleta
+    ? `Los ${o.acuerdos.length} países con acuerdo Working Holiday para personas con pasaporte ${o.pasaporte} y guías de cada destino con requisitos, costos y cupos.`
+    : `Guías de Working Holiday para personas con pasaporte ${o.pasaporte}: ${o.acuerdos.map((a) => a.name).join(', ')}, con requisitos, costos y cupos de fuentes oficiales.`,
+  h1: `Working Holiday para ${o.gentilicio}`,
+  summary: `${o.listaCompleta ? 'Países con acuerdo Working Holiday con' : 'Destinos confirmados para'} ${o.nombre}: ${o.acuerdos.map((a) => a.name).join(', ')}. Cada guía explica edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial.`,
+  origen: o.slug,
+  noindex: false,
+});
+
+export const guiaSeo = (g) => ({
+  path: `/guias/${g.origen}/${g.slug}`,
+  title: `Driftler | ${g.titulo}`,
+  description: g.resumen.length > 158 ? `${g.resumen.slice(0, 155).trim()}…` : g.resumen,
+  h1: g.titulo,
+  summary: `${g.resumen} Revisada el ${g.revisado}.`,
+  guia: `${g.origen}/${g.slug}`,
+  noindex: false,
+});
+
+export const GUIDE_PAGES = () => [...ORIGENES.map(origenSeo), ...GUIAS.map(guiaSeo)];
+
 const norm = (p) => (p.length > 1 ? p.replace(/\/+$/, '') : p);
 
 // Metadatos para una ruta del navegador. Devuelve null en /post/* (lo define cada aviso).
@@ -101,6 +134,10 @@ export const seoForPath = (pathname) => {
     const name = decodeURIComponent(country[1]);
     return { path, ...countrySeo(name), noindex: false, country: name };
   }
+  const origen = path.match(/^\/guias\/([^/]+)$/);
+  if (origen && origenPorSlug(origen[1])) return origenSeo(origenPorSlug(origen[1]));
+  const guia = path.match(/^\/guias\/([^/]+)\/([^/]+)$/);
+  if (guia && guiaPor(guia[1], guia[2])) return guiaSeo(guiaPor(guia[1], guia[2]));
   if (path.startsWith('/post/')) return null;
   const priv = PRIVATE_PAGES.find((p) => p.path === path) || PRIVATE_PREFIXES.find((p) => path.startsWith(p.prefix));
   if (priv) return { path, title: priv.title, description: 'Zona privada de Driftler.', noindex: true };
@@ -121,6 +158,45 @@ export const jsonLdFor = (meta, site) => {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+    });
+  }
+  if (meta.guia) {
+    const [origenSlug, guiaSlug] = meta.guia.split('/');
+    const g = guiaPor(origenSlug, guiaSlug);
+    const o = origenPorSlug(origenSlug);
+    out.push(
+      {
+        '@context': 'https://schema.org', '@type': 'Article', headline: g.titulo, description: g.resumen, inLanguage: 'es',
+        datePublished: g.revisado, dateModified: g.revisado,
+        author: { '@type': 'Organization', name: SITE_NAME, url: site },
+        publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: `${site}${LOGO_PATH}` } },
+        mainEntityOfPage: `${site}${meta.path}`,
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: g.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+          { '@type': 'ListItem', position: 2, name: 'Guías de visa', item: `${site}/guias` },
+          { '@type': 'ListItem', position: 3, name: `Pasaporte ${o.pasaporte}`, item: `${site}/guias/${o.slug}` },
+          { '@type': 'ListItem', position: 4, name: g.pais, item: `${site}${meta.path}` },
+        ],
+      },
+    );
+  }
+  if (meta.origen) {
+    const o = origenPorSlug(meta.origen);
+    out.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+        { '@type': 'ListItem', position: 2, name: 'Guías de visa', item: `${site}/guias` },
+        { '@type': 'ListItem', position: 3, name: `Pasaporte ${o.pasaporte}`, item: `${site}${meta.path}` },
+      ],
     });
   }
   if (meta.country) {

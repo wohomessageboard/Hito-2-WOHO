@@ -4,14 +4,14 @@
 // buscadores, tarjetas al compartir y modelos de lenguaje. Vercel sirve estos archivos
 // antes de aplicar la regla que manda todo a index.html.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { PAGES, countrySeo, jsonLdFor, LOGO_PATH } from '../src/seo/site.js';
+import { PAGES, GUIDE_PAGES, countrySeo, jsonLdFor, LOGO_PATH } from '../src/seo/site.js';
 import { siteUrl, getCountries } from './seo-lib.mjs';
 
 const site = siteUrl();
 const base = readFileSync('dist/index.html', 'utf8');
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const nav = [['/feed', 'Explorar anuncios'], ['/destinos', 'Destinos'], ['/como-funciona', 'Cómo funciona'], ['/manifiesto', 'Manifiesto']];
+const nav = [['/feed', 'Explorar anuncios'], ['/destinos', 'Destinos'], ['/guias', 'Guías de visa'], ['/como-funciona', 'Cómo funciona'], ['/manifiesto', 'Manifiesto']];
 
 function render(meta) {
   const url = `${site}${meta.path === '/' ? '' : meta.path}`;
@@ -44,6 +44,7 @@ const write = (path, html) => {
 };
 
 for (const page of PAGES) write(page.path, render(page));
+for (const guia of GUIDE_PAGES()) write(guia.path, render(guia));
 const countries = await getCountries();
 for (const name of countries) write(`/destinos/${name}`, render({ path: `/destinos/${encodeURIComponent(name)}`, ...countrySeo(name), country: name }));
-console.log(`[seo] HTML previo para ${PAGES.length + countries.length} rutas (${site}); logo ${LOGO_PATH}`);
+console.log(`[seo] HTML previo para ${PAGES.length + GUIDE_PAGES().length + countries.length} rutas (${site}); logo ${LOGO_PATH}`);

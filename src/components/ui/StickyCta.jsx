@@ -6,7 +6,7 @@ import { useUser } from '../../context/UserContext';
 // Llamada a la acción fija al pie en móvil, solo en páginas de descubrimiento. Quien no
 // tiene cuenta ve "Crear cuenta gratis"; quien ya entró ve "Publicar un aviso". En el
 // detalle de un aviso la acción principal es WhatsApp y la pone PostDetail.
-const SHOW_ON = [/^\/$/, /^\/feed$/, /^\/destinos(\/[^/]+)?$/, /^\/como-funciona$/, /^\/manifiesto$/];
+const SHOW_ON = [/^\/$/, /^\/feed$/, /^\/destinos(\/[^/]+)?$/, /^\/como-funciona$/, /^\/guias(\/[^/]+)?$/, /^\/manifiesto$/];
 
 const StickyCta = () => {
   const { pathname } = useLocation();
