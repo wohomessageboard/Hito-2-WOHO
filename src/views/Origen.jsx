@@ -4,7 +4,7 @@ import { Button } from '@heroui/react';
 import Stamp from '../components/ui/Stamp';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import { ArrowRight } from '../components/ui/icons';
-import { origenPorSlug, guiasDe, guiaPor } from '../data/guias';
+import { origenPorSlug, guiasDe, guiaPor, etiquetaDe } from '../data/guias';
 
 const INKS = ['text-ws-tomato-deep', 'text-ws-ocean', 'text-ws-plum', 'text-ws-olive'];
 const dato = (g, etiqueta) => g.datos.find(([k]) => k === etiqueta)?.[1];
@@ -49,7 +49,7 @@ const Origen = () => {
               <Link key={g.slug} to={`/guias/${o.slug}/${g.slug}`} className="ws-surface ws-surface-hover group flex flex-col gap-3 p-5 md:p-6 min-h-[14rem]">
                 <span className="flex items-start justify-between gap-2">
                   <span className="text-4xl leading-none" aria-hidden="true">{g.flag}</span>
-                  <span className={`ws-mono text-right ${INKS[i % INKS.length]}`}>{g.visa.split(',')[0].split('(')[0].trim()}</span>
+                  <span title={g.visa} className={`ws-mono text-right ${INKS[i % INKS.length]}`}>{etiquetaDe(g)}</span>
                 </span>
                 <h3 className="font-display text-3xl md:text-4xl">{g.pais}</h3>
                 <ul className="list-none p-0 m-0 font-cuerpo text-ws-ink/85 space-y-1">

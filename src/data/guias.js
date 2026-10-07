@@ -563,5 +563,10 @@ export const GUIAS = [
 
 GUIAS.push(...GUIAS_MAS);
 
+// Etiqueta corta de cada tarjeta: el tipo de permiso por destino. No lleva estados ni fechas
+// (cambian cada año y no se mantienen aquí); el nombre oficial completo está en `visa`.
+const ETIQUETAS = { australia: 'VISA 462', 'nueva-zelanda': 'WORKING HOLIDAY', canada: 'IEC', irlanda: 'AUTORIZACIÓN WH', dinamarca: 'PERMISO WH', francia: 'VVT' };
+export const etiquetaDe = (g) => ETIQUETAS[g.slug] || 'WORKING HOLIDAY';
+
 export const guiaPor = (origen, slug) => GUIAS.find((g) => g.origen === origen && g.slug === slug);
 export const guiasDe = (origen) => GUIAS.filter((g) => g.origen === origen);
