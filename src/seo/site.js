@@ -2,6 +2,7 @@
 // Lo usan la web (src/seo/RouteSeo.jsx) y el generador del build (scripts/*.mjs), por eso
 // es JavaScript puro, sin JSX ni imports del navegador.
 import { FAQ } from './faq.js';
+import { GUIAS, guiaPorSlug } from '../data/guias.js';
 
 export const SITE_NAME = 'Driftler';
 // Imagen por defecto al compartir y logo en los datos estructurados (ruta dentro del sitio).
@@ -10,6 +11,8 @@ export const SITE_SUMMARY = 'Tablón de avisos gratuito para viajeros con visa W
 
 // Páginas públicas e indexables. `h1` es el encabezado visible: debe diferir del `title`.
 // `summary` es el texto que ven los lectores sin JavaScript (buscadores simples y modelos de lenguaje).
+export const GUIDE_PAGES = () => GUIAS.map((g) => guiaSeo(g));
+
 export const PAGES = [
   {
     path: '/', priority: '1.0',
@@ -38,6 +41,13 @@ export const PAGES = [
     description: 'Explora avisos que caducan a los 30 días, crea tu cuenta gratis, sigue destinos y contacta por WhatsApp. Tu correo nunca se muestra.',
     h1: 'Cómo funciona Driftler',
     summary: 'Cuatro pasos: explora sin cuenta, crea tu cuenta gratis, sigue destinos y guarda avisos, y contacta por WhatsApp o publica el tuyo.',
+  },
+  {
+    path: '/guias', priority: '0.8',
+    title: 'Driftler | Guías de visa Working Holiday por país',
+    description: 'Requisitos, costos y pasos de la visa Working Holiday en Australia, Nueva Zelanda, Canadá, Irlanda y Dinamarca, con fuentes oficiales. Para chilenos.',
+    h1: 'Guías de visa',
+    summary: 'Guías por país de la visa Working Holiday para personas con pasaporte chileno: edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
   },
   {
     path: '/manifiesto', priority: '0.6',
@@ -89,6 +99,17 @@ export const countrySeo = (name) => ({
   summary: `Anuncios de la comunidad Driftler en ${name}: trabajo, alojamiento y planes. Filtra por ciudad y categoría.`,
 });
 
+// SEO de cada guía de visa (/guias/<slug>).
+export const guiaSeo = (g) => ({
+  path: `/guias/${g.slug}`,
+  title: `Driftler | ${g.titulo}`,
+  description: g.resumen.length > 158 ? `${g.resumen.slice(0, 155).trim()}…` : g.resumen,
+  h1: g.titulo,
+  summary: `${g.resumen} Revisada el ${g.revisado}.`,
+  guia: g.slug,
+  noindex: false,
+});
+
 const norm = (p) => (p.length > 1 ? p.replace(/\/+$/, '') : p);
 
 // Metadatos para una ruta del navegador. Devuelve null en /post/* (lo define cada aviso).
@@ -101,6 +122,8 @@ export const seoForPath = (pathname) => {
     const name = decodeURIComponent(country[1]);
     return { path, ...countrySeo(name), noindex: false, country: name };
   }
+  const guia = path.match(/^\/guias\/([^/]+)$/);
+  if (guia && guiaPorSlug(guia[1])) return guiaSeo(guiaPorSlug(guia[1]));
   if (path.startsWith('/post/')) return null;
   const priv = PRIVATE_PAGES.find((p) => p.path === path) || PRIVATE_PREFIXES.find((p) => path.startsWith(p.prefix));
   if (priv) return { path, title: priv.title, description: 'Zona privada de Driftler.', noindex: true };
@@ -122,6 +145,30 @@ export const jsonLdFor = (meta, site) => {
       '@type': 'FAQPage',
       mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
     });
+  }
+  if (meta.guia) {
+    const g = guiaPorSlug(meta.guia);
+    out.push(
+      {
+        '@context': 'https://schema.org', '@type': 'Article', headline: g.titulo, description: g.resumen, inLanguage: 'es',
+        datePublished: g.revisado, dateModified: g.revisado,
+        author: { '@type': 'Organization', name: SITE_NAME, url: site },
+        publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: `${site}${LOGO_PATH}` } },
+        mainEntityOfPage: `${site}${meta.path}`,
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: g.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+          { '@type': 'ListItem', position: 2, name: 'Guías de visa', item: `${site}/guias` },
+          { '@type': 'ListItem', position: 3, name: g.pais, item: `${site}${meta.path}` },
+        ],
+      },
+    );
   }
   if (meta.country) {
     out.push({

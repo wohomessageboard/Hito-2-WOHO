@@ -1,7 +1,7 @@
 // Genera public/sitemap.xml, public/robots.txt y public/llms.txt antes de cada build.
 // Las páginas salen de src/seo/site.js; los países, de la API.
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { PAGES, countrySeo, SITE_NAME, SITE_SUMMARY } from '../src/seo/site.js';
+import { PAGES, GUIDE_PAGES, countrySeo, SITE_NAME, SITE_SUMMARY } from '../src/seo/site.js';
 import { siteUrl, getCountries } from './seo-lib.mjs';
 
 const site = siteUrl();
@@ -10,6 +10,7 @@ const today = new Date().toISOString().slice(0, 10);
 
 const entries = [
   ...PAGES.map((p) => ({ path: p.path, priority: p.priority })),
+  ...GUIDE_PAGES().map((g) => ({ path: g.path, priority: '0.8' })),
   ...countries.map((name) => ({ path: `/destinos/${encodeURIComponent(name)}`, priority: '0.7' })),
 ];
 
@@ -37,7 +38,7 @@ Disallow: /page/
 Sitemap: ${site}/sitemap.xml
 `;
 
-const LABEL = { '/': 'Inicio', '/feed': 'Explorar anuncios', '/destinos': 'Destinos', '/como-funciona': 'Cómo funciona', '/manifiesto': 'Manifiesto', '/contacto': 'Contacto', '/terminos': 'Términos y condiciones', '/privacidad': 'Política de privacidad' };
+const LABEL = { '/': 'Inicio', '/feed': 'Explorar anuncios', '/destinos': 'Destinos', '/como-funciona': 'Cómo funciona', '/manifiesto': 'Manifiesto', '/guias': 'Guías de visa', '/contacto': 'Contacto', '/terminos': 'Términos y condiciones', '/privacidad': 'Política de privacidad' };
 const line = (title, path, desc) => `- [${title}](${site}${path === '/' ? '' : path}): ${desc}`;
 const llms = `# ${SITE_NAME}
 
@@ -47,7 +48,11 @@ Driftler es gratis. Los avisos de la comunidad caducan a los 30 días como máxi
 
 ## Páginas principales
 
-${PAGES.filter((p) => ['/', '/feed', '/destinos', '/como-funciona', '/manifiesto'].includes(p.path)).map((p) => line(LABEL[p.path] || p.h1, p.path, p.description)).join('\n')}
+${PAGES.filter((p) => ['/', '/feed', '/destinos', '/guias', '/como-funciona', '/manifiesto'].includes(p.path)).map((p) => line(LABEL[p.path] || p.h1, p.path, p.description)).join('\n')}
+
+## Guías de visa Working Holiday
+
+${GUIDE_PAGES().map((g) => line(g.h1, g.path, g.description)).join('\n')}
 
 ## Destinos
 

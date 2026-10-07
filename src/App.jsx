@@ -19,6 +19,8 @@ import UnderConstruction from './views/UnderConstruction';
 import UIKit from './views/UIKit';
 import Manifiesto from './views/Manifiesto';
 import ComoFunciona from './views/ComoFunciona';
+import Guias from './views/Guias';
+import Guia from './views/Guia';
 import Contacto from './views/Contacto';
 import ForgotPassword from './views/ForgotPassword';
 import Terminos from './views/Terminos';
@@ -53,6 +55,8 @@ function App() {
               <Route path="/feed" element={<Feed />} />
               <Route path="/destinos" element={<Countries />} />
               <Route path="/destinos/:countryName" element={<CountryFeed />} />
+              <Route path="/guias" element={<Guias />} />
+              <Route path="/guias/:slug" element={<Guia />} />
               <Route path="/manifiesto" element={<Manifiesto />} />
               <Route path="/como-funciona" element={<ComoFunciona />} />
               <Route path="/contacto" element={<Contacto />} />

@@ -10,6 +10,7 @@ import BrandLogo from './BrandLogo';
 const NAV_LINKS = [
   { to: '/feed', label: 'Explorar', match: (p) => p === '/feed' },
   { to: '/destinos', label: 'Destinos', match: (p) => p.startsWith('/destinos') },
+  { to: '/guias', label: 'Guías', match: (p) => p.startsWith('/guias') },
   { to: '/como-funciona', label: 'Cómo funciona', match: (p) => p === '/como-funciona' },
   { to: '/manifiesto', label: 'Manifiesto', match: (p) => p === '/manifiesto' },
 ];

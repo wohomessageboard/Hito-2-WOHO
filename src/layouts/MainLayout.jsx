@@ -50,6 +50,7 @@ const MainLayout = () => {
             </p>
           </div>
           <nav aria-label="Enlaces del pie" className="flex flex-wrap gap-x-6 gap-y-0 font-cuerpo text-sm font-bold">
+            <Link as={RouterLink} to="/guias" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Guías</Link>
             <Link as={RouterLink} to="/como-funciona" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Cómo funciona</Link>
             <Link as={RouterLink} to="/manifiesto" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Manifiesto</Link>
             <Link as={RouterLink} to="/terminos" className="text-ws-paper-light underline underline-offset-4 hover:text-ws-mustard inline-flex items-center min-h-11">Términos</Link>
