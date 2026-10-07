@@ -4,6 +4,7 @@ import { Pencil, Trash2, Star, Lock, Pin } from './icons';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import api from '../../config/api';
+import { tagClassFor } from './categoryTone';
 
 const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   const { isAuthenticated, currentUser, savedPostIds, toggleSavedPostId } = useUser();
@@ -13,8 +14,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
   const isFav = savedPostIds ? savedPostIds.includes(postIdToSave) : false;
 
   // Etiqueta de equipaje por categoría (relleno plano, texto con contraste AA).
-  const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
-  const typeTag = TAG_BY_TYPE[post.type] || 'ws-tag-ink';
+  const typeTag = tagClassFor(post.type);
 
   const handleToggleFavorite = async (e) => {
     e.preventDefault(); 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Chip } from '@heroui/react';
+import { iconOnTag } from './categoryTone';
 
 // Selected-state fill + matching text/icon color. Add a key here if a
 // filter group ever needs a third accent color.
@@ -20,6 +21,10 @@ const SELECTED_STYLES = {
  * @param {'purple'|'orange'} [selectedColor] - fill when selected
  * @param {'md'|'sm'} [size] - 'md' for the Feed bar, 'sm' for the denser
  *   CountryFeed bar
+ * @param {string} [tagClass] - clase ws-tag-* con la que se rellena al estar
+ *   marcado (el color de la categoría en las tarjetas)
+ * @param {boolean} [hideIconOnNarrow] - oculta el icono hasta 430 px para que
+ *   quepan en una sola línea
  */
 const FilterChip = ({
   label,
@@ -28,6 +33,8 @@ const FilterChip = ({
   onClick,
   selectedColor = 'purple',
   size = 'md',
+  tagClass,
+  hideIconOnNarrow = false,
   className = '',
 }) => {
   const isCompact = size === 'sm';
@@ -50,11 +57,11 @@ const FilterChip = ({
       className={[
         'cursor-pointer font-bold transition-colors',
         isCompact ? 'text-xs px-1 h-8 max-md:h-11' : 'font-cuerpo h-9 max-md:h-11',
-        isSelected ? `${selected.fill} ${selected.text}` : 'ws-chip-idle',
+        isSelected ? (tagClass ? `ws-chip-selected ${tagClass}` : `${selected.fill} ${selected.text}`) : 'ws-chip-idle',
         className,
       ].filter(Boolean).join(' ')}
       startContent={Icon ? (
-        <Icon className={`${isCompact ? 'w-4 h-4' : 'w-5 h-5'} ml-1 ${isSelected ? selected.icon : 'text-ws-ink'}`} />
+        <Icon className={`${isCompact ? 'w-4 h-4' : 'w-5 h-5'} ml-1 ${hideIconOnNarrow ? 'max-[430px]:hidden' : ''} ${isSelected ? (tagClass ? iconOnTag(tagClass) : selected.icon) : 'text-ws-ink'}`} />
       ) : undefined}
     >
       <span className={isCompact ? '' : 'px-1 text-sm'}>{label}</span>
