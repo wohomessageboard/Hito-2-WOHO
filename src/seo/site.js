@@ -2,7 +2,7 @@
 // Lo usan la web (src/seo/RouteSeo.jsx) y el generador del build (scripts/*.mjs), por eso
 // es JavaScript puro, sin JSX ni imports del navegador.
 import { FAQ } from './faq.js';
-import { GUIAS, guiaPorSlug } from '../data/guias.js';
+import { GUIAS, ORIGENES, guiaPor, origenPorSlug } from '../data/guias.js';
 
 export const SITE_NAME = 'Driftler';
 // Imagen por defecto al compartir y logo en los datos estructurados (ruta dentro del sitio).
@@ -11,8 +11,6 @@ export const SITE_SUMMARY = 'Tablón de avisos gratuito para viajeros con visa W
 
 // Páginas públicas e indexables. `h1` es el encabezado visible: debe diferir del `title`.
 // `summary` es el texto que ven los lectores sin JavaScript (buscadores simples y modelos de lenguaje).
-export const GUIDE_PAGES = () => GUIAS.map((g) => guiaSeo(g));
-
 export const PAGES = [
   {
     path: '/', priority: '1.0',
@@ -44,10 +42,10 @@ export const PAGES = [
   },
   {
     path: '/guias', priority: '0.8',
-    title: 'Driftler | Guías de visa Working Holiday por país',
-    description: 'Requisitos, costos y pasos de la visa Working Holiday en Australia, Nueva Zelanda, Canadá, Irlanda y Dinamarca, con fuentes oficiales. Para chilenos.',
+    title: 'Driftler | Guías de visa Working Holiday según tu pasaporte',
+    description: 'La visa Working Holiday cambia según tu pasaporte. Guías para chilenos y argentinos: requisitos, costos, cupos y trabajo permitido en cada país, con fuentes oficiales.',
     h1: 'Guías de visa',
-    summary: 'Guías por país de la visa Working Holiday para personas con pasaporte chileno: edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
+    summary: 'Guías de la visa Working Holiday según tu pasaporte (chileno o argentino): países con acuerdo, edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
   },
   {
     path: '/manifiesto', priority: '0.6',
@@ -99,16 +97,28 @@ export const countrySeo = (name) => ({
   summary: `Anuncios de la comunidad Driftler en ${name}: trabajo, alojamiento y planes. Filtra por ciudad y categoría.`,
 });
 
-// SEO de cada guía de visa (/guias/<slug>).
+// SEO de las guías de visa: /guias/<pasaporte> y /guias/<pasaporte>/<destino>.
+export const origenSeo = (o) => ({
+  path: `/guias/${o.slug}`,
+  title: `Driftler | Working Holiday para ${o.gentilicio}: países con acuerdo`,
+  description: `Los ${o.acuerdos.length} países con acuerdo Working Holiday para personas con pasaporte ${o.pasaporte} y guías de cada destino con requisitos, costos y cupos.`,
+  h1: `Working Holiday para ${o.gentilicio}`,
+  summary: `Países con acuerdo Working Holiday con ${o.nombre}: ${o.acuerdos.map((a) => a.name).join(', ')}. Cada guía explica edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial.`,
+  origen: o.slug,
+  noindex: false,
+});
+
 export const guiaSeo = (g) => ({
-  path: `/guias/${g.slug}`,
+  path: `/guias/${g.origen}/${g.slug}`,
   title: `Driftler | ${g.titulo}`,
   description: g.resumen.length > 158 ? `${g.resumen.slice(0, 155).trim()}…` : g.resumen,
   h1: g.titulo,
   summary: `${g.resumen} Revisada el ${g.revisado}.`,
-  guia: g.slug,
+  guia: `${g.origen}/${g.slug}`,
   noindex: false,
 });
+
+export const GUIDE_PAGES = () => [...ORIGENES.map(origenSeo), ...GUIAS.map(guiaSeo)];
 
 const norm = (p) => (p.length > 1 ? p.replace(/\/+$/, '') : p);
 
@@ -122,8 +132,10 @@ export const seoForPath = (pathname) => {
     const name = decodeURIComponent(country[1]);
     return { path, ...countrySeo(name), noindex: false, country: name };
   }
-  const guia = path.match(/^\/guias\/([^/]+)$/);
-  if (guia && guiaPorSlug(guia[1])) return guiaSeo(guiaPorSlug(guia[1]));
+  const origen = path.match(/^\/guias\/([^/]+)$/);
+  if (origen && origenPorSlug(origen[1])) return origenSeo(origenPorSlug(origen[1]));
+  const guia = path.match(/^\/guias\/([^/]+)\/([^/]+)$/);
+  if (guia && guiaPor(guia[1], guia[2])) return guiaSeo(guiaPor(guia[1], guia[2]));
   if (path.startsWith('/post/')) return null;
   const priv = PRIVATE_PAGES.find((p) => p.path === path) || PRIVATE_PREFIXES.find((p) => path.startsWith(p.prefix));
   if (priv) return { path, title: priv.title, description: 'Zona privada de Driftler.', noindex: true };
@@ -147,7 +159,9 @@ export const jsonLdFor = (meta, site) => {
     });
   }
   if (meta.guia) {
-    const g = guiaPorSlug(meta.guia);
+    const [origenSlug, guiaSlug] = meta.guia.split('/');
+    const g = guiaPor(origenSlug, guiaSlug);
+    const o = origenPorSlug(origenSlug);
     out.push(
       {
         '@context': 'https://schema.org', '@type': 'Article', headline: g.titulo, description: g.resumen, inLanguage: 'es',
@@ -165,10 +179,23 @@ export const jsonLdFor = (meta, site) => {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
           { '@type': 'ListItem', position: 2, name: 'Guías de visa', item: `${site}/guias` },
-          { '@type': 'ListItem', position: 3, name: g.pais, item: `${site}${meta.path}` },
+          { '@type': 'ListItem', position: 3, name: `Pasaporte ${o.pasaporte}`, item: `${site}/guias/${o.slug}` },
+          { '@type': 'ListItem', position: 4, name: g.pais, item: `${site}${meta.path}` },
         ],
       },
     );
+  }
+  if (meta.origen) {
+    const o = origenPorSlug(meta.origen);
+    out.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+        { '@type': 'ListItem', position: 2, name: 'Guías de visa', item: `${site}/guias` },
+        { '@type': 'ListItem', position: 3, name: `Pasaporte ${o.pasaporte}`, item: `${site}${meta.path}` },
+      ],
+    });
   }
   if (meta.country) {
     out.push({

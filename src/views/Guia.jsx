@@ -4,30 +4,31 @@ import { Accordion, AccordionItem, Button } from '@heroui/react';
 import Stamp from '../components/ui/Stamp';
 import ShareLinks from '../components/ui/ShareLinks';
 import RelatedLinks from '../components/ui/RelatedLinks';
-import { guiaPorSlug, GUIAS, CONSEJOS_GENERALES } from '../data/guias';
+import { guiaPor, guiasDe, origenPorSlug, CONSEJOS_GENERALES } from '../data/guias';
 
 const fechaLarga = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const Guia = () => {
-  const { slug } = useParams();
-  const g = guiaPorSlug(slug);
+  const { origen, slug } = useParams();
+  const g = guiaPor(origen, slug);
+  const o = origenPorSlug(origen);
 
   if (!g) {
     return (
       <div className="flex flex-col gap-6 py-10">
         <h1 className="font-display text-5xl md:text-7xl">Esa guía <em className="text-ws-accent">no existe</em></h1>
         <p className="font-cuerpo text-lg">Todavía no tenemos esa guía. Mira las que sí están.</p>
-        <div><Button as={Link} to="/guias" radius="sm" className="ws-btn ws-btn-ink h-12 px-6">Ver todas las guías</Button></div>
+        <div><Button as={Link} to={o ? `/guias/${o.slug}` : '/guias'} radius="sm" className="ws-btn ws-btn-ink h-12 px-6">Ver todas las guías</Button></div>
       </div>
     );
   }
 
-  const otras = GUIAS.filter((x) => x.slug !== g.slug).slice(0, 2);
+  const otras = guiasDe(g.origen).filter((x) => x.slug !== g.slug).slice(0, 2);
 
   return (
     <article className="flex flex-col gap-12 md:gap-16 w-full">
       <header className="relative flex flex-col gap-5">
-        <p className="ws-mono flex items-center gap-2"><span aria-hidden="true" className="text-2xl">{g.flag}</span> Guía de visa · {g.visa}</p>
+        <p className="ws-mono flex items-center gap-2"><span aria-hidden="true" className="text-2xl">{g.flag}</span> Guía de visa · pasaporte {o.pasaporte} · {g.visa}</p>
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl max-w-4xl">{g.titulo}</h1>
         <p className="font-cuerpo text-lg md:text-xl leading-relaxed text-ws-ink/90 max-w-3xl">{g.resumen}</p>
         <p className="ws-mono text-ws-ink/70">Revisada el {fechaLarga(g.revisado)}</p>
@@ -95,19 +96,19 @@ const Guia = () => {
             <li key={e.href}><a href={e.href} target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-4 break-words">{e.label}</a></li>
           ))}
         </ul>
-        <p className="font-cuerpo text-sm text-ws-ink/80">Esta guía es informativa y no reemplaza la asesoría de un profesional de migración. Está escrita para personas con pasaporte chileno; con otra nacionalidad los requisitos pueden ser distintos.</p>
+        <p className="font-cuerpo text-sm text-ws-ink/80">Esta guía es informativa y no reemplaza la asesoría de un profesional de migración. Está escrita para personas con pasaporte {o.pasaporte}; con otra nacionalidad los requisitos pueden ser distintos.</p>
       </section>
 
       <section aria-label="Compartir" className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p className="font-bold">¿Conoces a alguien que quiere viajar a {g.pais}?</p>
-        <ShareLinks url={`${window.location.origin}/guias/${g.slug}`} title={g.titulo} text={`${g.titulo}:`} />
+        <ShareLinks url={`${window.location.origin}/guias/${g.origen}/${g.slug}`} title={g.titulo} text={`${g.titulo}:`} />
       </section>
 
       <RelatedLinks links={[
         g.destino
           ? { to: `/destinos/${g.destino}`, label: `Avisos en ${g.pais}`, hint: 'Trabajo y alojamiento de la comunidad.' }
           : { to: '/destinos', label: 'Ver destinos', hint: 'Avisos de la comunidad por país.' },
-        ...otras.map((o) => ({ to: `/guias/${o.slug}`, label: `Guía: ${o.pais}`, hint: o.visa })),
+        ...otras.map((x) => ({ to: `/guias/${g.origen}/${x.slug}`, label: `Guía: ${x.pais}`, hint: x.visa })),
       ]} />
     </article>
   );

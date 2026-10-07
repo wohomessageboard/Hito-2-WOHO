@@ -20,6 +20,7 @@ import UIKit from './views/UIKit';
 import Manifiesto from './views/Manifiesto';
 import ComoFunciona from './views/ComoFunciona';
 import Guias from './views/Guias';
+import Origen from './views/Origen';
 import Guia from './views/Guia';
 import Contacto from './views/Contacto';
 import ForgotPassword from './views/ForgotPassword';
@@ -56,7 +57,8 @@ function App() {
               <Route path="/destinos" element={<Countries />} />
               <Route path="/destinos/:countryName" element={<CountryFeed />} />
               <Route path="/guias" element={<Guias />} />
-              <Route path="/guias/:slug" element={<Guia />} />
+              <Route path="/guias/:origen" element={<Origen />} />
+              <Route path="/guias/:origen/:slug" element={<Guia />} />
               <Route path="/manifiesto" element={<Manifiesto />} />
               <Route path="/como-funciona" element={<ComoFunciona />} />
               <Route path="/contacto" element={<Contacto />} />

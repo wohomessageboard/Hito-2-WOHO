@@ -3,13 +3,9 @@ import { Link } from 'react-router-dom';
 import Stamp from '../components/ui/Stamp';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import { ArrowRight } from '../components/ui/icons';
-import { GUIAS, ACUERDOS_CHILE, FUENTE_CHILE, CONSEJOS_GENERALES } from '../data/guias';
+import { ORIGENES, guiasDe, CONSEJOS_GENERALES } from '../data/guias';
 
-const INKS = ['text-ws-tomato-deep', 'text-ws-ocean', 'text-ws-plum', 'text-ws-olive'];
-
-// Resumen de una línea por guía, tomado de sus datos clave (así no se desactualiza aparte).
-const dato = (g, etiqueta) => g.datos.find(([k]) => k === etiqueta)?.[1];
-
+// Portada de las guías: lo primero que cambia el trámite es el pasaporte, así que se elige ahí.
 const Guias = () => (
   <div className="flex flex-col gap-12 md:gap-16 w-full">
     <header className="relative grid md:grid-cols-12 gap-6 items-end">
@@ -17,48 +13,33 @@ const Guias = () => (
         Guías de <em className="text-ws-accent">visa</em>
       </h1>
       <p className="md:col-span-5 lg:pr-28 font-cuerpo text-lg text-ws-ink/85 leading-relaxed">
-        Requisitos, costos y pasos de la visa Working Holiday en cada país, con la fuente oficial y la fecha de revisión. Escritas para personas con pasaporte chileno.
+        La visa Working Holiday cambia según tu pasaporte: edad, cupos y trabajo permitido no son iguales para todos. Elige el tuyo.
       </p>
       <Stamp variant="round" center={['GUÍAS']} top="WORKING HOLIDAY" bottom="PASO A PASO" rotate={-10} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
     </header>
 
-    <section aria-label="Guías disponibles" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-      {GUIAS.map((g, i) => (
-        <Link key={g.slug} to={`/guias/${g.slug}`} className="ws-surface ws-surface-hover group flex flex-col gap-3 p-5 md:p-6 min-h-[14rem]">
-          <span className="flex items-start justify-between">
-            <span className="text-4xl leading-none" aria-hidden="true">{g.flag}</span>
-            <span className={`ws-mono ${INKS[i % INKS.length]}`}>{g.visa.split(',')[0].split('(')[0].trim()}</span>
-          </span>
-          <h2 className="font-display text-3xl md:text-4xl">{g.pais}</h2>
-          <ul className="list-none p-0 m-0 font-cuerpo text-ws-ink/85 space-y-1">
-            {dato(g, 'Edad') && <li>{dato(g, 'Edad')}</li>}
-            {(dato(g, 'Duración')) && <li>{dato(g, 'Duración')}</li>}
-          </ul>
-          <span className="mt-auto flex items-center gap-2 font-bold">
-            Leer la guía <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-          </span>
-        </Link>
-      ))}
-    </section>
-
-    <section aria-labelledby="acuerdos" className="ws-surface p-6 md:p-8 flex flex-col gap-5">
-      <h2 id="acuerdos" className="font-display text-4xl md:text-5xl">
-        Países con acuerdo con <em className="text-ws-accent">Chile</em>
-      </h2>
-      <p className="font-cuerpo text-lg leading-relaxed text-ws-ink/90 max-w-3xl">
-        Según la Cancillería de Chile, estos son los países con los que existe un acuerdo Working Holiday. Los que ya tienen guía llevan enlace; las demás las iremos agregando.
-      </p>
-      <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 list-none p-0 m-0 font-cuerpo text-lg">
-        {ACUERDOS_CHILE.map((p) => (
-          <li key={p.name} className="flex items-center gap-2 min-h-8">
-            <span aria-hidden="true">{p.flag}</span>
-            {p.slug ? <Link to={`/guias/${p.slug}`} className="font-bold underline underline-offset-4">{p.name}</Link> : <span>{p.name}</span>}
-          </li>
-        ))}
-      </ul>
-      <p className="font-cuerpo text-sm text-ws-ink/80">
-        Fuente: <a href={FUENTE_CHILE.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{FUENTE_CHILE.label}</a>. Los requisitos cambian según tu nacionalidad: si tu pasaporte no es chileno, revisa el sitio oficial de cada país.
-      </p>
+    <section aria-label="Elige tu pasaporte" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      {ORIGENES.map((o) => {
+        const n = guiasDe(o.slug).length;
+        return (
+          <Link key={o.slug} to={`/guias/${o.slug}`} className="ws-surface ws-surface-hover group flex flex-col gap-3 p-5 md:p-6 min-h-[13rem]">
+            <span className="text-5xl leading-none" aria-hidden="true">{o.flag}</span>
+            <h2 className="font-display text-3xl md:text-4xl">Pasaporte {o.pasaporte}</h2>
+            <p className="font-cuerpo text-ws-ink/85">
+              {o.acuerdos.length} países con acuerdo{n ? ` · ${n} ${n === 1 ? 'guía lista' : 'guías listas'}` : ''}
+            </p>
+            <span className="mt-auto flex items-center gap-2 font-bold">
+              Ver acuerdos y guías <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </span>
+          </Link>
+        );
+      })}
+      <div className="ws-surface p-5 md:p-6 flex flex-col gap-3 min-h-[13rem] border-dashed">
+        <span className="text-5xl leading-none" aria-hidden="true">🌎</span>
+        <h2 className="font-display text-3xl md:text-4xl">¿Tu pasaporte no está?</h2>
+        <p className="font-cuerpo text-ws-ink/85">Vamos sumando más países, empezando por España y otros de Latinoamérica. Cuéntanos cuál necesitas.</p>
+        <Link to="/contacto" className="mt-auto font-bold underline underline-offset-4">Escríbenos</Link>
+      </div>
     </section>
 
     <section aria-labelledby="para-cualquier-destino" className="space-y-6">

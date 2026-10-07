@@ -1,4 +1,4 @@
-import { guiaPorSlug } from '../../data/guias';
+import { guiaPor, origenPorSlug } from '../../data/guias';
 import React from 'react';
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/react';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
@@ -91,8 +91,10 @@ const AppBreadcrumbs = () => {
               break;
             default:
 
-              if (index > 0 && pathnames[index-1] === 'guias' && guiaPorSlug(value)) {
-                title = guiaPorSlug(value).pais;
+              if (index > 0 && pathnames[index-1] === 'guias' && origenPorSlug(value)) {
+                title = `Pasaporte ${origenPorSlug(value).pasaporte}`;
+              } else if (index > 1 && pathnames[index-2] === 'guias' && guiaPor(pathnames[index-1], value)) {
+                title = guiaPor(pathnames[index-1], value).pais;
               } else if (index > 0 && (pathnames[index-1] === 'edit-post' || pathnames[index-1] === 'post')) {
 
                 const savedTitle = window.sessionStorage.getItem('last_post_title');
