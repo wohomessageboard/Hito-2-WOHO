@@ -3,8 +3,8 @@ import Stamp from '../components/ui/Stamp';
 import PhotoSlot from '../components/ui/PhotoSlot';
 import RelatedLinks from '../components/ui/RelatedLinks';
 
-// Cada principio es una banda de color a sangre. El texto va en tinta sobre los
-// tonos claros y en crema sobre el tomate; el cuerpo lleva capitular para leerse como artículo.
+// Cada principio es una banda de color a sangre. El texto va en tinta sobre
+// los tonos claros; el cuerpo lleva capitular para leerse como artículo.
 const PRINCIPLES = [
   {
     id: 'coraje',
@@ -65,7 +65,7 @@ const Manifiesto = () => {
                   top="WORKING HOLIDAY"
                   bottom="MANIFIESTO"
                   rotate={flip ? 10 : -10}
-                  className={`hidden md:block absolute -bottom-8 w-24 ${band === 'ws-band-tomato' ? 'text-ws-paper-light' : 'text-ws-ink'} ${flip ? '-left-8' : '-right-8'}`}
+                  className={`hidden md:block absolute -bottom-8 w-24 text-ws-ink ${flip ? '-left-8' : '-right-8'}`}
                 />
               </div>
               <div className={`md:col-span-7 space-y-6 ${flip ? 'md:order-1' : ''}`}>

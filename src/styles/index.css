@@ -50,7 +50,7 @@
   padding-inline: calc(50vw - 50%);
 }
 .ws-band { position: relative; overflow: hidden; isolation: isolate; }
-.ws-band-tomato { background: var(--ws-tomato); color: var(--ws-paper-light); }
+.ws-band-tomato { background: var(--ws-tomato); color: var(--ws-ink); }
 .ws-band-mustard { background: var(--ws-mustard); color: var(--ws-ink); }
 .ws-band-teal { background: var(--ws-teal); color: var(--ws-ink); }
 .ws-band-citron { background: var(--ws-citron); color: var(--ws-ink); }

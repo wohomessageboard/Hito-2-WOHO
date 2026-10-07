@@ -17,11 +17,10 @@ const DEPARTURES = [
   },
   {
     code: 'TRB',
-    name: 'Trabajo temporario',
+    name: 'Trabajo de temporada',
     Icon: Briefcase,
     text: 'Cosechas, hospitalidad o construcción. Los mejores datos pasados de viajero a viajero.',
-    hover: 'hover:bg-ws-tomato hover:text-ws-paper-light',
-    hoverLight: true,
+    hover: 'hover:bg-ws-tomato',
   },
   {
     code: 'SOC',
@@ -77,7 +76,7 @@ const Home = () => {
       {/* Cinta de rótulos */}
       <Marquee
         className="ws-band ws-band-ink ws-bleed text-ws-paper-light"
-        items={['Alojamiento', 'Trabajo temporario', 'Compañeros de ruta', 'De viajero a viajero', 'Sin algoritmo, sin relleno']}
+        items={['Alojamiento', 'Trabajo de temporada', 'Compañeros de ruta', 'De viajero a viajero', 'Sin algoritmo, sin relleno']}
       />
 
       {/* Lo que nos distingue: los avisos caducan */}
@@ -122,7 +121,7 @@ const Home = () => {
         </div>
 
         <ul className="border-t border-ws-ink/25">
-          {DEPARTURES.map(({ code, name, Icon, text, hover, hoverLight }) => (
+          {DEPARTURES.map(({ code, name, Icon, text, hover }) => (
             <li key={code} className="border-b border-ws-ink/25">
               <Link
                 to="/feed"
@@ -133,7 +132,7 @@ const Home = () => {
                   <span className="hidden md:inline">{code}</span>
                 </span>
                 <span className="font-display text-4xl md:text-6xl">{name}</span>
-                <span className={`col-span-3 md:col-span-1 md:col-start-3 row-start-2 md:row-start-1 font-cuerpo text-base md:text-lg leading-relaxed text-ws-ink/85 ${hoverLight ? 'group-hover:text-ws-paper-light' : ''}`}>{text}</span>
+                <span className="col-span-3 md:col-span-1 md:col-start-3 row-start-2 md:row-start-1 font-cuerpo text-base md:text-lg leading-relaxed text-ws-ink/85">{text}</span>
                 <span className="col-start-3 md:col-start-4 row-start-1 grid place-items-center w-11 h-11 rounded-[6px] bg-ws-paper-deep group-hover:bg-ws-ink group-hover:text-ws-paper-light transition-colors" aria-hidden="true">
                   <ArrowRight className="w-6 h-6" />
                 </span>

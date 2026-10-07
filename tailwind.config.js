@@ -9,7 +9,7 @@ const ws = {
   'paper-light': '#FFF9EA', // superficies: tickets, tarjetas, campos (crema)
   'paper-deep': '#E6DAC1',  // separadores y fondos hundidos
   ink: '#18130F',        // tinta de texto y filetes
-  tomato: '#EE4B2B',     // rojo imprenta (texto encima: crema)
+  tomato: '#EE4B2B',     // rojo imprenta (texto encima: crema en botones y etiquetas; tinta en la franja del Manifiesto)
   'tomato-deep': '#B8321A', // rojo para texto pequeño sobre papel
   mustard: '#F2B51D',    // amarillo mostaza
   ocean: '#0E4FA3',      // azul tinta (texto encima: papel)
