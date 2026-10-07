@@ -2,8 +2,9 @@
 // filtros por categoría, para que un filtro marcado tenga el mismo color que sus etiquetas.
 export const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato', Social: 'ws-tag-olive' };
 export const tagClassFor = (type) => TAG_BY_TYPE[type] || 'ws-tag-ink';
-// Color del icono sobre cada relleno: el tomate lleva texto oscuro y los demás, claro.
-export const iconOnTag = (tagClass) => (tagClass === 'ws-tag-tomato' ? 'text-ws-ink' : 'text-ws-paper-light');
+// Color del icono y del texto de un filtro marcado: claro en todos los colores, para que los
+// cuatro botones se vean iguales (la etiqueta de la tarjeta de Trabajo sí lleva texto oscuro).
+export const iconOnTag = () => 'text-ws-paper-light';
 
 // Orden fijo de las categorías en todos los filtros (la base las devuelve en el orden en que se
 // crearon, que no es el que queremos mostrar). Las categorías desconocidas van al final.
