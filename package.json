@@ -9,6 +9,8 @@
     "build": "vite build",
     "postbuild": "node scripts/prerender-seo.mjs",
     "lint": "eslint .",
+    "guias:revisar": "node scripts/revisar-fuentes.mjs",
+    "guias:fuentes": "node scripts/revisar-fuentes.mjs --lista",
     "preview": "vite preview"
   },
   "dependencies": {

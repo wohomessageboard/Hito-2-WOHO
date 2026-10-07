@@ -1,0 +1,153 @@
+{
+  "_ayuda": "Ajustes por fuente. 'manual': el script no puede leerla (JavaScript o bloqueo): se revisa a mano con navegador. 'ignorar': enlace de referencia sin datos de las guías (portada de un organismo). 'claves': textos que deben seguir apareciendo; si desaparece uno, probablemente cambió una cifra de la guía. 'nota': pista para quien revise.",
+  "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462": {
+    "manual": true,
+    "nota": "Revisar precio (AUD 840 / 1.000), edad 18-30, meses de trabajo para 2ª y 3ª visa (3 y 6)."
+  },
+  "https://immi.homeaffairs.gov.au/what-we-do/whm-program/status-of-country-caps": {
+    "manual": true,
+    "nota": "Revisar tope y estado de Argentina, Chile, España, Perú (y Uruguay); si aparece Colombia o México, crear su guía de Australia."
+  },
+  "https://www.cancilleria.gob.ar/es/servicios/programas-de-vacaciones-y-trabajo/extranjeros": {
+    "manual": true,
+    "nota": "Lista de acuerdos de Argentina: 19 países a enero de 2026."
+  },
+  "https://www.diplomatie.gouv.fr/fr/services-aux-francais/preparer-son-expatriation/emploi/article/programme-vacances-travail-pvt": {
+    "manual": true,
+    "nota": "Países con acuerdo con Francia y cupos por país."
+  },
+  "https://france-visas.gouv.fr/es/jovenes-asalariados": {
+    "manual": true,
+    "nota": "Bloquea al script (403)."
+  },
+  "https://www.minrel.gob.cl/minrel/sala-de-prensa/chile-renueva-acuerdo-working-holiday-con-corea-del-sur-y-extiende-la-edad": {
+    "manual": true,
+    "nota": "Edad hasta 34 para chilenos en Corea."
+  },
+  "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html": {
+    "manual": true,
+    "nota": "Los datos por país se cargan al elegir el país en un menú; el script ve solo el texto fijo. Comprobar que Chile y España siguen en la lista y que Argentina, México, Colombia y Perú no."
+  },
+  "https://www.fairwork.gov.au/": {
+    "ignorar": true
+  },
+  "https://www.ato.gov.au/": {
+    "ignorar": true
+  },
+  "https://www.ird.govt.nz/": {
+    "ignorar": true
+  },
+  "https://www.vfsglobal.com/": {
+    "ignorar": true
+  },
+  "https://www.irishimmigration.ie/": {
+    "ignorar": true
+  },
+  "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html": {
+    "ignorar": true
+  },
+  "https://www.immigration.govt.nz/visas/chile-working-holiday-visa": {
+    "claves": [
+      "940",
+      "4,200",
+      "770",
+      "6 months"
+    ]
+  },
+  "https://www.immigration.govt.nz/visas/argentina-working-holiday-visa": {
+    "claves": [
+      "1,000",
+      "4,200",
+      "770"
+    ]
+  },
+  "https://www.immigration.govt.nz/visas/spain-working-holiday-visa/": {
+    "claves": [
+      "2,000",
+      "4,200",
+      "770"
+    ]
+  },
+  "https://www.immigration.govt.nz/visas/peru-working-holiday-visa/": {
+    "claves": [
+      "4,200",
+      "7,000",
+      "3 months"
+    ]
+  },
+  "https://www.immigration.govt.nz/visas/mexico-working-holiday-visa/": {
+    "claves": [
+      "200",
+      "4,200",
+      "3 months"
+    ]
+  },
+  "https://www.immigration.govt.nz/about-us/news-centre/2026-opening-dates-for-capped-working-holiday-schemes-confirmed/": {
+    "nota": "Fechas de apertura 2026. Cada año hay una página nueva: buscar la de 2027 y actualizar el enlace en las guías de Nueva Zelanda."
+  },
+  "https://www.nyidanmark.dk/pl-PL/You-want-to-apply/Working-Holiday/Working-Holiday-Chile-application": {
+    "claves": [
+      "3,060",
+      "150",
+      "20,000"
+    ]
+  },
+  "https://www.nyidanmark.dk/uk-UA/You-want-to-apply/Working-Holiday/Working-Holiday-Argentina-application": {
+    "claves": [
+      "3,060",
+      "150",
+      "20,000"
+    ]
+  },
+  "https://www.ireland.ie/en/argentina/buenosaires/services/visas/working-holiday-programme/": {
+    "claves": [
+      "200"
+    ],
+    "nota": "Cada año se abre una convocatoria con fecha propia."
+  },
+  "https://www.ireland.ie/en/chile/santiago/services/visas/chile-working-holiday-agreement/": {
+    "nota": "Revisar rondas y montos del año."
+  },
+  "https://santiago.diplo.de/cl-es/service/05-visaeinreise/1210626-1210626": {
+    "claves": [
+      "1.326",
+      "75"
+    ]
+  },
+  "https://buenos-aires.diplo.de/ar-de/service/05-visaeinreise/workingholiday-2196308": {
+    "claves": [
+      "442",
+      "1.326",
+      "75"
+    ]
+  },
+  "https://www.cl.emb-japan.go.jp/itpr_es/WorkingHolidayChileJapon.html": {
+    "claves": [
+      "200"
+    ],
+    "nota": "Revisar si se anuncia el programa 2027 (el cupo se llena en días)."
+  },
+  "https://www.ar.emb-japan.go.jp/itpr_ja/NuevoAvisoWorkingHoliday03112020.html": {
+    "claves": [
+      "200",
+      "4.000"
+    ],
+    "nota": "Cupos en enero y julio."
+  },
+  "https://overseas.mofa.go.kr/cl-es/brd/m_22556/view.do?seq=3&page=1": {
+    "claves": [
+      "100",
+      "34"
+    ]
+  },
+  "https://overseas.mofa.go.kr/ar-es/brd/m_6300/view.do?seq=754261&page=1": {
+    "claves": [
+      "200",
+      "34"
+    ]
+  },
+  "https://www.consulado.gob.cl/workingholiday": {
+    "manual": true,
+    "nota": "Lista de acuerdos de Chile (18 países + Suiza para pasantías). Los datos se cargan con JavaScript."
+  }
+}
