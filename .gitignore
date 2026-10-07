@@ -12,3 +12,6 @@ dist/
 public/sitemap.xml
 public/robots.txt
 public/llms.txt
+
+# Informes de la revisión de fuentes de las guías (scripts/revisar-fuentes.mjs)
+tmp-revision/
