@@ -11,6 +11,7 @@
 
 import { REVISADO_HOY } from './revision.js';
 import { GUIAS_MAS } from './guiasMas.js';
+import { GUIAS_LOTE2 } from './guiasLote2.js';
 
 export { REVISADO_HOY };
 
@@ -561,11 +562,11 @@ export const GUIAS = [
   },
 ];
 
-GUIAS.push(...GUIAS_MAS);
+GUIAS.push(...GUIAS_MAS, ...GUIAS_LOTE2);
 
 // Etiqueta corta de cada tarjeta: el tipo de permiso por destino. No lleva estados ni fechas
 // (cambian cada año y no se mantienen aquí); el nombre oficial completo está en `visa`.
-const ETIQUETAS = { australia: 'VISA 462', 'nueva-zelanda': 'WORKING HOLIDAY', canada: 'IEC', irlanda: 'AUTORIZACIÓN WH', dinamarca: 'PERMISO WH', francia: 'VVT' };
+const ETIQUETAS = { australia: 'VISA 462', 'nueva-zelanda': 'WORKING HOLIDAY', canada: 'IEC', irlanda: 'AUTORIZACIÓN WH', dinamarca: 'PERMISO WH', francia: 'VVT', alemania: 'VISA WH', japon: 'VISA WH', 'corea-del-sur': 'VISA H-1' };
 export const etiquetaDe = (g) => ETIQUETAS[g.slug] || 'WORKING HOLIDAY';
 
 export const guiaPor = (origen, slug) => GUIAS.find((g) => g.origen === origen && g.slug === slug);
