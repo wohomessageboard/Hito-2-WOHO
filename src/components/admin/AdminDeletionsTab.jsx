@@ -80,7 +80,7 @@ const AdminDeletionsTab = ({ onPendingCountChange }) => {
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className={`ws-tag ${item.status === 'pending' ? 'ws-tag-tomato' : 'ws-tag-ink'}`}>{STATUS[item.status]}</span>
                   {item.status === 'pending' && (
-                    <span className={`ws-mono px-2 py-1 rounded-[4px] ${overdue ? 'bg-ws-tomato' : urgent ? 'bg-ws-mustard' : 'bg-ws-paper-deep'}`}>
+                    <span className={`ws-mono px-2 py-1 rounded-[4px] ${overdue ? 'bg-ws-tomato text-ws-paper-light' : urgent ? 'bg-ws-mustard' : 'bg-ws-paper-deep'}`}>
                       {overdue ? `Vencida hace ${Math.abs(left)} día(s)` : left === 0 ? 'Vence hoy' : `Quedan ${left} día(s)`}
                     </span>
                   )}
@@ -92,7 +92,7 @@ const AdminDeletionsTab = ({ onPendingCountChange }) => {
                 </p>
               </div>
               {item.status === 'pending' && (
-                <Button radius="sm" className="ws-btn bg-ws-tomato text-ws-ink h-11 px-5 shrink-0" onPress={() => execute(item)}>
+                <Button radius="sm" className="ws-btn bg-ws-tomato text-ws-paper-light h-11 px-5 shrink-0" onPress={() => execute(item)}>
                   Eliminar cuenta ahora
                 </Button>
               )}

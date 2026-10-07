@@ -17,7 +17,7 @@ const DEPARTURES = [
   },
   {
     code: 'TRB',
-    name: 'Trabajo temporario',
+    name: 'Trabajo de temporada',
     Icon: Briefcase,
     text: 'Cosechas, hospitalidad o construcción. Los mejores datos pasados de viajero a viajero.',
     hover: 'hover:bg-ws-tomato',
@@ -76,7 +76,7 @@ const Home = () => {
       {/* Cinta de rótulos */}
       <Marquee
         className="ws-band ws-band-ink ws-bleed text-ws-paper-light"
-        items={['Alojamiento', 'Trabajo temporario', 'Compañeros de ruta', 'De viajero a viajero', 'Sin algoritmo, sin relleno']}
+        items={['Alojamiento', 'Trabajo de temporada', 'Compañeros de ruta', 'De viajero a viajero', 'Sin algoritmo, sin relleno']}
       />
 
       {/* Lo que nos distingue: los avisos caducan */}

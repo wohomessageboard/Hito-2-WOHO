@@ -51,7 +51,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
 
     if (variant === "creator") {
       const days = post.expiresInDays;
-      const tone = days <= 2 ? 'bg-ws-tomato text-ws-ink' : days <= 5 ? 'bg-ws-mustard text-ws-ink' : 'bg-ws-citron text-ws-ink';
+      const tone = days <= 2 ? 'bg-ws-tomato text-ws-paper-light' : days <= 5 ? 'bg-ws-mustard text-ws-ink' : 'bg-ws-citron text-ws-ink';
       return (
         <header className="flex items-center justify-between gap-2 px-4 pt-4">
           <div className="flex items-center gap-2 min-w-0">
@@ -125,7 +125,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               aria-label="Eliminar como administrador"
               onClick={handleDelete}
             >
-              <Trash2 className="w-5 h-5 text-ws-ink" />
+              <Trash2 className="w-5 h-5 text-ws-paper-light" />
             </Button>
           )}
         </div>
@@ -192,7 +192,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           <Button as={Link} to={`/edit-post/${post.id}`} radius="sm" size="sm" className="ws-pill ws-pill-line w-1/2 min-h-11">
             <Pencil className="w-5 h-5 mr-1" /> Editar
           </Button>
-          <Button radius="sm" size="sm" className="ws-pill w-1/2 min-h-11 bg-ws-tomato text-ws-ink" onClick={handleDelete}>
+          <Button radius="sm" size="sm" className="ws-pill w-1/2 min-h-11 bg-ws-tomato text-ws-paper-light" onClick={handleDelete}>
             <Trash2 className="w-5 h-5 mr-1" /> Eliminar
           </Button>
         </footer>
@@ -224,7 +224,7 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
               radius="sm"
               size="sm"
               isIconOnly
-              className="ws-pill min-h-11 min-w-11 bg-ws-tomato text-ws-ink"
+              className="ws-pill min-h-11 min-w-11 bg-ws-tomato text-ws-paper-light"
               title="Eliminar mi aviso"
               aria-label="Eliminar mi aviso"
             >

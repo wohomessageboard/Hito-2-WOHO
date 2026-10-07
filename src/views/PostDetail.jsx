@@ -110,7 +110,7 @@ const PostDetail = () => {
   const country = post.country || post.country_name;
   const city = post.city || post.city_name;
   const expiresInDays = post.expires_at ? Math.max(0, Math.ceil((new Date(post.expires_at) - new Date()) / (1000*60*60*24))) : post.duration_days || null;
-  const expiryTone = expiresInDays <= 2 ? 'bg-ws-tomato' : expiresInDays <= 5 ? 'bg-ws-mustard' : 'bg-ws-citron';
+  const expiryTone = expiresInDays <= 2 ? 'bg-ws-tomato text-ws-paper-light' : expiresInDays <= 5 ? 'bg-ws-mustard text-ws-ink' : 'bg-ws-citron text-ws-ink';
 
   return (
     <div className="w-full max-w-6xl mx-auto flex flex-col gap-8">
@@ -146,7 +146,7 @@ const PostDetail = () => {
                 </span>
               )}
               {expiresInDays !== null && (
-                <span className={`ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-ws-ink ${expiryTone}`}>
+                <span className={`ws-mono flex items-center gap-1.5 px-2 py-1 rounded-[4px] ${expiryTone}`}>
                   <Calendar className="w-4 h-4" aria-hidden="true" />
                   {expiresInDays === 0 ? '¡Expira hoy!' : `Expira en ${expiresInDays} días`}
                 </span>

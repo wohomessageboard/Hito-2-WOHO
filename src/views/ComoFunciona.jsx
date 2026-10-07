@@ -14,7 +14,7 @@ const STEPS = [
   {
     Icon: Search,
     title: 'Explora sin cuenta',
-    block: 'bg-ws-tomato text-ws-ink',
+    block: 'bg-ws-tomato text-ws-paper-light',
     body: 'Entra a Explorar y recorre los anuncios más recientes de la comunidad. Filtra por categoría o busca por palabra clave o ciudad. Sin cuenta ves el anuncio completo; el nombre de quien lo publica queda oculto.',
     cta: { to: '/feed', label: 'Explorar anuncios' },
   },

@@ -156,14 +156,14 @@ const AdminDashboard = () => {
         
  <Tab
           key="inbox"
-          title={<><Mail className="w-5 h-5"/> <span className="hidden sm:inline">Bandeja</span>{inboxOpen > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{inboxOpen}</span>}</>}
+          title={<><Mail className="w-5 h-5"/> <span className="hidden sm:inline">Bandeja</span>{inboxOpen > 0 && <span className="ws-mono bg-ws-tomato text-ws-paper-light rounded-[4px] px-1.5">{inboxOpen}</span>}</>}
         >
           <AdminInboxTab onOpenCountChange={setInboxOpen} />
         </Tab>
 
         <Tab
           key="deletions"
-          title={<><Trash2 className="w-5 h-5"/> <span className="hidden sm:inline">Eliminaciones</span>{deletionsPending > 0 && <span className="ws-mono bg-ws-tomato text-ws-ink rounded-[4px] px-1.5">{deletionsPending}</span>}</>}
+          title={<><Trash2 className="w-5 h-5"/> <span className="hidden sm:inline">Eliminaciones</span>{deletionsPending > 0 && <span className="ws-mono bg-ws-tomato text-ws-paper-light rounded-[4px] px-1.5">{deletionsPending}</span>}</>}
         >
           <AdminDeletionsTab onPendingCountChange={setDeletionsPending} />
         </Tab>
