@@ -18,6 +18,12 @@ const Guias = () => (
       <Stamp variant="round" center={['GUÍAS']} top="WORKING HOLIDAY" bottom="PASO A PASO" rotate={-10} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
     </header>
 
+    <Link to="/guias/buscador" className="ws-surface ws-surface-hover group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 p-5 md:p-6 bg-ws-mustard">
+      <span className="font-display text-3xl md:text-4xl">¿A qué países puedo ir?</span>
+      <span className="font-cuerpo text-lg flex-1">Elige tu pasaporte y tu edad y compara los destinos lado a lado.</span>
+      <span className="flex items-center gap-2 font-bold">Abrir el buscador <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
+    </Link>
+
     <section aria-label="Elige tu pasaporte" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
       {ORIGENES.map((o) => {
         const n = guiasDe(o.slug).length;

@@ -570,5 +570,21 @@ GUIAS.push(...GUIAS_MAS, ...GUIAS_LOTE2, ...GUIAS_LOTE3);
 const ETIQUETAS = { australia: 'VISA 462', 'nueva-zelanda': 'WORKING HOLIDAY', canada: 'IEC', irlanda: 'AUTORIZACIÓN WH', dinamarca: 'PERMISO WH', francia: 'VVT', alemania: 'VISA WH', japon: 'VISA WH', 'corea-del-sur': 'VISA H-1', espana: 'VISA JÓVENES' };
 export const etiquetaDe = (g) => ETIQUETAS[g.slug] || 'WORKING HOLIDAY';
 
+// Edad máxima para postular (inclusive) de cada guía, para el buscador. `null` = la guía no la fija
+// (se remite a la fuente oficial). Al agregar una guía, agrega su fila aquí.
+const EDAD_MAX = {
+  'chile/australia': 30, 'chile/nueva-zelanda': 35, 'chile/canada': 35, 'chile/irlanda': 30, 'chile/dinamarca': 30,
+  'chile/francia': 30, 'chile/alemania': 30, 'chile/japon': 30, 'chile/corea-del-sur': 34,
+  'argentina/australia': 30, 'argentina/nueva-zelanda': 35, 'argentina/irlanda': 35, 'argentina/dinamarca': 30,
+  'argentina/francia': 35, 'argentina/alemania': 30, 'argentina/japon': 30, 'argentina/corea-del-sur': 34, 'argentina/espana': 35,
+  'espana/australia': 30, 'espana/nueva-zelanda': 30, 'espana/canada': null,
+  'peru/australia': 30, 'peru/nueva-zelanda': 30, 'peru/francia': 30,
+  'mexico/nueva-zelanda': 30, 'mexico/francia': 30,
+  'colombia/francia': 30,
+};
+export const EDAD_MIN = 18;
+export const edadMaxDe = (g) => EDAD_MAX[`${g.origen}/${g.slug}`] ?? null;
+export const tieneEdadRegistrada = (g) => `${g.origen}/${g.slug}` in EDAD_MAX;
+
 export const guiaPor = (origen, slug) => GUIAS.find((g) => g.origen === origen && g.slug === slug);
 export const guiasDe = (origen) => GUIAS.filter((g) => g.origen === origen);

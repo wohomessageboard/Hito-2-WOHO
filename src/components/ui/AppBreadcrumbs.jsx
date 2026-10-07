@@ -91,7 +91,9 @@ const AppBreadcrumbs = () => {
               break;
             default:
 
-              if (index > 0 && pathnames[index-1] === 'guias' && origenPorSlug(value)) {
+              if (index > 0 && pathnames[index-1] === 'guias' && value === 'buscador') {
+                title = 'Buscador';
+              } else if (index > 0 && pathnames[index-1] === 'guias' && origenPorSlug(value)) {
                 title = `Pasaporte ${origenPorSlug(value).pasaporte}`;
               } else if (index > 1 && pathnames[index-2] === 'guias' && guiaPor(pathnames[index-1], value)) {
                 title = guiaPor(pathnames[index-1], value).pais;
