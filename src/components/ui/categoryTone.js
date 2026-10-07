@@ -4,3 +4,9 @@ export const TAG_BY_TYPE = { Alojamiento: 'ws-tag-blue', Trabajo: 'ws-tag-tomato
 export const tagClassFor = (type) => TAG_BY_TYPE[type] || 'ws-tag-ink';
 // Color del icono sobre cada relleno: el tomate lleva texto oscuro y los demás, claro.
 export const iconOnTag = (tagClass) => (tagClass === 'ws-tag-tomato' ? 'text-ws-ink' : 'text-ws-paper-light');
+
+// Orden fijo de las categorías en todos los filtros (la base las devuelve en el orden en que se
+// crearon, que no es el que queremos mostrar). Las categorías desconocidas van al final.
+export const CATEGORY_ORDER = ['Alojamiento', 'Trabajo', 'Social', 'Otro'];
+const rank = (key) => { const i = CATEGORY_ORDER.indexOf(key); return i === -1 ? CATEGORY_ORDER.length : i; };
+export const sortCategories = (cats) => [...cats].sort((a, b) => rank(a.key) - rank(b.key));

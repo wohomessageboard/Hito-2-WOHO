@@ -10,7 +10,7 @@ import { Search, Grid, Briefcase, Home, Users, Globe, Compass, Calendar } from '
 
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
-import { tagClassFor } from '../components/ui/categoryTone';
+import { tagClassFor, sortCategories } from '../components/ui/categoryTone';
 import EmptyState from '../components/ui/EmptyState';
 
 import { useScrollRestore } from '../hooks/useScrollRestore';
@@ -86,7 +86,7 @@ const Feed = () => {
     });
 
     api.get('/categories').then(res => {
-      if(res.data && res.data.length > 0) setCategories(res.data);
+      if(res.data && res.data.length > 0) setCategories(sortCategories(res.data));
     }).catch(err => console.log(err));
   }, [isAuthenticated]);
 
