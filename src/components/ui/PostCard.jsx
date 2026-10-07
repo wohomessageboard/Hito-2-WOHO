@@ -89,7 +89,8 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           </div>
         </div>
 
-        <div className="flex gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`ws-tag ${typeTag}`}>{post.type}</span>
           {currentUser?.role === 'superadmin' && (
             <Button
               isIconOnly
@@ -139,9 +140,9 @@ const PostCard = ({ post, owner, variant = "feed", isMyPost = false }) => {
           {post.title}
         </h3>
       </Link>
-      <span className={`ws-tag ${typeTag} mt-4 mb-3 block w-fit`}>{post.type}</span>
+      {variant === "creator" && <span className={`ws-tag ${typeTag} mt-4 block w-fit`}>{post.type}</span>}
       {variant !== "favorite" && (
-        <p className="text-sm font-cuerpo text-ws-ink/80 line-clamp-4 leading-relaxed">
+        <p className="mt-3 text-sm font-cuerpo text-ws-ink/80 line-clamp-4 leading-relaxed">
           {post.description}
         </p>
       )}
