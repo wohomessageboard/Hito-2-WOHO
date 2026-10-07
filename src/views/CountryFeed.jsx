@@ -6,7 +6,7 @@ import { Button, Input } from '@heroui/react';
 import { Search, Grid, Briefcase, Home, Users, Globe, MapPin, ArrowLeft, Heart } from '../components/ui/icons';
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
-import { tagClassFor } from '../components/ui/categoryTone';
+import { tagClassFor, sortCategories } from '../components/ui/categoryTone';
 import EmptyState from '../components/ui/EmptyState';
 import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
@@ -51,7 +51,7 @@ const CountryFeed = () => {
         ]);
         setCountryInfo(cRes.data);
         setCountryPosts(pRes.data);
-        if(catRes.data && catRes.data.length > 0) setCategories(catRes.data);
+        if(catRes.data && catRes.data.length > 0) setCategories(sortCategories(catRes.data));
       } catch (error) {
         console.error("Error al cargar país", error);
       } finally {
