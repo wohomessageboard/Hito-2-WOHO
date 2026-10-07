@@ -48,6 +48,13 @@ export const PAGES = [
     summary: 'Guías de la visa Working Holiday según tu pasaporte (chileno, argentino, español, peruano, mexicano o colombiano): países con acuerdo, edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
   },
   {
+    path: '/guias/buscador', priority: '0.8',
+    title: 'Driftler | Buscador de visas Working Holiday por pasaporte y edad',
+    description: 'Elige tu pasaporte y tu edad y compara los países con visa Working Holiday a los que puedes postular: duración, costo, cupos y trabajo permitido.',
+    h1: '¿A qué países puedo ir?',
+    summary: 'Buscador de visas Working Holiday: eliges tu pasaporte y tu edad y compara los destinos con sus requisitos, costos, cupos y trabajo permitido, con enlace a la guía y a la fuente oficial.',
+  },
+  {
     path: '/manifiesto', priority: '0.6',
     title: 'Driftler | Manifiesto: viajar para encontrarse',
     description: 'Creemos en el coraje de migrar y en la fuerza de la comunidad. Lee el manifiesto de Driftler, el tablón de avisos hecho por y para viajeros.',

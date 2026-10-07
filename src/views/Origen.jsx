@@ -94,6 +94,7 @@ const Origen = () => {
       </section>
 
       <RelatedLinks links={[
+        { to: `/guias/buscador?pasaporte=${o.slug}`, label: 'Buscar por mi edad', hint: 'Compara los destinos lado a lado.' },
         { to: '/guias', label: 'Otros pasaportes', hint: 'Guías para otras nacionalidades.' },
         { to: '/destinos', label: 'Ver destinos', hint: 'Avisos de la comunidad por país.' },
         { to: '/feed', label: 'Explorar anuncios', hint: 'Trabajo y alojamiento vigentes.' },

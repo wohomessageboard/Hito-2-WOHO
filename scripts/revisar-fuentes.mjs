@@ -15,7 +15,7 @@
 // los datos y la fecha `revisado`. Ver GUIAS-MANTENIMIENTO.md.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { GUIAS, ORIGENES } from '../src/data/guias.js';
+import { GUIAS, ORIGENES, tieneEdadRegistrada } from '../src/data/guias.js';
 import { REVISADO_HOY } from '../src/data/revision.js';
 
 const args = process.argv.slice(2);
@@ -127,6 +127,9 @@ for (const r of resultados) {
 const hoy = Date.now();
 const vencidas = GUIAS.filter((g) => (hoy - new Date(`${g.revisado}T12:00:00`).getTime()) / 864e5 > DIAS_VENCIDA);
 lineas.push('', vencidas.length ? `Guías sin revisar hace más de ${DIAS_VENCIDA} días: ${vencidas.map((g) => `${g.origen}/${g.slug}`).join(', ')}` : `Todas las guías se revisaron hace menos de ${DIAS_VENCIDA} días (última revisión registrada: ${REVISADO_HOY}).`);
+
+const sinEdad = GUIAS.filter((g) => !tieneEdadRegistrada(g));
+if (sinEdad.length) lineas.push(`⚠ Guías sin edad máxima para el buscador (agrégalas en EDAD_MAX, src/data/guias.js): ${sinEdad.map((g) => `${g.origen}/${g.slug}`).join(', ')}`);
 
 const n = (e) => resultados.filter((r) => r.estado === e).length;
 lineas.push(`Resumen: ${n('cambió')} cambiaron · ${n('error')} con error · ${n('manual')} para revisar a mano · ${n('nueva')} nuevas · ${n('igual')} sin cambios · ${resultados.filter((r) => r.claves.length).length} con cifras que ya no aparecen.`);

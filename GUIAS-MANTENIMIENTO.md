@@ -38,13 +38,14 @@ Cada página termina en uno de estos estados:
 Además avisa:
 - **«Ya no aparece»**: una cifra que se vigila (por ejemplo `940` en Nueva Zelanda) desapareció de la página: probablemente cambió un dato de la guía.
 - **Guías sin revisar hace más de 90 días**.
+- **Guías sin edad máxima** registrada en `EDAD_MAX` (el buscador `/guias/buscador` las necesita).
 
 El informe también queda en `tmp-revision/informe-AAAA-MM-DD.txt` (no se sube a git).
 
 ## Flujo recomendado
 
 1. Corre `npm run guias:revisar`.
-2. Con cada cambio: abre la página oficial, compara con la guía y actualiza los datos (`datos`, `aviso`, `faq`, `pasos`).
+2. Con cada cambio: abre la página oficial, compara con la guía y actualiza los datos (`datos`, `aviso`, `faq`, `pasos`). Si cambia el límite de edad, actualiza también `EDAD_MAX` en `src/data/guias.js`, porque el buscador usa ese valor.
 3. Repasa a mano las fuentes **MANUAL**.
 4. Actualiza `REVISADO_HOY` en `src/data/revision.js` solo si repasaste todas.
 5. Corre `npm run guias:revisar -- --guardar`, luego `npm run lint` y `npm run build`.
@@ -70,7 +71,7 @@ proyecto, escribe `/revisar-guias`.
 
 1. Lee la página oficial del destino para ese pasaporte (embajada, consulado o ministerio).
 2. Agrega la guía en un archivo de `src/data/` con los campos de las demás (`slug`, `origen`, `pais`, `flag`, `visa`, `titulo`, `resumen`, `revisado`, `datos`, `pasos`, `trabajo`, `consejos`, `faq`, `enlaces`).
-3. Si es un destino nuevo, agrega su etiqueta corta en `ETIQUETAS` (`src/data/guias.js`).
+3. Si es un destino nuevo, agrega su etiqueta corta en `ETIQUETAS` (`src/data/guias.js`). En todos los casos agrega la edad máxima de la guía en `EDAD_MAX` (mismo archivo): la usa el buscador `/guias/buscador`. Usa `null` solo si la fuente no la fija.
 4. Si es un pasaporte nuevo, agrégalo en `ORIGENES` con sus `fuentes` y `acuerdos`.
 5. En `scripts/fuentes-config.json` agrega, para sus enlaces, las `claves` (cifras a vigilar) o `manual` si el script no los puede leer.
 6. `npm run guias:revisar -- --guardar` para tener la copia inicial.

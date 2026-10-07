@@ -12,7 +12,7 @@ Reglas que no se negocian:
 
 Pasos:
 1. Ejecuta `npm run guias:revisar` y lee el informe completo.
-2. Por cada fuente **CAMBIÓ**: abre la página oficial, compara con la guía que la usa (campos `datos`, `aviso`, `faq`, `pasos`, `trabajo` en `src/data/guias.js`, `guiasMas.js`, `guiasLote2.js`) y actualiza lo que haya cambiado. Si el cambio no afecta a ninguna cifra de la guía, no toques nada.
+2. Por cada fuente **CAMBIÓ**: abre la página oficial, compara con la guía que la usa (campos `datos`, `aviso`, `faq`, `pasos`, `trabajo` en `src/data/guias.js`, `guiasMas.js`, `guiasLote2.js`) y actualiza lo que haya cambiado. Si cambia el límite de edad, actualiza también `EDAD_MAX` en `src/data/guias.js` (lo usa el buscador `/guias/buscador`). Si el cambio no afecta a ninguna cifra de la guía, no toques nada.
 3. Por cada fuente **MANUAL**: ábrela con el navegador integrado (`get_page_text` o JavaScript en la página) y comprueba la pista de `scripts/fuentes-config.json`. Para Home Affairs mira el precio, la edad, los meses de trabajo especificado y la tabla de cupos por país; para Cancillería de Argentina y de Chile, la lista de países con acuerdo.
 4. Por cada aviso «Ya no aparece»: la cifra de la guía puede estar desactualizada; verifícala y corrige o ajusta la clave en `scripts/fuentes-config.json`.
 5. Revisa los avisos con fecha (`aviso` y la fila «Estado» en `datos`): si la fecha ya pasó o cambió el estado, actualízalos. Mira también si Nueva Zelanda publicó la página de fechas de apertura del año nuevo y actualiza ese enlace.
