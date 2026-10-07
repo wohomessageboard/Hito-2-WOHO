@@ -48,7 +48,6 @@ const FilterChip = ({
       role="button"
       tabIndex={0}
       aria-pressed={!!isSelected}
-      style={isSelected && tagClass ? { color: 'var(--ws-paper-light)' } : undefined}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();

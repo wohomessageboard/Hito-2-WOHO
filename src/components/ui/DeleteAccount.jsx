@@ -96,7 +96,7 @@ const DeleteAccount = () => {
         Si ya no quieres estar en Driftler, puedes pedir que borremos tu cuenta, tus avisos, tus fotos y tus favoritos. Lo hacemos en un plazo de hasta {DAYS} días y puedes cancelar antes de que ocurra.
         Más detalles en nuestra <Link to="/contacto" className="underline underline-offset-4">página de contacto</Link>.
       </p>
-      <Button radius="sm" onPress={modal.onOpen} className="ws-btn bg-ws-tomato text-ws-ink h-11 px-5">
+      <Button radius="sm" onPress={modal.onOpen} className="ws-btn bg-ws-tomato text-ws-paper-light h-11 px-5">
         Eliminar mi cuenta
       </Button>
 
@@ -130,7 +130,7 @@ const DeleteAccount = () => {
               </ModalBody>
               <ModalFooter>
                 <Button radius="sm" className="ws-pill ws-pill-line h-11 px-5" onPress={onClose}>Mantener mi cuenta</Button>
-                <Button radius="sm" isLoading={busy} isDisabled={!password} className="ws-btn bg-ws-tomato text-ws-ink h-11 px-5" onPress={() => submit(onClose)}>
+                <Button radius="sm" isLoading={busy} isDisabled={!password} className="ws-btn bg-ws-tomato text-ws-paper-light h-11 px-5" onPress={() => submit(onClose)}>
                   Solicitar eliminación
                 </Button>
               </ModalFooter>

@@ -13,7 +13,7 @@ const BARS = [3,1,2,1,4,1,1,3,2,1,3,1,2,4,1,2,1,1,3,2,1,4,1,2,3,1,1,2,1,3,4,1,2,
 const BoardingPass = ({ className = '' }) => (
   <div aria-hidden="true" className={`relative ${className}`}>
     <div className="ws-ticket overflow-hidden rotate-[-2deg]" style={{ '--ws-stub': '5.5rem' }}>
-      <div className="flex items-center justify-between bg-ws-tomato text-ws-ink px-5 py-2.5">
+      <div className="flex items-center justify-between bg-ws-tomato text-ws-paper-light px-5 py-2.5">
         <span className="ws-mono font-medium">Working Holiday Pass</span>
         <span className="ws-mono">N.º 0001</span>
       </div>

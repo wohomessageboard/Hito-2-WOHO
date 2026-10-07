@@ -330,7 +330,7 @@ const NewPost = () => {
                             setSelectedFiles(newFiles);
                             setPreviews(newPrevs);
                           }}
-                          className="absolute top-0 right-0 bg-ws-tomato text-ws-ink w-6 h-6 z-10 flex items-center justify-center text-xs font-bold"
+                          className="absolute top-0 right-0 bg-ws-tomato text-ws-paper-light w-6 h-6 z-10 flex items-center justify-center text-xs font-bold"
                         >
                           X
                         </button>
