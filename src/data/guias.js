@@ -587,4 +587,6 @@ export const edadMaxDe = (g) => EDAD_MAX[`${g.origen}/${g.slug}`] ?? null;
 export const tieneEdadRegistrada = (g) => `${g.origen}/${g.slug}` in EDAD_MAX;
 
 export const guiaPor = (origen, slug) => GUIAS.find((g) => g.origen === origen && g.slug === slug);
+// Guías de un destino (por nombre de país, como en /destinos), una por pasaporte.
+export const guiasDePais = (nombre) => GUIAS.filter((g) => g.pais.toLowerCase() === String(nombre).trim().toLowerCase());
 export const guiasDe = (origen) => GUIAS.filter((g) => g.origen === origen);

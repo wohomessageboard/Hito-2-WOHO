@@ -1,20 +1,21 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import { Button, Input } from '@heroui/react';
 import { Search, Grid, Briefcase, Home, Users, Globe, MapPin, ArrowLeft, Heart } from '../components/ui/icons';
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
+import { tagClassFor } from '../components/ui/categoryTone';
 import EmptyState from '../components/ui/EmptyState';
 import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
 import ShareLinks from '../components/ui/ShareLinks';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import CityMultiSelect from '../components/ui/CityMultiSelect';
+import { guiasDePais, origenPorSlug } from '../data/guias';
 
 const CATEGORY_ICONS = {
-  'Todos': Grid,
   'Alojamiento': Home,
   'Trabajo': Briefcase,
   'Social': Users,
@@ -68,14 +69,16 @@ const CountryFeed = () => {
   }, [countryPosts]);
 
   const [selectedCities, setSelectedCities] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  // Categorías marcadas (varias a la vez); sin ninguna se ven todos los avisos.
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const toggleCategory = (key) => setSelectedCategories((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPosts = useMemo(() => {
     let results = countryPosts;
 
     if (selectedCities.length) results = results.filter(p => selectedCities.includes(p.city));
-    if (selectedCategory !== 'Todos') results = results.filter(p => p.type === selectedCategory);
+    if (selectedCategories.length) results = results.filter(p => selectedCategories.includes(p.type));
     
     if (searchQuery.trim() !== '') {
       const lowerQ = searchQuery.toLowerCase();
@@ -86,7 +89,7 @@ const CountryFeed = () => {
     }
 
     return results;
-  }, [countryPosts, selectedCities, selectedCategory, searchQuery]);
+  }, [countryPosts, selectedCities, selectedCategories, searchQuery]);
 
   if (!isLoading && !countryInfo) {
     return (
@@ -186,21 +189,17 @@ const CountryFeed = () => {
 
           <div className="flex-1 space-y-2">
             <span className="ws-mono flex items-center gap-1.5"><Grid className="w-4 h-4" aria-hidden="true" /> ¿Qué buscas?</span>
-            <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap gap-2">
-              <FilterChip
-                label="Todos"
-                size="sm"
-                isSelected={selectedCategory === "Todos"}
-                onClick={() => setSelectedCategory("Todos")}
-              />
+            <div role="group" aria-label="Filtrar por categoría; puedes marcar varias" className="flex flex-nowrap max-[360px]:flex-wrap gap-1.5 sm:gap-2">
               {categories.map(cat => (
                 <FilterChip
                   key={cat.key}
                   label={cat.label}
                   icon={CATEGORY_ICONS[cat.key] || Globe}
                   size="sm"
-                  isSelected={selectedCategory === cat.key}
-                  onClick={() => setSelectedCategory(cat.key)}
+                  tagClass={tagClassFor(cat.key)}
+                  hideIconOnNarrow
+                  isSelected={selectedCategories.includes(cat.key)}
+                  onClick={() => toggleCategory(cat.key)}
                 />
               ))}
             </div>
@@ -215,7 +214,7 @@ const CountryFeed = () => {
             title={`Pueblo fantasma en ${selectedCities.length === 1 ? selectedCities[0] : countryInfo.name}`}
             action={
               <Button
-                onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); setSelectedCities([]); }}
+                onPress={() => { setSearchQuery(''); setSelectedCategories([]); setSelectedCities([]); }}
                 radius="sm"
                 className="ws-btn ws-btn-ink mt-2 h-11 px-6"
               >
@@ -256,6 +255,22 @@ const CountryFeed = () => {
           </div>
         )}
       </section>
+
+      {guiasDePais(countryInfo.name).length > 0 && (
+        <section aria-labelledby="guias-visa" className="ws-surface p-6 md:p-8 flex flex-col gap-4">
+          <h2 id="guias-visa" className="font-display text-3xl md:text-4xl">Guías de visa para <em className="text-ws-accent">{countryInfo.name}</em></h2>
+          <p className="font-cuerpo text-ws-ink/85 max-w-2xl">Los requisitos cambian según tu pasaporte. Elige el tuyo:</p>
+          <ul className="list-none p-0 m-0 flex flex-wrap gap-3">
+            {guiasDePais(countryInfo.name).map((g) => (
+              <li key={g.origen}>
+                <Link to={`/guias/${g.origen}/${g.slug}`} className="ws-surface-hover inline-flex items-center gap-2 rounded-[6px] bg-ws-paper-deep px-4 min-h-11 font-bold">
+                  <span aria-hidden="true">{origenPorSlug(g.origen)?.flag}</span> Pasaporte {origenPorSlug(g.origen)?.pasaporte}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section aria-label="Compartir este destino" className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p className="font-bold">¿Alguien más viaja a {countryInfo.name}?</p>

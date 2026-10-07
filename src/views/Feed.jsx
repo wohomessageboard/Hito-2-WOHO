@@ -10,12 +10,12 @@ import { Search, Grid, Briefcase, Home, Users, Globe, Compass, Calendar } from '
 
 import PostCard from '../components/ui/PostCard';
 import FilterChip from '../components/ui/FilterChip';
+import { tagClassFor } from '../components/ui/categoryTone';
 import EmptyState from '../components/ui/EmptyState';
 
 import { useScrollRestore } from '../hooks/useScrollRestore';
 
 const CATEGORY_ICONS = {
-  'Todos': Grid,
   'Alojamiento': Home,
   'Trabajo': Briefcase,
   'Social': Users,
@@ -44,7 +44,9 @@ const Feed = () => {
     setShowTip(false);
   };
 
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  // Categorías marcadas (varias a la vez); sin ninguna se ven todos los avisos.
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const toggleCategory = (key) => setSelectedCategories((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -91,8 +93,8 @@ const Feed = () => {
   const filteredPosts = useMemo(() => {
     let results = posts;
 
-    if (selectedCategory !== 'Todos') {
-      results = results.filter(post => post.type === selectedCategory);
+    if (selectedCategories.length) {
+      results = results.filter(post => selectedCategories.includes(post.type));
     }
 
     if (searchQuery.trim() !== '') {
@@ -105,7 +107,7 @@ const Feed = () => {
     }
 
     return results;
-  }, [selectedCategory, searchQuery, posts]);
+  }, [selectedCategories, searchQuery, posts]);
 
   return (
     <div className="flex flex-col gap-8 md:gap-10 w-full">
@@ -145,20 +147,16 @@ const Feed = () => {
           </div>
         </div>
 
-        <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap gap-2 py-4 border-y border-ws-line">
-          <FilterChip
-            label="Todos"
-            icon={Grid}
-            isSelected={selectedCategory === "Todos"}
-            onClick={() => setSelectedCategory("Todos")}
-          />
+        <div role="group" aria-label="Filtrar por categoría; puedes marcar varias" className="flex flex-nowrap max-[360px]:flex-wrap gap-1.5 sm:gap-2 py-4 border-y border-ws-line">
           {categories.map((cat) => (
             <FilterChip
               key={cat.key}
               label={cat.label}
               icon={CATEGORY_ICONS[cat.key] || Globe}
-              isSelected={selectedCategory === cat.key}
-              onClick={() => setSelectedCategory(cat.key)}
+              tagClass={tagClassFor(cat.key)}
+              hideIconOnNarrow
+              isSelected={selectedCategories.includes(cat.key)}
+              onClick={() => toggleCategory(cat.key)}
             />
           ))}
         </div>
@@ -177,7 +175,7 @@ const Feed = () => {
                 Ver destinos
               </Button>
             ) : (
-              <Button onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); }} radius="sm" className="ws-btn ws-btn-ink mt-2 h-11 px-6">
+              <Button onPress={() => { setSearchQuery(''); setSelectedCategories([]); }} radius="sm" className="ws-btn ws-btn-ink mt-2 h-11 px-6">
                 Limpiar búsqueda
               </Button>
             )}

@@ -143,6 +143,24 @@ const Home = () => {
         </ul>
       </section>
 
+      {/* Antes de viajar: guías y buscador de visas */}
+      <section aria-labelledby="antes-de-viajar" className="ws-surface p-6 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 md:gap-10 items-center">
+        <div className="space-y-3">
+          <h2 id="antes-de-viajar" className="font-display text-4xl md:text-6xl">Antes de viajar, mira a qué países <em className="text-ws-accent">puedes ir</em></h2>
+          <p className="font-cuerpo text-lg text-ws-ink/85 max-w-2xl leading-relaxed">
+            Elige tu pasaporte y tu edad y compara las visas Working Holiday: cupos, costos y trabajo permitido, con la fuente oficial de cada país.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <Button as={Link} to="/guias/buscador" size="lg" radius="sm" className="ws-btn ws-btn-tomato h-14 px-8 text-lg w-full md:w-auto">
+            Abrir el buscador
+          </Button>
+          <Button as={Link} to="/guias" size="lg" radius="sm" className="ws-btn ws-btn-quiet h-14 px-8 text-lg w-full md:w-auto">
+            Ver las guías
+          </Button>
+        </div>
+      </section>
+
       {/* CTA final */}
       <section className="ws-band ws-band-teal ws-bleed py-14 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
