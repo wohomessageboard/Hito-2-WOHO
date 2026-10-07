@@ -11,6 +11,7 @@ import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
 import ShareLinks from '../components/ui/ShareLinks';
 import RelatedLinks from '../components/ui/RelatedLinks';
+import CityMultiSelect from '../components/ui/CityMultiSelect';
 import { guiasDePais, origenPorSlug } from '../data/guias';
 
 const CATEGORY_ICONS = {
@@ -60,19 +61,21 @@ const CountryFeed = () => {
     fetchCountryData();
   }, [countryName]);
 
+  // Ciudades con avisos, con cuántos tiene cada una (las más activas primero).
   const availableCities = useMemo(() => {
-    const cities = new Set(countryPosts.map(p => p.city));
-    return ['Todas', ...Array.from(cities)];
+    const counts = new Map();
+    countryPosts.forEach((p) => { if (p.city) counts.set(p.city, (counts.get(p.city) || 0) + 1); });
+    return [...counts].map(([city, count]) => ({ city, count })).sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, 'es'));
   }, [countryPosts]);
 
-  const [selectedCity, setSelectedCity] = useState('Todas');
+  const [selectedCities, setSelectedCities] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredPosts = useMemo(() => {
     let results = countryPosts;
 
-    if (selectedCity !== 'Todas') results = results.filter(p => p.city === selectedCity);
+    if (selectedCities.length) results = results.filter(p => selectedCities.includes(p.city));
     if (selectedCategory !== 'Todos') results = results.filter(p => p.type === selectedCategory);
     
     if (searchQuery.trim() !== '') {
@@ -84,7 +87,7 @@ const CountryFeed = () => {
     }
 
     return results;
-  }, [countryPosts, selectedCity, selectedCategory, searchQuery]);
+  }, [countryPosts, selectedCities, selectedCategory, searchQuery]);
 
   if (!isLoading && !countryInfo) {
     return (
@@ -179,17 +182,7 @@ const CountryFeed = () => {
         <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8 md:items-start">
           <div className="flex-1 space-y-2">
             <span className="ws-mono flex items-center gap-1.5"><MapPin className="w-4 h-4" aria-hidden="true" /> Ciudad / región</span>
-            <div role="group" aria-label="Filtrar por ciudad" className="flex flex-wrap gap-2">
-              {availableCities.map(city => (
-                <FilterChip
-                  key={city}
-                  label={city}
-                  size="sm"
-                  isSelected={selectedCity === city}
-                  onClick={() => setSelectedCity(city)}
-                />
-              ))}
-            </div>
+            <CityMultiSelect options={availableCities} value={selectedCities} onChange={setSelectedCities} />
           </div>
 
           <div className="flex-1 space-y-2">
@@ -220,10 +213,10 @@ const CountryFeed = () => {
         <h2 id="resultados" className="sr-only">Anuncios en {countryInfo.name}</h2>
         {filteredPosts.length === 0 ? (
           <EmptyState
-            title={`Pueblo fantasma en ${selectedCity !== 'Todas' ? selectedCity : countryInfo.name}`}
+            title={`Pueblo fantasma en ${selectedCities.length === 1 ? selectedCities[0] : countryInfo.name}`}
             action={
               <Button
-                onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); setSelectedCity('Todas'); }}
+                onPress={() => { setSearchQuery(''); setSelectedCategory('Todos'); setSelectedCities([]); }}
                 radius="sm"
                 className="ws-btn ws-btn-ink mt-2 h-11 px-6"
               >
