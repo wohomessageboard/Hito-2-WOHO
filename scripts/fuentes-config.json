@@ -149,5 +149,12 @@
   "https://www.consulado.gob.cl/workingholiday": {
     "manual": true,
     "nota": "Lista de acuerdos de Chile (18 países + Suiza para pasantías). Los datos se cargan con JavaScript."
+  },
+  "https://www.exteriores.gob.es/Consulados/cordoba/es/Comunicacion/Noticias/Paginas/Articulos/Programa-de-Movilidad-J%C3%B3venes-argentinos.aspx": {
+    "manual": true,
+    "nota": "Fondos por mes (EUR 1.080), seguro (EUR 30.000), requisitos y consulados que reciben solicitudes."
+  },
+  "https://www.boe.es/boe/dias/2023/01/26/pdfs/BOE-A-2023-2097.pdf": {
+    "nota": "Texto del acuerdo (PDF): edad 18-35, 500 visados, 12 meses, 6 meses de trabajo. Solo cambiaría si se modifica el acuerdo por canje de notas."
   }
 }
