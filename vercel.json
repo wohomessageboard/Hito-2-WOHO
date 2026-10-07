@@ -10,6 +10,14 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "woho-three.vercel.app" }],
+      "destination": "https://driftler.com/:path",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/p/:id",
