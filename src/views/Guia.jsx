@@ -105,9 +105,7 @@ const Guia = () => {
       </section>
 
       <RelatedLinks links={[
-        g.destino
-          ? { to: `/destinos/${g.destino}`, label: `Avisos en ${g.pais}`, hint: 'Trabajo y alojamiento de la comunidad.' }
-          : { to: '/destinos', label: 'Ver destinos', hint: 'Avisos de la comunidad por país.' },
+        { to: `/destinos/${g.pais}`, label: `Avisos en ${g.pais}`, hint: 'Trabajo y alojamiento de la comunidad.' },
         ...otras.map((x) => ({ to: `/guias/${g.origen}/${x.slug}`, label: `Guía: ${x.pais}`, hint: x.visa })),
       ]} />
     </article>

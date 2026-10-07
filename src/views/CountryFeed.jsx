@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../config/api';
 import { useUser } from '../context/UserContext';
 import { Button, Input } from '@heroui/react';
@@ -11,6 +11,7 @@ import Stamp from '../components/ui/Stamp';
 import { useScrollRestore } from '../hooks/useScrollRestore';
 import ShareLinks from '../components/ui/ShareLinks';
 import RelatedLinks from '../components/ui/RelatedLinks';
+import { guiasDePais, origenPorSlug } from '../data/guias';
 
 const CATEGORY_ICONS = {
   'Todos': Grid,
@@ -263,6 +264,22 @@ const CountryFeed = () => {
           </div>
         )}
       </section>
+
+      {guiasDePais(countryInfo.name).length > 0 && (
+        <section aria-labelledby="guias-visa" className="ws-surface p-6 md:p-8 flex flex-col gap-4">
+          <h2 id="guias-visa" className="font-display text-3xl md:text-4xl">Guías de visa para <em className="text-ws-accent">{countryInfo.name}</em></h2>
+          <p className="font-cuerpo text-ws-ink/85 max-w-2xl">Los requisitos cambian según tu pasaporte. Elige el tuyo:</p>
+          <ul className="list-none p-0 m-0 flex flex-wrap gap-3">
+            {guiasDePais(countryInfo.name).map((g) => (
+              <li key={g.origen}>
+                <Link to={`/guias/${g.origen}/${g.slug}`} className="ws-surface-hover inline-flex items-center gap-2 rounded-[6px] bg-ws-paper-deep px-4 min-h-11 font-bold">
+                  <span aria-hidden="true">{origenPorSlug(g.origen)?.flag}</span> Pasaporte {origenPorSlug(g.origen)?.pasaporte}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section aria-label="Compartir este destino" className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p className="font-bold">¿Alguien más viaja a {countryInfo.name}?</p>

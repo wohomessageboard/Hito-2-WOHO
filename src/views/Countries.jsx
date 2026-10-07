@@ -4,6 +4,7 @@ import api from '../config/api';
 import Stamp from '../components/ui/Stamp';
 import { ArrowRight } from '../components/ui/icons';
 import RelatedLinks from '../components/ui/RelatedLinks';
+import { guiasDePais } from '../data/guias';
 
 // Cada destino es una página de pasaporte con su sello; color y giro rotan
 // para que la grilla no se vea fotocopiada.
@@ -65,14 +66,23 @@ const Countries = () => {
                 />
                 <h2 className="sr-only">{country.name}</h2>
               </span>
-              <span className="ws-mono flex items-center justify-between border-t border-ws-line pt-3">
-                Ver anuncios
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              <span className="ws-mono flex flex-col gap-1 border-t border-ws-line pt-3">
+                {guiasDePais(country.name).length > 0 && (
+                  <span className="text-ws-ink/70">{guiasDePais(country.name).length} {guiasDePais(country.name).length === 1 ? 'guía de visa' : 'guías de visa'}</span>
+                )}
+                <span className="flex items-center justify-between">Ver anuncios
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
               </span>
             </Link>
           ))
         )}
       </section>
+
+      <Link to="/guias/buscador" className="ws-surface ws-surface-hover group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 p-5 md:p-6 bg-ws-mustard">
+        <span className="font-display text-3xl md:text-4xl">¿A qué países puedo ir?</span>
+        <span className="font-cuerpo text-lg flex-1">Elige tu pasaporte y tu edad y compara las visas de cada destino.</span>
+        <span className="flex items-center gap-2 font-bold">Abrir el buscador <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
+      </Link>
 
       <RelatedLinks links={[
         { to: '/como-funciona', label: 'Cómo funciona', hint: 'Cuatro pasos, gratis.' },
