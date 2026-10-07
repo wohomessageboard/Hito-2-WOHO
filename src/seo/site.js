@@ -43,9 +43,9 @@ export const PAGES = [
   {
     path: '/guias', priority: '0.8',
     title: 'Driftler | Guías de visa Working Holiday según tu pasaporte',
-    description: 'La visa Working Holiday cambia según tu pasaporte. Guías para chilenos y argentinos: requisitos, costos, cupos y trabajo permitido en cada país, con fuentes oficiales.',
+    description: 'La visa Working Holiday cambia según tu pasaporte. Guías para chilenos, argentinos, españoles, peruanos, mexicanos y colombianos: requisitos, costos, cupos y trabajo permitido, con fuentes oficiales.',
     h1: 'Guías de visa',
-    summary: 'Guías de la visa Working Holiday según tu pasaporte (chileno o argentino): países con acuerdo, edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
+    summary: 'Guías de la visa Working Holiday según tu pasaporte (chileno, argentino, español, peruano, mexicano o colombiano): países con acuerdo, edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial y fecha de revisión.',
   },
   {
     path: '/manifiesto', priority: '0.6',
@@ -100,10 +100,12 @@ export const countrySeo = (name) => ({
 // SEO de las guías de visa: /guias/<pasaporte> y /guias/<pasaporte>/<destino>.
 export const origenSeo = (o) => ({
   path: `/guias/${o.slug}`,
-  title: `Driftler | Working Holiday para ${o.gentilicio}: países con acuerdo`,
-  description: `Los ${o.acuerdos.length} países con acuerdo Working Holiday para personas con pasaporte ${o.pasaporte} y guías de cada destino con requisitos, costos y cupos.`,
+  title: `Driftler | Working Holiday para ${o.gentilicio}: ${o.listaCompleta ? 'países con acuerdo' : 'guías por destino'}`,
+  description: o.listaCompleta
+    ? `Los ${o.acuerdos.length} países con acuerdo Working Holiday para personas con pasaporte ${o.pasaporte} y guías de cada destino con requisitos, costos y cupos.`
+    : `Guías de Working Holiday para personas con pasaporte ${o.pasaporte}: ${o.acuerdos.map((a) => a.name).join(', ')}, con requisitos, costos y cupos de fuentes oficiales.`,
   h1: `Working Holiday para ${o.gentilicio}`,
-  summary: `Países con acuerdo Working Holiday con ${o.nombre}: ${o.acuerdos.map((a) => a.name).join(', ')}. Cada guía explica edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial.`,
+  summary: `${o.listaCompleta ? 'Países con acuerdo Working Holiday con' : 'Destinos confirmados para'} ${o.nombre}: ${o.acuerdos.map((a) => a.name).join(', ')}. Cada guía explica edad, duración, costo, cupos, cómo se pide y qué trabajo se permite, con enlace a la fuente oficial.`,
   origen: o.slug,
   noindex: false,
 });

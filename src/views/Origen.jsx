@@ -67,7 +67,7 @@ const Origen = () => {
 
       <section aria-labelledby="acuerdos" className="ws-surface p-6 md:p-8 flex flex-col gap-5">
         <h2 id="acuerdos" className="font-display text-4xl md:text-5xl">
-          Países con acuerdo con <em className="text-ws-accent">{o.nombre}</em>
+          {o.listaCompleta ? 'Países con acuerdo con' : 'Destinos confirmados para'} <em className="text-ws-accent">{o.nombre}</em>
         </h2>
         <p className="font-cuerpo text-lg leading-relaxed text-ws-ink/90 max-w-3xl">
           {o.nota} Los que ya tienen guía llevan enlace; las demás las iremos agregando.
@@ -82,9 +82,15 @@ const Origen = () => {
             </li>
           ))}
         </ul>
-        <p className="font-cuerpo text-sm text-ws-ink/80">
-          Fuente: <a href={o.fuente.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{o.fuente.label}</a>. Los requisitos dependen de tu pasaporte y cambian cada año: confirma siempre en el sitio oficial del país de destino.
-        </p>
+        <div className="font-cuerpo text-sm text-ws-ink/80">
+          <p>{o.fuentes.length > 1 ? 'Fuentes:' : 'Fuente:'}</p>
+          <ul className="list-none p-0 m-0 mt-1 space-y-1">
+            {o.fuentes.map((f) => (
+              <li key={f.href}><a href={f.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 break-words">{f.label}</a></li>
+            ))}
+          </ul>
+          <p className="mt-2">Los requisitos dependen de tu pasaporte y cambian cada año: confirma siempre en el sitio oficial del país de destino.</p>
+        </div>
       </section>
 
       <RelatedLinks links={[

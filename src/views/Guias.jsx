@@ -26,7 +26,7 @@ const Guias = () => (
             <span className="text-5xl leading-none" aria-hidden="true">{o.flag}</span>
             <h2 className="font-display text-3xl md:text-4xl">Pasaporte {o.pasaporte}</h2>
             <p className="font-cuerpo text-ws-ink/85">
-              {o.acuerdos.length} países con acuerdo{n ? ` · ${n} ${n === 1 ? 'guía lista' : 'guías listas'}` : ''}
+              {o.listaCompleta ? `${o.acuerdos.length} países con acuerdo` : `${o.acuerdos.length} ${o.acuerdos.length === 1 ? 'destino confirmado' : 'destinos confirmados'}`}{n ? ` · ${n} ${n === 1 ? 'guía lista' : 'guías listas'}` : ''}
             </p>
             <span className="mt-auto flex items-center gap-2 font-bold">
               Ver acuerdos y guías <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -37,7 +37,7 @@ const Guias = () => (
       <div className="ws-surface p-5 md:p-6 flex flex-col gap-3 min-h-[13rem] border-dashed">
         <span className="text-5xl leading-none" aria-hidden="true">🌎</span>
         <h2 className="font-display text-3xl md:text-4xl">¿Tu pasaporte no está?</h2>
-        <p className="font-cuerpo text-ws-ink/85">Vamos sumando más países, empezando por España y otros de Latinoamérica. Cuéntanos cuál necesitas.</p>
+        <p className="font-cuerpo text-ws-ink/85">Vamos sumando más pasaportes, como Uruguay y Brasil. Cuéntanos cuál necesitas.</p>
         <Link to="/contacto" className="mt-auto font-bold underline underline-offset-4">Escríbenos</Link>
       </div>
     </section>

@@ -9,7 +9,10 @@
 // Las guías están escritas para personas con pasaporte chileno. Con otra nacionalidad los
 // requisitos cambian: cada guía lo advierte y enlaza a la fuente oficial.
 
-export const REVISADO_HOY = '2026-10-08';
+import { REVISADO_HOY } from './revision.js';
+import { GUIAS_MAS } from './guiasMas.js';
+
+export { REVISADO_HOY };
 
 const slugify = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const acuerdo = (name, flag, slug) => ({ name, flag, slug: slug || slugify(name) });
@@ -25,7 +28,8 @@ export const ORIGENES = [
     gentilicio: 'chilenos',
     pasaporte: 'chileno',
     revisado: REVISADO_HOY,
-    fuente: { label: 'Portal Working Holiday de la Cancillería de Chile', href: 'https://www.consulado.gob.cl/workingholiday' },
+    listaCompleta: true,
+    fuentes: [{ label: 'Portal Working Holiday de la Cancillería de Chile', href: 'https://www.consulado.gob.cl/workingholiday' }],
     nota: 'La Cancillería de Chile informa acuerdos con 18 países y un acuerdo de intercambio de pasantías con Suiza.',
     acuerdos: [
       acuerdo('Alemania', '🇩🇪'), acuerdo('Australia', '🇦🇺'), acuerdo('Austria', '🇦🇹'), acuerdo('Canadá', '🇨🇦'),
@@ -42,7 +46,8 @@ export const ORIGENES = [
     gentilicio: 'argentinos',
     pasaporte: 'argentino',
     revisado: REVISADO_HOY,
-    fuente: { label: 'Cancillería Argentina: Programas de Vacaciones y Trabajo (información de enero de 2026)', href: 'https://www.cancilleria.gob.ar/es/servicios/programas-de-vacaciones-y-trabajo/extranjeros' },
+    listaCompleta: true,
+    fuentes: [{ label: 'Cancillería Argentina: Programas de Vacaciones y Trabajo (información de enero de 2026)', href: 'https://www.cancilleria.gob.ar/es/servicios/programas-de-vacaciones-y-trabajo/extranjeros' }],
     nota: 'La Cancillería Argentina informa acuerdos con 19 países. Para las condiciones de cada uno, recomienda consultar a la embajada del país de destino.',
     acuerdos: [
       acuerdo('Alemania', '🇩🇪'), acuerdo('Armenia', '🇦🇲'), acuerdo('Australia', '🇦🇺'), acuerdo('Austria', '🇦🇹'),
@@ -51,6 +56,67 @@ export const ORIGENES = [
       acuerdo('Japón', '🇯🇵'), acuerdo('Noruega', '🇳🇴'), acuerdo('Nueva Zelanda', '🇳🇿'), acuerdo('Países Bajos', '🇳🇱'),
       acuerdo('Polonia', '🇵🇱'), acuerdo('Portugal', '🇵🇹'), acuerdo('Suecia', '🇸🇪'),
     ],
+  },
+  {
+    slug: 'espana',
+    nombre: 'España',
+    flag: '🇪🇸',
+    gentilicio: 'españoles',
+    pasaporte: 'español',
+    revisado: REVISADO_HOY,
+    listaCompleta: false,
+    fuentes: [
+      { label: 'Estado de los cupos por país, Home Affairs (Australia)', href: 'https://immi.homeaffairs.gov.au/what-we-do/whm-program/status-of-country-caps' },
+      { label: 'Spain Working Holiday Visa, Inmigración de Nueva Zelanda', href: 'https://www.immigration.govt.nz/visas/spain-working-holiday-visa/' },
+      { label: 'International Experience Canada: quién puede postular', href: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html' },
+    ],
+    nota: 'No encontramos una lista oficial completa del gobierno de España. Aquí van los acuerdos que confirmamos en las páginas oficiales de cada país de destino.',
+    acuerdos: [acuerdo('Australia', '🇦🇺'), acuerdo('Nueva Zelanda', '🇳🇿'), acuerdo('Canadá', '🇨🇦')],
+  },
+  {
+    slug: 'peru',
+    nombre: 'Perú',
+    flag: '🇵🇪',
+    gentilicio: 'peruanos',
+    pasaporte: 'peruano',
+    revisado: REVISADO_HOY,
+    listaCompleta: false,
+    fuentes: [
+      { label: 'Estado de los cupos por país, Home Affairs (Australia)', href: 'https://immi.homeaffairs.gov.au/what-we-do/whm-program/status-of-country-caps' },
+      { label: 'Peru Working Holiday Visa, Inmigración de Nueva Zelanda', href: 'https://www.immigration.govt.nz/visas/peru-working-holiday-visa/' },
+      { label: 'Programa Vacaciones-Trabajo, Embajada de Francia en Perú', href: 'https://pe.diplomatie.gouv.fr/fr/aller-en-france/programme-vacances-travail' },
+    ],
+    nota: 'No encontramos una lista oficial completa del gobierno de Perú. Aquí van los acuerdos que confirmamos en las páginas oficiales de cada país de destino.',
+    acuerdos: [acuerdo('Australia', '🇦🇺'), acuerdo('Nueva Zelanda', '🇳🇿'), acuerdo('Francia', '🇫🇷')],
+  },
+  {
+    slug: 'mexico',
+    nombre: 'México',
+    flag: '🇲🇽',
+    gentilicio: 'mexicanos',
+    pasaporte: 'mexicano',
+    revisado: REVISADO_HOY,
+    listaCompleta: false,
+    fuentes: [
+      { label: 'Mexico Working Holiday Visa, Inmigración de Nueva Zelanda', href: 'https://www.immigration.govt.nz/visas/mexico-working-holiday-visa/' },
+      { label: 'Cupos agotados 2026, Embajada de Francia en México', href: 'https://mx.diplomatie.gouv.fr/es/agotadas-visas-vacaciones-y-trabajo-2026' },
+    ],
+    nota: 'No encontramos una lista oficial completa del gobierno de México. Aquí van los acuerdos que confirmamos en las páginas oficiales de cada país de destino.',
+    acuerdos: [acuerdo('Nueva Zelanda', '🇳🇿'), acuerdo('Francia', '🇫🇷')],
+  },
+  {
+    slug: 'colombia',
+    nombre: 'Colombia',
+    flag: '🇨🇴',
+    gentilicio: 'colombianos',
+    pasaporte: 'colombiano',
+    revisado: REVISADO_HOY,
+    listaCompleta: false,
+    fuentes: [
+      { label: 'Visa Vacaciones-Trabajo, Embajada de Francia en Colombia', href: 'https://co.diplomatie.gouv.fr/es/vvt' },
+    ],
+    nota: 'No encontramos una lista oficial completa del gobierno de Colombia. Por ahora confirmamos el acuerdo con Francia; iremos sumando los demás.',
+    acuerdos: [acuerdo('Francia', '🇫🇷')],
   },
 ];
 
@@ -81,6 +147,7 @@ export const GUIAS = [
       ['Edad', '18 a 30 años (inclusive) al momento de solicitar'],
       ['Duración', '12 meses'],
       ['Costo', 'AUD 840 la primera visa; AUD 1.000 la segunda y la tercera'],
+      ['Cupo anual', '3.400 visas; estado «abierto» el 8 de octubre de 2026, según Home Affairs'],
       ['Dónde se pide', 'En línea y desde fuera de Australia'],
       ['Tiempo de trámite', 'Promedio estimado de 3 meses, según Home Affairs'],
       ['Segunda visa', 'Pide haber completado 3 meses de trabajo especificado'],
@@ -319,6 +386,7 @@ export const GUIAS = [
       ['Edad', '18 a 30 años (inclusive) al momento de solicitar'],
       ['Duración', '12 meses'],
       ['Costo', 'AUD 840 la primera visa; AUD 1.000 la segunda y la tercera'],
+      ['Cupo anual', '3.400 visas; estado «abierto» el 8 de octubre de 2026, según Home Affairs'],
       ['Dónde se pide', 'En línea y desde fuera de Australia'],
       ['Tiempo de trámite', 'Promedio estimado de 3 meses, según Home Affairs'],
       ['Segunda visa', 'Pide haber completado 3 meses de trabajo especificado'],
@@ -492,6 +560,8 @@ export const GUIAS = [
     ],
   },
 ];
+
+GUIAS.push(...GUIAS_MAS);
 
 export const guiaPor = (origen, slug) => GUIAS.find((g) => g.origen === origen && g.slug === slug);
 export const guiasDe = (origen) => GUIAS.filter((g) => g.origen === origen);
