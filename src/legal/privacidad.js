@@ -12,7 +12,7 @@ export const PRIVACIDAD = {
       id: 'responsable',
       title: 'Quién es responsable de tus datos',
       blocks: [
-        '[[NOMBRE COMPLETO O RAZÓN SOCIAL DEL TITULAR]] ([[RUT / DNI / IDENTIFICACIÓN]]), con domicilio en [[DIRECCIÓN, CIUDAD Y PAÍS]]. Contacto para temas de privacidad: [[CORREO DE CONTACTO]].',
+        'Felipe Roa Fuentes (RUT 18.960.119-0), con domicilio en Sídney, Australia. Contacto para temas de privacidad: hello@driftler.com.',
       ],
     },
     {
@@ -47,7 +47,7 @@ export const PRIVACIDAD = {
             'Cumplir obligaciones legales.',
           ],
         },
-        'Nos basamos en la ejecución del servicio que pides al crear tu cuenta, en tu consentimiento (por ejemplo, al aceptar estos textos y compartir tu WhatsApp) y en nuestro interés legítimo de mantener el sitio seguro. [[AJUSTAR LAS BASES LEGALES SEGÚN LA LEY DE TU PAÍS.]]',
+        'Nos basamos en la ejecución del servicio que pides al crear tu cuenta, en tu consentimiento (por ejemplo, al aceptar estos textos y compartir tu WhatsApp) y en nuestro interés legítimo de mantener el sitio seguro.',
       ],
     },
     {
@@ -73,12 +73,12 @@ export const PRIVACIDAD = {
           list: [
             '**Cloudinary** — almacenamiento y entrega de fotos.',
             '**Resend** — envío de correos del servicio.',
-            '**[[PROVEEDOR DE HOSTING DEL SITIO]]** y **[[PROVEEDOR DE LA BASE DE DATOS]]** — alojamiento de la aplicación y de los datos.',
+            '**Vercel** (sitio), **Render** (servidor) y **Neon** (base de datos) — alojamiento de la aplicación y de los datos.',
             '**WhatsApp (Meta)** — cuando una persona abre el chat; esa conversación ocurre en WhatsApp y se rige por sus condiciones, no por las de Driftler.',
           ],
         },
         'No vendemos tus datos. Podemos entregarlos si una autoridad competente nos lo exige conforme a la ley.',
-        'Algunos de estos proveedores tienen servidores fuera de tu país [[CONFIRMAR UBICACIONES]]; en ese caso procuramos que ofrezcan garantías adecuadas.',
+        'Algunos de estos proveedores tienen servidores fuera de tu país (el servidor y la base de datos están en Fráncfort, Alemania; Vercel sirve el sitio desde una red global con sede en EE. UU.); en ese caso procuramos que ofrezcan garantías adecuadas.',
       ],
     },
     {
@@ -89,8 +89,8 @@ export const PRIVACIDAD = {
           list: [
             'Tu cuenta y sus datos, mientras la mantengas. Los avisos dejan de mostrarse al vencer, pero quedan en tu cuenta hasta que los elimines.',
             'Si pides eliminar tu cuenta, la borramos junto con tus avisos, fotos y favoritos en un plazo de **hasta 5 días**. Quedará solo una constancia de la solicitud, sin tu nombre ni tu correo.',
-            'Las copias de seguridad del proveedor pueden conservar datos hasta [[30]] días más antes de borrarse por completo.',
-            'Reportes y mensajes de contacto: [[12]] meses, o más si hay un trámite abierto.',
+            'Las copias de seguridad del proveedor pueden conservar datos hasta 30 días más antes de borrarse por completo.',
+            'Reportes y mensajes de contacto: 12 meses, o más si hay un trámite abierto.',
             'Códigos para recuperar contraseña: se invalidan a la hora de crearse o al usarse.',
           ],
         },
@@ -108,7 +108,7 @@ export const PRIVACIDAD = {
             'Pedir la **eliminación de tu cuenta** al final de «Editar perfil».',
           ],
         },
-        'Para lo demás (por ejemplo, una copia de tus datos) escríbenos desde **Contacto** o a [[CORREO DE CONTACTO]] y respondemos en un plazo de [[30]] días. Si crees que no tratamos bien tus datos, también puedes acudir a la autoridad de protección de datos de tu país.',
+        'Para lo demás (por ejemplo, una copia de tus datos) escríbenos desde **Contacto** o a hello@driftler.com y respondemos en un plazo de 30 días. Si crees que no tratamos bien tus datos, también puedes acudir a la autoridad de protección de datos de tu país.',
       ],
     },
     {
@@ -141,7 +141,7 @@ export const PRIVACIDAD = {
       id: 'ue-eeuu',
       title: 'Si estás en la Unión Europea, el Reino Unido o California',
       blocks: [
-        'Si estás en la UE, el EEE o el Reino Unido, tienes los derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad que reconoce la normativa de protección de datos (RGPD), y puedes presentar una reclamación ante tu autoridad de control. Para ejercerlos, usa los medios de la sección «Tus derechos». [[COMPLETAR: REPRESENTANTE EN LA UE, SI CORRESPONDE, Y DATOS DE CONTACTO PARA ESTOS DERECHOS.]]',
+        'Si estás en la UE, el EEE o el Reino Unido, tienes los derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad que reconoce la normativa de protección de datos (RGPD), y puedes presentar una reclamación ante tu autoridad de control. Para ejercerlos, usa los medios de la sección «Tus derechos».',
         'Si estás en California u otro estado de EE. UU. con una ley de privacidad, puedes pedir saber qué datos tuyos tenemos, corregirlos o borrarlos. **No vendemos ni compartimos tus datos personales con fines publicitarios.** Para pedirlo, escríbenos desde Contacto.',
       ],
     },
