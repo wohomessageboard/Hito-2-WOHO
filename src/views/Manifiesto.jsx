@@ -58,7 +58,7 @@ const Manifiesto = () => {
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-12 gap-8 md:gap-12 items-center">
               <div className={`md:col-span-5 relative ${flip ? 'md:order-2' : ''}`}>
-                <PhotoSlot file={photo.file} alt={photo.alt} ratio="4 / 3" hint={photo.hint} />
+                <PhotoSlot file={photo.file} alt={photo.alt} ratio="3 / 4" hint={photo.hint} />
                 <Stamp
                   variant="round"
                   center={['DRIFTLER']}
@@ -92,7 +92,7 @@ const Manifiesto = () => {
             </p>
           </div>
           <div className="md:col-span-5 relative">
-            <PhotoSlot file="manifiesto-cierre" alt="Horizonte al atardecer, con el camino abierto" ratio="4 / 3" hint="Foto de horizonte: atardecer, mar o camino abierto" />
+            <PhotoSlot file="manifiesto-cierre" alt="Horizonte al atardecer, con el camino abierto" ratio="3 / 4" hint="Foto de horizonte: atardecer, mar o camino abierto" />
             <Stamp solid variant="oval" center="BIENVENIDO" bottom="FAMILIA GLOBAL" rotate={-5} className="hidden md:block absolute -bottom-8 -left-10 w-36 text-ws-mustard" />
           </div>
         </div>
