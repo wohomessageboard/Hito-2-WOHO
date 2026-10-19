@@ -44,7 +44,7 @@ const Manifiesto = () => {
           <Stamp variant="rect" top="LLEGADA" center="BIENVENIDO" bottom="2026" rotate={-6} className="hidden sm:block w-36 text-ws-plum" />
         </div>
         <div className="md:col-span-6">
-          <PhotoSlot file="manifiesto-portada" alt="Tranvía elevado amarillo en Berlín" ratio="3 / 4" hint="Foto principal: vertical 3:4" />
+          <PhotoSlot file="manifiesto-portada" alt="Calle de Colonia al atardecer con un ciclista" ratio="3 / 4" hint="Foto principal: vertical 3:4" />
         </div>
       </header>
 
