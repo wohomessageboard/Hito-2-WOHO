@@ -33,20 +33,20 @@ const Manifiesto = () => {
   return (
     <div className="flex flex-col gap-14 md:gap-20 -mb-16">
 
-      <header className="relative grid md:grid-cols-12 gap-8 items-end pt-2">
-        <h1 className="md:col-span-7 font-display text-6xl sm:text-7xl xl:text-8xl">
-          Nuestro <em className="text-ws-accent">manifiesto</em>
-        </h1>
-        <p className="md:col-span-5 font-display italic text-3xl md:text-4xl leading-tight text-ws-ink/90">
-          Viajar no es escapar, es encontrarse. Creemos en el poder transformador de migrar y en la fuerza invencible de la comunidad.
-        </p>
-        <Stamp variant="round" center={['DRIFTLER']} top="WORKING HOLIDAY" bottom="MANIFIESTO" rotate={-12} className="hidden lg:block absolute -top-4 right-0 w-28 text-ws-plum" />
+      <header className="grid md:grid-cols-12 gap-8 md:gap-12 items-start pt-2">
+        <div className="md:col-span-6 flex flex-col gap-8 md:gap-10">
+          <h1 className="font-display text-6xl sm:text-7xl xl:text-8xl">
+            Nuestro <em className="text-ws-accent">manifiesto</em>
+          </h1>
+          <p className="font-display italic text-3xl md:text-4xl leading-tight text-ws-ink/90">
+            Viajar no es escapar, es encontrarse. Creemos en el poder transformador de migrar y en la fuerza invencible de la comunidad.
+          </p>
+          <Stamp variant="rect" top="LLEGADA" center="BIENVENIDO" bottom="2026" rotate={-6} className="hidden sm:block w-36 text-ws-plum" />
+        </div>
+        <div className="md:col-span-6">
+          <PhotoSlot file="manifiesto-portada" alt="Calle de Colonia al atardecer con un ciclista" ratio="3 / 4" hint="Foto principal: vertical 3:4" />
+        </div>
       </header>
-
-      <div className="relative">
-        <PhotoSlot file="manifiesto-portada" alt="Paisaje panorámico de un viaje por carretera" ratio="21 / 9" hint="Paisaje panorámico: tu mejor foto de ruta" className="[&>div]:min-h-[12rem]" />
-        <Stamp variant="rect" top="LLEGADA" center="BIENVENIDO" bottom="2026" rotate={-6} className="hidden sm:block absolute -bottom-8 right-6 w-36 text-ws-plum" />
-      </div>
 
       {PRINCIPLES.map(({ id, title, band, body, photo }, index) => {
         const flip = index % 2 === 1;
@@ -58,7 +58,7 @@ const Manifiesto = () => {
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-12 gap-8 md:gap-12 items-center">
               <div className={`md:col-span-5 relative ${flip ? 'md:order-2' : ''}`}>
-                <PhotoSlot file={photo.file} alt={photo.alt} ratio="3 / 4" hint={photo.hint} />
+                <PhotoSlot file={photo.file} alt={photo.alt} ratio="4 / 3" hint={photo.hint} />
                 <Stamp
                   variant="round"
                   center={['DRIFTLER']}
@@ -92,7 +92,7 @@ const Manifiesto = () => {
             </p>
           </div>
           <div className="md:col-span-5 relative">
-            <PhotoSlot file="manifiesto-cierre" alt="Horizonte al atardecer, con el camino abierto" ratio="3 / 4" hint="Foto de horizonte: atardecer, mar o camino abierto" />
+            <PhotoSlot file="manifiesto-cierre" alt="Horizonte al atardecer, con el camino abierto" ratio="4 / 3" hint="Foto de horizonte: atardecer, mar o camino abierto" />
             <Stamp solid variant="oval" center="BIENVENIDO" bottom="FAMILIA GLOBAL" rotate={-5} className="hidden md:block absolute -bottom-8 -left-10 w-36 text-ws-mustard" />
           </div>
         </div>
