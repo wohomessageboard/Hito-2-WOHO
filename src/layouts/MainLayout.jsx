@@ -12,13 +12,18 @@ import Analytics from '../analytics/Analytics';
 import { GA_ID, openConsent } from '../analytics/consent';
 
 const MainLayout = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useLayoutEffect(() => {
     const { paper, accent } = themeForPath(pathname);
     const root = document.documentElement;
     root.style.setProperty('--ws-paper', paper);
     root.style.setProperty('--ws-accent', accent);
   }, [pathname]);
+
+  // Al cambiar de página se vuelve arriba; los feeds restauran su posición después (useScrollRestore).
+  useLayoutEffect(() => {
+    if (!hash) window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname, hash]);
 
   const year = new Date().getFullYear();
   return (
